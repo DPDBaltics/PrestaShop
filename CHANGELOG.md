@@ -175,3 +175,6 @@
 - Improved price calculation
 - Fixed issues with carrier shown as "Free" when it is not needed to display
 - Carriers error handling improvements
+
+## [3.2.22]
+- Removed PUDO default preselection

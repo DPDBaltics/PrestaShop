@@ -60,7 +60,7 @@ class ModuleLatestVersionValidator implements ValidatorInterface
     {
         try {
             $request = curl_init();
-            curl_setopt($request, CURLOPT_URL, Config::DPD_GITHUB_REPO_RELEASE_LATEST_URL);
+            curl_setopt($request, CURLOPT_URL, Config::DPD_GITHUB_REPO_RELEASE_LATEST_API_URL);
             curl_setopt($request, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($request, CURLOPT_USERAGENT, 'PrestaShop');
             $response = curl_exec($request);

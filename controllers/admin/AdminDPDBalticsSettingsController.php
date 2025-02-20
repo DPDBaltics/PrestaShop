@@ -331,8 +331,18 @@ class AdminDPDBalticsSettingsController extends AbstractAdminController
             $this->errors[] = $e->getMessage();
         }
 
+        $isModuleVersionLatest = false;
+
         if (!$isModuleVersionLatest) {
-            $this->errors[] = $this->l('Please upgrade DPD Baltics module');
+            $this->warnings[] = $this->context->smarty->fetch(
+                $this->module->getLocalPath() . 'views/templates/admin/warning-message-with-link.tpl',
+                [
+                    'messageLink' => Config::DPD_GITHUB_REPO_RELEASE_LATEST_DOWNLOAD_URL,
+                    'messageStart' => $this->module->l('You are using an outdated version of the module. Please update the module to the latest version. ', self::FILENAME),
+                    'messageEnd' => '',
+                    'linkText' => $this->module->l('Download latest module', self::FILENAME)
+                ]
+            );
         }
     }
 }

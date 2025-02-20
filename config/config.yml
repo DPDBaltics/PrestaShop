@@ -17,6 +17,7 @@ imports:
   - { resource: presenter.yml }
   - { resource: templateRender.yml }
   - { resource: verification.yml }
+  - { resource: utility.yml }
 
 services:
   _defaults:
@@ -68,3 +69,5 @@ services:
 
   invertus.dpdbaltics.orm.entity_manager:
     class: 'Invertus\dpdBaltics\ORM\EntityManager'
+    arguments:
+      - '@invertus.dpdbaltics.utility.module_version_utility'

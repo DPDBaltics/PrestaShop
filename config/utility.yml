@@ -1,0 +1,8 @@
+services:
+  _defaults:
+    public: true
+
+  invertus.dpdbaltics.utility.module_version_utility:
+    class: 'Invertus\dpdBaltics\Infrastructure\Utility\ModuleVersionUtility'
+    arguments:
+      - '@dpdbaltics'

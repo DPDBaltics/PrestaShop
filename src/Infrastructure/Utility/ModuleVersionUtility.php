@@ -28,9 +28,7 @@ if (!defined('_PS_VERSION_')) {
 
 class ModuleVersionUtility
 {
-    /**
-     * @var string
-     */
+    /** @var string */
     private $moduleVersion;
 
     public function __construct(DPDBaltics $module)
@@ -38,8 +36,8 @@ class ModuleVersionUtility
         $this->moduleVersion = $module->version;
     }
 
-    public function isVersionLatest(string $version): bool
+    public function isVersionLatest(string $githubModuleVersion): bool
     {
-        return version_compare($this->moduleVersion, $version, '>=');
+        return version_compare($this->moduleVersion, $githubModuleVersion, '=');
     }
 }

@@ -213,18 +213,7 @@ class AdminDPDBalticsSettingsController extends AbstractAdminController
 
     public function postProcess()
     {
-        /** @var ModuleLatestVersionValidator $moduleVersionValidator */
-        $moduleVersionValidator = $this->module->getModuleContainer()->get('invertus.dpdbaltics.validator.module_latest_version_validator');
-
-        try {
-            $isModuleVersionLatest = $moduleVersionValidator->validate();
-        } catch (Exception $e) {
-            $this->errors[] = $e->getMessage();
-        }
-
-        if (!$isModuleVersionLatest) {
-            $this->errors[] = $this->l('Please upgrade DPD Baltics module');
-        }
+        $this->checkCanUpdateModule();
 
         if (Tools::isSubmit('submitOptionsconfiguration')) {
             /** @var ProductService $productService */
@@ -329,5 +318,21 @@ class AdminDPDBalticsSettingsController extends AbstractAdminController
         $encodedPassword = str_rot13($plainPassword);
 
         Configuration::updateValue(Config::WEB_SERVICE_PASSWORD, $encodedPassword, false, 0, 0);
+    }
+
+    private function checkCanUpdateModule()
+    {
+        /** @var ModuleLatestVersionValidator $moduleVersionValidator */
+        $moduleVersionValidator = $this->module->getModuleContainer()->get('invertus.dpdbaltics.validator.module_latest_version_validator');
+
+        try {
+            $isModuleVersionLatest = $moduleVersionValidator->validate();
+        } catch (\Exception $e) {
+            $this->errors[] = $e->getMessage();
+        }
+
+        if (!$isModuleVersionLatest) {
+            $this->errors[] = $this->l('Please upgrade DPD Baltics module');
+        }
     }
 }

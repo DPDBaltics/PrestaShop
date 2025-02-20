@@ -30,6 +30,8 @@ if (!defined('_PS_VERSION_')) {
 
 class ModuleLatestVersionValidator implements ValidatorInterface
 {
+    const FILE_NAME = 'ModuleLatestVersionValidator';
+
     /** @var ModuleVersionUtility */
     private $moduleVersionUtility;
 
@@ -38,29 +40,36 @@ class ModuleLatestVersionValidator implements ValidatorInterface
         $this->moduleVersionUtility = $moduleVersionUtility;
     }
 
+    /**
+     * Checks and validates if the module is the latest version from GitHub
+     *
+     * @return bool
+     *
+     * @throws \Exception
+     */
     public function validate(): bool
     {
         try {
-            return $this->moduleVersionUtility->isVersionLatest('3.2.20');
+            return $this->moduleVersionUtility->isVersionLatest($this->getLatestModuleVersionGithub());
         } catch (\Exception $e) {
-            throw new \Exception($e->getMessage());
+            throw new \Exception(sprintf('%s - Unable to get the latest module version from GitHub', self::FILE_NAME));
         }
     }
 
     private function getLatestModuleVersionGithub(): string
     {
         try {
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, Config::DPD_GITHUB_REPO_RELEASE_LATEST_URL);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLOPT_USERAGENT, 'PrestaShop');
-            $response = curl_exec($ch);
-            curl_close($ch);
+            $request = curl_init();
+            curl_setopt($request, CURLOPT_URL, Config::DPD_GITHUB_REPO_RELEASE_LATEST_URL);
+            curl_setopt($request, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($request, CURLOPT_USERAGENT, 'PrestaShop');
+            $response = curl_exec($request);
+            curl_close($request);
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage());
         }
 
-        unset($ch);
+        unset($request);
 
         $version = json_decode($response)->tag_name;
 

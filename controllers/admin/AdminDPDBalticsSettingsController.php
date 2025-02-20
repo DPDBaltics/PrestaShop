@@ -213,8 +213,6 @@ class AdminDPDBalticsSettingsController extends AbstractAdminController
 
     public function postProcess()
     {
-        $this->checkCanUpdateModule();
-
         if (Tools::isSubmit('submitOptionsconfiguration')) {
             /** @var ProductService $productService */
             $productService = $this->module->getModuleContainer()->get('invertus.dpdbaltics.service.product.product_service');
@@ -318,31 +316,5 @@ class AdminDPDBalticsSettingsController extends AbstractAdminController
         $encodedPassword = str_rot13($plainPassword);
 
         Configuration::updateValue(Config::WEB_SERVICE_PASSWORD, $encodedPassword, false, 0, 0);
-    }
-
-    private function checkCanUpdateModule()
-    {
-        /** @var ModuleLatestVersionValidator $moduleVersionValidator */
-        $moduleVersionValidator = $this->module->getModuleContainer()->get('invertus.dpdbaltics.validator.module_latest_version_validator');
-
-        try {
-            $isModuleVersionLatest = $moduleVersionValidator->validate();
-        } catch (\Exception $e) {
-            $this->errors[] = $e->getMessage();
-        }
-
-        $isModuleVersionLatest = false;
-
-        if (!$isModuleVersionLatest) {
-            $this->warnings[] = $this->context->smarty->fetch(
-                $this->module->getLocalPath() . 'views/templates/admin/warning-message-with-link.tpl',
-                [
-                    'messageLink' => Config::DPD_GITHUB_REPO_RELEASE_LATEST_DOWNLOAD_URL,
-                    'messageStart' => $this->module->l('You are using an outdated version of the module. Please update the module to the latest version. ', self::FILENAME),
-                    'messageEnd' => '',
-                    'linkText' => $this->module->l('Download latest module', self::FILENAME)
-                ]
-            );
-        }
     }
 }

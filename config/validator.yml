@@ -44,3 +44,8 @@ services:
         
   invertus.dpdbaltics.validator.opc_module_compatibility_validator:
     class: 'Invertus\dpdBaltics\Validate\Compatibility\OpcModuleCompatibilityValidator'
+
+  invertus.dpdbaltics.validator.module_latest_version_validator:
+    class: 'Invertus\dpdBaltics\Validate\Version\ModuleLatestVersionValidator'
+    arguments:
+      - '@invertus.dpdbaltics.utility.module_version_utility'

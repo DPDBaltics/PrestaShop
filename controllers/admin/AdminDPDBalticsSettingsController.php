@@ -33,6 +33,7 @@ use Invertus\dpdBaltics\Service\Carrier\UpdateCarrierService;
 use Invertus\dpdBaltics\Service\LogsService;
 use Invertus\dpdBaltics\Service\Product\ProductService;
 use Invertus\dpdBaltics\Templating\InfoBlockRender;
+use Invertus\dpdBaltics\Validate\Version\ModuleLatestVersionValidator;
 
 require_once dirname(__DIR__).'/../vendor/autoload.php';
 

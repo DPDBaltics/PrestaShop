@@ -51,12 +51,12 @@ class LabelUrlFormatter
     }
 
     /**
-     * Format URL for saving and printing label dynamically
+     * Format URL for saving & printing label
      *
      * @note Additional logic with is used to be compatible with PrestaShop 9
      *
      *
-     * @return string
+     * @return string URL
      */
     public function formatJsLabelSaveAndPrintUrl()
     {

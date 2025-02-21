@@ -50,14 +50,29 @@ class LabelUrlFormatter
         ]);
     }
 
+    /**
+     * Format URL for saving and printing label dynamically
+     *
+     * @note rtrim(\Context::getContext()->shop->getBaseURL(), '/') is used to be compatible with PrestaShop 9
+     *
+     * @return string
+     */
     public function formatJsLabelSaveAndPrintUrl()
     {
-        return $this->linkAdapter->getUrlSmarty([
+        $url = $this->linkAdapter->getUrlSmarty([
             'entity' => 'sf',
             'route' => 'dpdbaltics_save_and_download_printed_label_order_view',
             'sf-params' => [
                 'orderId' => 'orderId_',
             ]
         ]);
+
+        $parsedUrl = parse_url($url);
+
+        if (isset($parsedUrl['scheme'], $parsedUrl['host'])) {
+            return $url;
+        }
+
+        return rtrim(\Context::getContext()->shop->getBaseURL(), '/') . $url;
     }
 }

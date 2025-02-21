@@ -108,7 +108,7 @@ class AdminDPDBalticsImportExportController extends AbstractAdminController
                 $this->module->getLocalPath() . 'views/templates/admin/import/importing-parcels-popup.tpl'
             );
 
-        parent::initContent();
+            parent::initContent();
     }
 
     protected function initOptions()
@@ -167,11 +167,11 @@ class AdminDPDBalticsImportExportController extends AbstractAdminController
                         'validation' => 'isCleanHtml',
                         'form_group_class' => 'dpd-info-block'
                     ],
-//                    Config::IMPORT_FILE => [
-//                        'title' => $this->module->l('File'),
-//                        'type' => 'file',
-//                        'name' => Config::IMPORT_FILE,
-//                    ],
+                    Config::IMPORT_FILE => [
+                        'title' => $this->module->l('File'),
+                        'type' => 'file',
+                        'name' => Config::IMPORT_FILE,
+                    ],
                     Config::IMPORT_OPTION => [
                         'title' => $this->module->l('Import'),
                         'type' => 'select',

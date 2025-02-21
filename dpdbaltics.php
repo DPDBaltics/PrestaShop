@@ -71,7 +71,7 @@ class DPDBaltics extends CarrierModule
 
     /**
      * Prestashop fills this property automatically with selected carrier ID in FO checkout
-     * @default -1 - Because PS9 doesn't recognize property as existing
+     * Default value is needed because PS9 doesn't recognize property as existing
      *
      * @var int $id_carrier
      */

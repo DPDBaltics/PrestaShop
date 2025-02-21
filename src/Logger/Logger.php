@@ -52,12 +52,12 @@ class Logger implements LoggerInterface
     /**
      * System is unusable.
      *
-     * @param string $message
+     * @param \Stringable|string $message
      * @param array $context
      *
      * @return void
      */
-    public function emergency($message, array $context = [])
+    public function emergency($message, array $context = []): void
     {
         // TODO: Implement emergency() method.
     }
@@ -73,7 +73,7 @@ class Logger implements LoggerInterface
      *
      * @return void
      */
-    public function alert($message, array $context = [])
+    public function alert($message, array $context = []): void
     {
         // TODO: Implement alert() method.
     }
@@ -90,7 +90,7 @@ class Logger implements LoggerInterface
      * @throws PrestaShopDatabaseException
      * @throws PrestaShopException
      */
-    public function critical($message, array $context = [])
+    public function critical($message, array $context = []): void
     {
         if (!Configuration::get(Config::TRACK_LOGS)) {
             return;
@@ -113,7 +113,7 @@ class Logger implements LoggerInterface
      * @throws PrestaShopDatabaseException
      * @throws PrestaShopException
      */
-    public function error($message, array $context = [])
+    public function error($message, array $context = []): void
     {
         if (!Configuration::get(Config::TRACK_LOGS)) {
             return;
@@ -136,7 +136,7 @@ class Logger implements LoggerInterface
      *
      * @return void
      */
-    public function warning($message, array $context = [])
+    public function warning($message, array $context = []): void
     {
         // TODO: Implement warning() method.
     }
@@ -149,7 +149,7 @@ class Logger implements LoggerInterface
      *
      * @return void
      */
-    public function notice($message, array $context = [])
+    public function notice($message, array $context = []): void
     {
         // TODO: Implement notice() method.
     }
@@ -164,7 +164,7 @@ class Logger implements LoggerInterface
      *
      * @return void
      */
-    public function info($message, array $context = [])
+    public function info($message, array $context = []): void
     {
         // TODO: Implement info() method.
     }
@@ -177,7 +177,7 @@ class Logger implements LoggerInterface
      *
      * @return void
      */
-    public function debug($message, array $context = [])
+    public function debug($message, array $context = []): void
     {
         // TODO: Implement debug() method.
     }
@@ -191,7 +191,7 @@ class Logger implements LoggerInterface
      *
      * @return void
      */
-    public function log($level, $message, array $context = [])
+    public function log($level, $message, array $context = []): void
     {
         // TODO: Implement log() method.
     }

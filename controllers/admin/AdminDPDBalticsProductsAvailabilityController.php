@@ -173,7 +173,8 @@ class AdminDPDBalticsProductsAvailabilityController extends AbstractAdminControl
             $response['error'] = $e->getMessage();
         }
 
-        $this->ajaxDie(json_encode($response));
+        $this->ajaxRender(json_encode($response));
+        exit;
     }
 
     /**

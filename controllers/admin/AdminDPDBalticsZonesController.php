@@ -231,7 +231,8 @@ class AdminDPDBalticsZonesController extends AbstractAdminController
             $response['error'] = $e->getMessage();
         }
 
-        $this->ajaxDie(json_encode($response));
+        $this->ajaxRender(json_encode($response));
+        die();
     }
 
     public function processDelete()

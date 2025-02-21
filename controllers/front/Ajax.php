@@ -65,7 +65,8 @@ class DpdBalticsAjaxModuleFrontController extends ModuleFrontController
             ];
 
             http_response_code(401);
-            $this->ajaxDie(json_encode($response));
+            $this->ajaxRender(json_encode($response));
+            exit;
         }
 
         return true;
@@ -94,14 +95,16 @@ class DpdBalticsAjaxModuleFrontController extends ModuleFrontController
                     $response = $this->searchPudoServices($countryCode, $city, $carrierId, $cartId);
                 } catch (Exception $e) {
                     $this->messages[] = $this->module->l('Parcel shop search failed!');
-                    $this->ajaxDie(json_encode(
+                    $this->ajaxRender(json_encode(
                         [
                             'status' => false,
                             'template' => $this->getMessageTemplate('danger'),
                         ]
                     ));
+                    exit;
                 }
-                $this->ajaxDie(json_encode($response));
+                $this->ajaxRender(json_encode($response));
+                exit;
                 break;
             case 'savePudoPickupPoint':
                 $pudoId = Tools::getValue('id_pudo');
@@ -121,7 +124,7 @@ class DpdBalticsAjaxModuleFrontController extends ModuleFrontController
                     $pudoValidator->isPudoSelected($cartId, $carrier->id_reference);
                 } catch (DpdCarrierException $exception) {
                     $this->setErrorMessage($exception);
-                    $this->ajaxDie(json_encode(
+                    $this->ajaxRender(json_encode(
                         [
                             'status' => false,
                             'template' => $this->getMessageTemplate('danger'),
@@ -129,8 +132,10 @@ class DpdBalticsAjaxModuleFrontController extends ModuleFrontController
                             'phone_valid' => $phoneNumberValidator
                         ]
                     ));
+                    exit;
                 }
-                $this->ajaxDie(json_encode(['status' => true]));
+                $this->ajaxRender(json_encode(['status' => true]));
+                exit;
                 break;
             case 'updateStreetSelect':
                 $city = Tools::getValue('city');
@@ -150,14 +155,16 @@ class DpdBalticsAjaxModuleFrontController extends ModuleFrontController
                     $response = $phoneService->saveCarrierPhone($cartId, $phone, $prefix);
                 } catch (DpdCarrierException $exception) {
                     $this->setErrorMessage($exception);
-                    $this->ajaxDie(json_encode(
+                    $this->ajaxRender(json_encode(
                         [
                             'status' => false,
                             'template' => $this->getMessageTemplate('danger'),
                         ]
                     ));
+                    exit;
                 }
-                $this->ajaxDie(json_encode(['status' => true]));
+                $this->ajaxRender(json_encode(['status' => true]));
+                exit;
                 break;
             case 'updateParcelBlock':
                 $street = Tools::getValue('street');
@@ -167,14 +174,16 @@ class DpdBalticsAjaxModuleFrontController extends ModuleFrontController
                     $response = $this->searchPudoServices($countryCode, $city, $carrierId, $cartId, $street);
                 } catch (Exception $e) {
                     $this->messages[] = $this->module->l('Parcel shop search failed!');
-                    $this->ajaxDie(json_encode(
+                    $this->ajaxRender(json_encode(
                         [
                             'status' => false,
                             'template' => $this->getMessageTemplate('danger'),
                         ]
                     ));
+                    exit;
                 }
-                $this->ajaxDie(json_encode($response));
+                $this->ajaxRender(json_encode($response));
+                exit;
                 break;
             case 'saveSelectedStreet':
                 $city = Tools::getValue('city');
@@ -260,14 +269,16 @@ class DpdBalticsAjaxModuleFrontController extends ModuleFrontController
 
         if (!$addPudoCartOrderStatus) {
             $this->messages[] = $this->l('Failed to save pickup point.');
-            $this->ajaxDie(json_encode([
+            $this->ajaxRender(json_encode([
                 'template' => $this->getMessageTemplate('danger'),
                 'status' => false
             ]));
+            exit;
         }
-        $this->ajaxDie(json_encode([
+        $this->ajaxRender(json_encode([
             'status' => true
         ]));
+        exit;
     }
 
     public function getFileName()
@@ -318,10 +329,11 @@ class DpdBalticsAjaxModuleFrontController extends ModuleFrontController
             $this->module->getLocalPath() . 'views/templates/hook/front/partials/pudo-search-street.tpl'
         );
 
-        $this->ajaxDie(json_encode([
+        $this->ajaxRender(json_encode([
             'status' => true,
             'template' => $streetSelectTpl
         ]));
+        exit;
     }
 
     private function saveParcelShop($countryCode, $city, $street)
@@ -335,10 +347,11 @@ class DpdBalticsAjaxModuleFrontController extends ModuleFrontController
 
         if (!$isSuccess) {
             $this->messages[] = $this->l('Failed to save pickup point.');
-            $this->ajaxDie(json_encode([
+            $this->ajaxRender(json_encode([
                 'template' => $this->getMessageTemplate('danger'),
                 'status' => false
             ]));
+            exit;
         }
 
         $pudoId = $pudoService->getPudoIdByCityAndAddress($city, $street);
@@ -369,7 +382,7 @@ class DpdBalticsAjaxModuleFrontController extends ModuleFrontController
             ]
         );
 
-        $this->ajaxDie(json_encode([
+        $this->ajaxRender(json_encode([
             'template' => $this->context->smarty->fetch(
                 $this->module->getLocalPath() . '/views/templates/hook/front/partials/markers-list.tpl'
             ),
@@ -377,6 +390,7 @@ class DpdBalticsAjaxModuleFrontController extends ModuleFrontController
             'selectedPudoId' => $selectedPudo->getParcelShopId(),
             'coordinates' => $coordinates
         ]));
+        exit;
     }
 
     /**

@@ -53,7 +53,8 @@ class LabelUrlFormatter
     /**
      * Format URL for saving and printing label dynamically
      *
-     * @note rtrim(\Context::getContext()->shop->getBaseURL(), '/') is used to be compatible with PrestaShop 9
+     * @note Additional logic with is used to be compatible with PrestaShop 9
+     *
      *
      * @return string
      */

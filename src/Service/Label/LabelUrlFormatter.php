@@ -30,6 +30,7 @@ if (!defined('_PS_VERSION_')) {
 
 class LabelUrlFormatter
 {
+    /** @var LinkAdapter */
     private $linkAdapter;
 
     public function __construct(LinkAdapter $linkAdapter)

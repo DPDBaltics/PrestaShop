@@ -108,7 +108,11 @@ class AdminDPDBalticsImportExportController extends AbstractAdminController
                 $this->module->getLocalPath() . 'views/templates/admin/import/importing-parcels-popup.tpl'
             );
 
-            parent::initContent();
+        // NOTE: PS 9 warning for file upload form throws warning
+        error_reporting(E_ALL & ~E_WARNING);
+
+
+        parent::initContent();
     }
 
     protected function initOptions()

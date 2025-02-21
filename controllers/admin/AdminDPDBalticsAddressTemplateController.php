@@ -87,7 +87,7 @@ class AdminDPDBalticsAddressTemplateController extends AbstractAdminController
                     [],
                     ['importContr' => Config::IMPORT_EXPORT_OPTION_ADDRESS_TEMPLATES]
                 ),
-                'desc' => $this->l('Import')
+                'desc' => $this->module->l('Import')
             ];
         }
     }
@@ -107,7 +107,7 @@ class AdminDPDBalticsAddressTemplateController extends AbstractAdminController
             Media::addJsDef([
                 'dpdAjaxUrl' =>
                     $this->context->link->getAdminLink(ModuleTabs::ADMIN_AJAX_CONTROLLER),
-                'inputWarningMessage' => $this->l('Please fill all required fields')
+                'inputWarningMessage' => $this->module->l('Please fill all required fields')
             ]);
         }
         $this->addCSS($this->module->getPathUri() . 'views/css/admin/addresses.css');
@@ -160,14 +160,14 @@ class AdminDPDBalticsAddressTemplateController extends AbstractAdminController
 
         $inputs = [
             [
-                'label' => $this->l('Name'),
+                'label' => $this->module->l('Name'),
                 'type' => 'text',
                 'name' => 'name',
                 'required' => true,
                 'class' => 'fixed-width-xxl',
             ],
             [
-                'label' => $this->l('Address type'),
+                'label' => $this->module->l('Address type'),
                 'name' => 'type',
                 'type' => $isEECountry ? 'hidden' : 'radio',
                 'default_value' => DPDAddressTemplate::ADDRESS_TYPE_COLLECTION_REQUEST,
@@ -175,35 +175,35 @@ class AdminDPDBalticsAddressTemplateController extends AbstractAdminController
                     [
                         'id' => DPDAddressTemplate::ADDRESS_TYPE_COLLECTION_REQUEST,
                         'value' => DPDAddressTemplate::ADDRESS_TYPE_COLLECTION_REQUEST,
-                        'label' => $this->l('Collection request'),
+                        'label' => $this->module->l('Collection request'),
                     ],
                     [
                         'id' => DPDAddressTemplate::ADDRESS_TYPE_RETURN_SERVICE,
                         'value' => DPDAddressTemplate::ADDRESS_TYPE_RETURN_SERVICE,
-                        'label' => $this->l('Return service'),
+                        'label' => $this->module->l('Return service'),
                     ],
                 ],
             ],
             [
-                'label' => $this->l('Full name/Company name'),
+                'label' => $this->module->l('Full name/Company name'),
                 'name' => 'full_name',
                 'type' => 'text',
                 'class' => 'fixed-width-xxl',
             ],
             [
-                'label' => $this->l('Mobile phone'),
+                'label' => $this->module->l('Mobile phone'),
                 'name' => 'mobile_phone',
                 'type' => 'free',
                 'class' => 'fixed-width-xxl',
             ],
             [
-                'label' => $this->l('Email address'),
+                'label' => $this->module->l('Email address'),
                 'name' => 'email',
                 'type' => 'text',
                 'class' => 'fixed-width-xxl',
             ],
             [
-                'label' => $this->l('Country'),
+                'label' => $this->module->l('Country'),
                 'name' => 'dpd_country_id',
                 'type' => 'select',
                 'class' => 'fixed-width-xxl chosen',
@@ -214,19 +214,19 @@ class AdminDPDBalticsAddressTemplateController extends AbstractAdminController
                 ],
             ],
             [
-                'label' => $this->l('Zip code'),
+                'label' => $this->module->l('Zip code'),
                 'name' => 'zip_code',
                 'type' => 'text',
                 'class' => 'fixed-width-xxl',
             ],
             [
-                'label' => $this->l('City/Region'),
+                'label' => $this->module->l('City/Region'),
                 'name' => 'dpd_city_name',
                 'type' => 'text',
                 'class' => 'fixed-width-xxl',
             ],
             [
-                'label' => $this->l('Address'),
+                'label' => $this->module->l('Address'),
                 'name' => 'address',
                 'type' => 'text',
                 'class' => 'fixed-width-xxl',
@@ -238,7 +238,7 @@ class AdminDPDBalticsAddressTemplateController extends AbstractAdminController
 
         if ($isMultiShop) {
             $inputs[] = [
-                'label' => $this->l('Receiver shops'),
+                'label' => $this->module->l('Receiver shops'),
                 'name' => 'search_block_shops',
                 'type' => 'free',
                 'form_group_class' => 'dpd-price-rule-shops',
@@ -247,15 +247,15 @@ class AdminDPDBalticsAddressTemplateController extends AbstractAdminController
 
         $this->fields_form = [
             'legend' => [
-                'title' => $this->l('Address template'),
+                'title' => $this->module->l('Address template'),
             ],
             'input' => $inputs,
             'submit' => [
-                'title' => $this->l('Save'),
+                'title' => $this->module->l('Save'),
             ],
             'buttons' => [
                 [
-                    'title' => $this->l('Save and stay'),
+                    'title' => $this->module->l('Save and stay'),
                     'icon' => 'process-icon-save',
                     'name' => 'submitAdddpd_address_templateAndStay',
                     'type' => 'submit',
@@ -303,32 +303,32 @@ class AdminDPDBalticsAddressTemplateController extends AbstractAdminController
         $this->addRowAction('delete');
 
         $this->fields_list['id_dpd_address_template'] = [
-            'title' => $this->l('ID'),
+            'title' => $this->module->l('ID'),
             'type' => 'text',
         ];
 
         $this->fields_list['type'] = [
-            'title' => $this->l('Type'),
+            'title' => $this->module->l('Type'),
             'type' => 'text',
         ];
 
         $this->fields_list['name'] = [
-            'title' => $this->l('Name'),
+            'title' => $this->module->l('Name'),
             'type' => 'text',
         ];
 
         $this->fields_list['mobile_phone_code'] = [
-            'title' => $this->l('GSM code'),
+            'title' => $this->module->l('GSM code'),
             'type' => 'text',
         ];
 
         $this->fields_list['mobile_phone'] = [
-            'title' => $this->l('Mobile phone'),
+            'title' => $this->module->l('Mobile phone'),
             'type' => 'text',
         ];
 
         $this->fields_list['country_name'] = [
-            'title' => $this->l('Country'),
+            'title' => $this->module->l('Country'),
             'type' => 'free'
         ];
     }

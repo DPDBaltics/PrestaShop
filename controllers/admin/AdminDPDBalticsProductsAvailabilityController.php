@@ -55,15 +55,15 @@ class AdminDPDBalticsProductsAvailabilityController extends AbstractAdminControl
             'dpdbaltics' => [
                 'messages' => [
                     'error' => [
-                        'emptyAvailabilityTimeValue' => $this->l('Product availability time range cannot have empty values'),
-                        'emptyProductAvailability' => $this->l('No product availability are configured'),
+                        'emptyAvailabilityTimeValue' => $this->module->l('Product availability time range cannot have empty values'),
+                        'emptyProductAvailability' => $this->module->l('No product availability are configured'),
                     ],
                     'success' => [
-                        'saved' => $this->l('Successfully saved'),
+                        'saved' => $this->module->l('Successfully saved'),
                     ],
                 ],
                 'notifications' => [
-                    'saveProgress' => $this->l('Saving...'),
+                    'saveProgress' => $this->module->l('Saving...'),
                 ],
                 'url' => [
                     'productAvailabilityControllerUrl' => $this->context->link->getAdminLink(ModuleTabs::ADMIN_PRODUCT_AVAILABILITY_CONTROLLER),
@@ -189,20 +189,20 @@ class AdminDPDBalticsProductsAvailabilityController extends AbstractAdminControl
 
         $this->bulk_actions = [
             'delete' => [
-                'text' => $this->l('Delete selected'),
-                'confirm' => $this->l('Delete selected items?'),
+                'text' => $this->module->l('Delete selected'),
+                'confirm' => $this->module->l('Delete selected items?'),
                 'icon' => 'icon-trash'
             ]
         ];
 
         $this->fields_list = [
             'product_reference' => [
-                'title' => $this->l('Product reference'),
+                'title' => $this->module->l('Product reference'),
                 'type' => 'text',
                 'align' => 'center',
             ],
             'id_dpd_product' => [
-                'title' => $this->l('Product id'),
+                'title' => $this->module->l('Product id'),
                 'type' => 'text',
                 'align' => 'center',
             ]
@@ -216,7 +216,7 @@ class AdminDPDBalticsProductsAvailabilityController extends AbstractAdminControl
     {
         $this->fields_form = [
             'legend' => [
-                'title' => $this->l('Product availability'),
+                'title' => $this->module->l('Product availability'),
             ],
             'input' => [
                 [
@@ -237,14 +237,14 @@ class AdminDPDBalticsProductsAvailabilityController extends AbstractAdminControl
             ],
             'buttons' => [
                 [
-                    'title' => $this->l('Save'),
+                    'title' => $this->module->l('Save'),
                     'icon' => 'process-icon-save',
                     'name' => 'processSaveProductAvailabilities',
                     'type' => 'button',
                     'class' => 'pull-right',
                 ],
                 [
-                    'title' => $this->l('Save and stay'),
+                    'title' => $this->module->l('Save and stay'),
                     'icon' => 'process-icon-save',
                     'name' => 'processSaveAndStayProductAvailabilities',
                     'type' => 'button',

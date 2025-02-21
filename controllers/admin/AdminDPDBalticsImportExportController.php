@@ -121,16 +121,16 @@ class AdminDPDBalticsImportExportController extends AbstractAdminController
         $info = '';
 
         $importInfoBlockText =
-            $this->l('ZIP file must contain only import files. No folders or images are allowed.');
+            $this->module->l('ZIP file must contain only import files. No folders or images are allowed.');
 
         $importZonesInfoBlockText =
-            $this->l('We have prepared standard zones for Latvia and Lithuania. You can import them whenever you want.');
+            $this->module->l('We have prepared standard zones for Latvia and Lithuania. You can import them whenever you want.');
 
         $importParcelsInfoBlockText =
-            $this->l('You can import or update list of pick-up points by clicking Import button. We would recommend to update pick-up points daily, as DPD Pick-up network is expanding regularly');
+            $this->module->l('You can import or update list of pick-up points by clicking Import button. We would recommend to update pick-up points daily, as DPD Pick-up network is expanding regularly');
 
         $importParcelsWarningBlockText =
-            $this->l('Pick-up point import might might take up to 10 minutes depending on how many parcels selected country has. Please be patient and don\'t close this page.');
+            $this->module->l('Pick-up point import might might take up to 10 minutes depending on how many parcels selected country has. Please be patient and don\'t close this page.');
 
         $break = $this->context->smarty->fetch(
             $this->module->getLocalPath() . 'views/templates/admin/partials/break.tpl'
@@ -145,18 +145,18 @@ class AdminDPDBalticsImportExportController extends AbstractAdminController
             ]
         );
         $cronJobText =
-            $this->l('You can setup cronjob with: ' . $href);
+            $this->module->l('You can setup cronjob with: ' . $href);
 
         if (Shop::CONTEXT_GROUP == $shopContext) {
-            $info = $this->l('Data will be imported to all group shops');
+            $info = $this->module->l('Data will be imported to all group shops');
         } elseif (Shop::CONTEXT_ALL == $shopContext) {
-            $info = $this->l('Data will be imported to all shops');
+            $info = $this->module->l('Data will be imported to all shops');
         }
 
         $this->fields_options = [
             'import_configuration' => [
                 'description' => $info,
-                'title' => $this->l('Import'),
+                'title' => $this->module->l('Import'),
                 'icon' => 'dpd-icon-settings',
                 'image' => '../img/admin/tab-tools.gif',
                 'fields' => [
@@ -168,39 +168,39 @@ class AdminDPDBalticsImportExportController extends AbstractAdminController
                         'form_group_class' => 'dpd-info-block'
                     ],
                     Config::IMPORT_FILE => [
-                        'title' => $this->l('File'),
+                        'title' => $this->module->l('File'),
                         'type' => 'file',
                         'name' => Config::IMPORT_FILE,
                     ],
                     Config::IMPORT_OPTION => [
-                        'title' => $this->l('Import'),
+                        'title' => $this->module->l('Import'),
                         'type' => 'select',
                         'list' => $importExportProvider->getImportExportOptions(),
                         'identifier' => 'id',
                     ],
                     Config::IMPORT_FIELD_SEPARATOR => [
-                        'title' => $this->l('Field separator'),
+                        'title' => $this->module->l('Field separator'),
                         'validation' => 'isCleanHtml',
                         'type' => 'text',
                         'class' => 'fixed-width-xxl',
                         'required' => true,
                     ],
                     Config::IMPORT_FIELD_MULTIPLE_SEPARATOR => [
-                        'title' => $this->l('Multiple value separator'),
+                        'title' => $this->module->l('Multiple value separator'),
                         'validation' => 'isCleanHtml',
                         'type' => 'text',
                         'class' => 'fixed-width-xxl',
                         'required' => true,
                     ],
                     Config::IMPORT_LINES_SKIP => [
-                        'title' => $this->l('Line to skip from the top'),
+                        'title' => $this->module->l('Line to skip from the top'),
                         'validation' => 'isUnsignedInt',
                         'type' => 'text',
                         'class' => 'fixed-width-xxl',
                         'required' => true,
                     ],
                     Config::IMPORT_DELETE_OLD_DATA => [
-                        'title' => $this->l('Delete old data before importing new'),
+                        'title' => $this->module->l('Delete old data before importing new'),
                         'validation' => 'isBool',
                         'type' => 'bool',
                         'class' => 'fixed-width-xxl',
@@ -209,7 +209,7 @@ class AdminDPDBalticsImportExportController extends AbstractAdminController
                 ],
                 'buttons' => [
                     'export' => [
-                        'title' => $this->l('Import'),
+                        'title' => $this->module->l('Import'),
                         'icon' => 'process-icon-import',
                         'class' => 'btn btn-default pull-right',
                         'name' => 'submitProcessImport',
@@ -218,25 +218,25 @@ class AdminDPDBalticsImportExportController extends AbstractAdminController
                 ],
             ],
             'export_configuration' => [
-                'title' => $this->l('Export'),
+                'title' => $this->module->l('Export'),
                 'icon' => 'dpd-icon-settings',
                 'image' => '../img/admin/tab-tools.gif',
                 'fields' => [
                     Config::EXPORT_OPTION => [
-                        'title' => $this->l('Export'),
+                        'title' => $this->module->l('Export'),
                         'type' => 'select',
                         'list' => $importExportProvider->getImportExportOptions(),
                         'identifier' => 'id',
                     ],
                     Config::EXPORT_FIELD_SEPARATOR => [
-                        'title' => $this->l('Field separator'),
+                        'title' => $this->module->l('Field separator'),
                         'validation' => 'isCleanHtml',
                         'type' => 'text',
                         'class' => 'fixed-width-xxl',
                         'required' => true,
                     ],
                     Config::EXPORT_FIELD_MULTIPLE_SEPARATOR => [
-                        'title' => $this->l('Multiple value separator'),
+                        'title' => $this->module->l('Multiple value separator'),
                         'validation' => 'isCleanHtml',
                         'type' => 'text',
                         'class' => 'fixed-width-xxl',
@@ -245,7 +245,7 @@ class AdminDPDBalticsImportExportController extends AbstractAdminController
                 ],
                 'buttons' => [
                     'export' => [
-                        'title' => $this->l('Export'),
+                        'title' => $this->module->l('Export'),
                         'icon' => 'process-icon-export',
                         'class' => 'btn btn-default pull-right',
                         'name' => 'submitProcessExport',
@@ -254,7 +254,7 @@ class AdminDPDBalticsImportExportController extends AbstractAdminController
                 ],
             ],
             'import_zones' => [
-                'title' => $this->l('Import Zones'),
+                'title' => $this->module->l('Import Zones'),
                 'icon' => 'dpd-icon-settings',
                 'fields' => [
                     Config::IMPORT_ZONE_INFO_BLOCK_FIELD => [
@@ -267,7 +267,7 @@ class AdminDPDBalticsImportExportController extends AbstractAdminController
                 ],
                 'buttons' => [
                     'export' => [
-                        'title' => $this->l('Import'),
+                        'title' => $this->module->l('Import'),
                         'icon' => 'process-icon-export',
                         'class' => 'btn btn-default pull-right',
                         'name' => 'submitProcessImportZones',
@@ -277,7 +277,7 @@ class AdminDPDBalticsImportExportController extends AbstractAdminController
                 ],
             ],
             'import_parcels' => [
-                'title' => $this->l('Import pick-up points'),
+                'title' => $this->module->l('Import pick-up points'),
                 'icon' => 'dpd-icon-settings',
                 'fields' => [
                     Config::IMPORT_PARCEL_INFO_BLOCK_FIELD => [
@@ -293,7 +293,7 @@ class AdminDPDBalticsImportExportController extends AbstractAdminController
                         'form_group_class' => 'dpd-info-block'
                     ],
                     Config::DPD_PARCEL_IMPORT_COUNTRY_SELECTOR => [
-                        'title' => $this->l('Country'),
+                        'title' => $this->module->l('Country'),
                         'type' => 'select',
                         'list' => Country::getCountries($this->context->language->id, true),
                         'identifier' => 'id_country',
@@ -301,7 +301,7 @@ class AdminDPDBalticsImportExportController extends AbstractAdminController
                 ],
                 'buttons' => [
                     'export' => [
-                        'title' => $this->l('Update'),
+                        'title' => $this->module->l('Update'),
                         'icon' => 'process-icon-export',
                         'class' => 'btn btn-default pull-right',
                         'name' => 'submitProcessImportParcels',
@@ -437,7 +437,7 @@ class AdminDPDBalticsImportExportController extends AbstractAdminController
         );
 
         $this->confirmations[] = sprintf(
-                $this->l('Successfully imported %s with %d row(s)'),
+                $this->module->l('Successfully imported %s with %d row(s)'),
                 $name,
                 $importable->getImportedRowsCount()
             ) . $break;
@@ -477,7 +477,7 @@ class AdminDPDBalticsImportExportController extends AbstractAdminController
                     return $this->module->getModuleContainer('invertus.dpdbaltics.service.import.product_import');
                     break;
                 default:
-                    $this->errors[] = $this->l('Invalid export option selected');
+                    $this->errors[] = $this->module->l('Invalid export option selected');
                     return;
             }
         } catch (Exception $e) {
@@ -491,17 +491,17 @@ class AdminDPDBalticsImportExportController extends AbstractAdminController
         try {
             switch ($importOption) {
                 case Config::IMPORT_EXPORT_OPTION_ZONES:
-                    return $this->l('Zones');
+                    return $this->module->l('Zones');
                 case Config::IMPORT_EXPORT_OPTION_SETTINGS:
-                    return $this->l('Settings');
+                    return $this->module->l('Settings');
                 case Config::IMPORT_EXPORT_OPTION_PRODUCTS:
-                    return $this->l('Products');
+                    return $this->module->l('Products');
                 case Config::IMPORT_EXPORT_OPTION_PRICE_RULES:
-                    return $this->l('Price rules');
+                    return $this->module->l('Price rules');
                 case Config::IMPORT_EXPORT_OPTION_ADDRESS_TEMPLATES:
-                    return $this->l('Addresses');
+                    return $this->module->l('Addresses');
                 default:
-                    $this->errors[] = $this->l('Invalid export option selected');
+                    $this->errors[] = $this->module->l('Invalid export option selected');
             }
         } catch (Exception $e) {
             $this->errors[] = $e->getMessage();

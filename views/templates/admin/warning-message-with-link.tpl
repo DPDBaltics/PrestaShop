@@ -17,4 +17,4 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
  *}
 
-{$messageStart|escape:'htmlall':'UTF-8'}<a href="{$messageLink|escape:'htmlall':'UTF-8'}">{$linkText}</a>{$messageEnd|escape:'htmlall':'UTF-8'}
+{$messageStart|escape:'htmlall':'UTF-8'|default:''}

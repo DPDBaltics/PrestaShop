@@ -52,52 +52,52 @@ class AdminDPDBalticsOrderReturnController extends AbstractAdminController
 
         $this->fields_list = [
             'tracking_id' => [
-                'title' => $this->l('Tracking id'),
+                'title' => $this->module->l('Tracking id'),
                 'type' => 'text',
                 'havingFilter' => true
             ],
             'date_print' => [
-                'title' => $this->l('Printing date'),
+                'title' => $this->module->l('Printing date'),
                 'type' => 'text',
                 'havingFilter' => true
             ],
             'date_add' => [
-                'title' => $this->l('Create date'),
+                'title' => $this->module->l('Create date'),
                 'type' => 'text',
                 'havingFilter' => true
             ],
             'receiver_name' => [
-                'title' => $this->l('Receiver'),
+                'title' => $this->module->l('Receiver'),
                 'type' => 'text',
                 'havingFilter' => true
             ],
             'address1' => [
-                'title' => $this->l('Address'),
+                'title' => $this->module->l('Address'),
                 'type' => 'text',
                 'havingFilter' => true
             ],
             'city' => [
-                'title' => $this->l('City'),
+                'title' => $this->module->l('City'),
                 'type' => 'text',
                 'havingFilter' => true
             ],
             'reference1' => [
-                'title' => $this->l('Cust Ref 1'),
+                'title' => $this->module->l('Cust Ref 1'),
                 'type' => 'string',
                 'havingFilter' => true
             ],
             'num_of_parcels' => [
-                'title' => $this->l('Parcel count'),
+                'title' => $this->module->l('Parcel count'),
                 'type' => 'int',
                 'havingFilter' => true
             ],
             'printed_label' => [
-                'title' => $this->l('Printed label'),
+                'title' => $this->module->l('Printed label'),
                 'type' => 'bool',
                 'havingFilter' => true
             ],
             'printed_manifest' => [
-                'title' => $this->l('Printed manifest'),
+                'title' => $this->module->l('Printed manifest'),
                 'type' => 'bool',
                 'havingFilter' => true
             ],
@@ -146,7 +146,7 @@ class AdminDPDBalticsOrderReturnController extends AbstractAdminController
 
         $params = [
             'href' => $orderUrl,
-            'action' => $this->l('View'),
+            'action' => $this->module->l('View'),
             'icon' => 'icon-search-plus',
         ];
 

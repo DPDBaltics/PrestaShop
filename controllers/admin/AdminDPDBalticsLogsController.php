@@ -52,27 +52,27 @@ class AdminDPDBalticsLogsController extends AbstractAdminController
 
         $this->fields_list = [
             'id_dpd_log' => [
-                'title' => $this->l('ID'),
+                'title' => $this->module->l('ID'),
                 'type' => 'text',
                 'havingFilter' => true
             ],
             'request' => [
-                'title' => $this->l('request'),
+                'title' => $this->module->l('request'),
                 'type' => 'text',
                 'havingFilter' => true
             ],
             'response' => [
-                'title' => $this->l('response'),
+                'title' => $this->module->l('response'),
                 'type' => 'text',
                 'havingFilter' => true
             ],
             'status' => [
-                'title' => $this->l('status'),
+                'title' => $this->module->l('status'),
                 'type' => 'text',
                 'havingFilter' => true
             ],
             'date_add' => [
-                'title' => $this->l('Created date'),
+                'title' => $this->module->l('Created date'),
                 'type' => 'datetime',
                 'havingFilter' => true
             ]

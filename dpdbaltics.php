@@ -237,7 +237,7 @@ class DPDBaltics extends CarrierModule
 
         Media::addJsDef([
             'lapinas_img' => $baseUrl . $this->getPathUri() . 'views/img/lapinas.png',
-            'lapinas_text' => $this->l('Sustainable'),
+            'lapinas_text' => $this->module->l('Sustainable'),
             'dpd_carrier_ids' => $carrierIds
         ]);
         if (in_array($currentController, $applicableControlelrs, true)) {

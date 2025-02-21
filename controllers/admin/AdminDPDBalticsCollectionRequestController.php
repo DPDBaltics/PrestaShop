@@ -77,37 +77,37 @@ class AdminDPDBalticsCollectionRequestController extends AbstractAdminController
             [
                 'form' => [
                     'legend' => [
-                        'title' => $this->l('Pick-up address'),
+                        'title' => $this->module->l('Pick-up address'),
                     ],
                     'input' => [
                         [
-                            'label' => $this->l('Prefill with selected address'),
+                            'label' => $this->module->l('Prefill with selected address'),
                             'name' => 'pickup_address_prefill_placeholder',
                             'type' => 'free',
                         ],
                         [
-                            'label' => $this->l('Full name/Company name'),
+                            'label' => $this->module->l('Full name/Company name'),
                             'name' => 'pickup_address_full_name',
                             'type' => 'text',
                             'class' => 'fixed-width-xxl',
                             'required' => true,
                         ],
                         [
-                            'label' => $this->l('Mobile phone'),
+                            'label' => $this->module->l('Mobile phone'),
                             'name' => 'pickup_address_mobile_phone',
                             'type' => 'free',
                             'class' => 'fixed-width-xxl',
                             'required' => true,
                         ],
                         [
-                            'label' => $this->l('Email address'),
+                            'label' => $this->module->l('Email address'),
                             'name' => 'pickup_address_email',
                             'type' => 'text',
                             'class' => 'fixed-width-xxl',
                             'required' => true,
                         ],
                         [
-                            'label' => $this->l('Country'),
+                            'label' => $this->module->l('Country'),
                             'name' => 'pickup_address_id_ws_country',
                             'type' => 'select',
                             'class' => 'fixed-width-xxl chosen',
@@ -119,21 +119,21 @@ class AdminDPDBalticsCollectionRequestController extends AbstractAdminController
                             ],
                         ],
                         [
-                            'label' => $this->l('Zip code'),
+                            'label' => $this->module->l('Zip code'),
                             'name' => 'pickup_address_zip_code',
                             'type' => 'text',
                             'class' => 'fixed-width-xxl',
                             'required' => true,
                         ],
                         [
-                            'label' => $this->l('City/Region'),
+                            'label' => $this->module->l('City/Region'),
                             'name' => 'pickup_address_city',
                             'type' => 'text',
                             'class' => 'fixed-width-xxl',
                             'required' => true,
                         ],
                         [
-                            'label' => $this->l('Address'),
+                            'label' => $this->module->l('Address'),
                             'name' => 'pickup_address_address',
                             'type' => 'text',
                             'class' => 'fixed-width-xxl',
@@ -145,37 +145,37 @@ class AdminDPDBalticsCollectionRequestController extends AbstractAdminController
             [
                 'form' => [
                     'legend' => [
-                        'title' => $this->l('Receiver'),
+                        'title' => $this->module->l('Receiver'),
                     ],
                     'input' => [
                         [
-                            'label' => $this->l('Prefill with selected address'),
+                            'label' => $this->module->l('Prefill with selected address'),
                             'name' => 'receiver_address_prefill_placeholder',
                             'type' => 'free',
                         ],
                         [
-                            'label' => $this->l('Full name/Company name'),
+                            'label' => $this->module->l('Full name/Company name'),
                             'name' => 'receiver_address_full_name',
                             'type' => 'text',
                             'class' => 'fixed-width-xxl',
                             'required' => true,
                         ],
                         [
-                            'label' => $this->l('Mobile phone'),
+                            'label' => $this->module->l('Mobile phone'),
                             'name' => 'receiver_address_mobile_phone',
                             'type' => 'free',
                             'class' => 'fixed-width-xxl',
                             'required' => true,
                         ],
                         [
-                            'label' => $this->l('Email address'),
+                            'label' => $this->module->l('Email address'),
                             'name' => 'receiver_address_email',
                             'type' => 'text',
                             'class' => 'fixed-width-xxl',
                             'required' => true,
                         ],
                         [
-                            'label' => $this->l('Country'),
+                            'label' => $this->module->l('Country'),
                             'name' => 'receiver_address_id_ws_country',
                             'type' => 'select',
                             'class' => 'fixed-width-xxl chosen',
@@ -187,21 +187,21 @@ class AdminDPDBalticsCollectionRequestController extends AbstractAdminController
                             ],
                         ],
                         [
-                            'label' => $this->l('Zip code'),
+                            'label' => $this->module->l('Zip code'),
                             'name' => 'receiver_address_zip_code',
                             'type' => 'text',
                             'class' => 'fixed-width-xxl',
                             'required' => true,
                         ],
                         [
-                            'label' => $this->l('City/Region'),
+                            'label' => $this->module->l('City/Region'),
                             'name' => 'receiver_address_city',
                             'type' => 'text',
                             'class' => 'fixed-width-xxl',
                             'required' => true,
                         ],
                         [
-                            'label' => $this->l('Address'),
+                            'label' => $this->module->l('Address'),
                             'name' => 'receiver_address_address',
                             'type' => 'text',
                             'class' => 'fixed-width-xxl',
@@ -213,19 +213,19 @@ class AdminDPDBalticsCollectionRequestController extends AbstractAdminController
             [
                 'form' => [
                     'legend' => [
-                        'title' => $this->l('Shipment information'),
+                        'title' => $this->module->l('Shipment information'),
                     ],
                     'input' => [
                         [
-                            'label' => $this->l('Enter the amount of parcels/pallets'),
+                            'label' => $this->module->l('Enter the amount of parcels/pallets'),
                             'name' => 'info1',
                             'type' => 'text',
                             'class' => 'fixed-width-xxl',
                             'required' => true,
-                            'desc' => $this->l('e.g. #1cll, 2pll (always starts with # and then the amount of parcels and/or pallets)')
+                            'desc' => $this->module->l('e.g. #1cll, 2pll (always starts with # and then the amount of parcels and/or pallets)')
                         ],
                         [
-                            'label' => $this->l('Additional information (order number)'),
+                            'label' => $this->module->l('Additional information (order number)'),
                             'name' => 'info2',
                             'type' => 'text',
                             'class' => 'fixed-width-xxl',
@@ -244,7 +244,7 @@ class AdminDPDBalticsCollectionRequestController extends AbstractAdminController
 
         if (!$this->object->id) {
             $this->fields_form[2]['form']['submit'] = [
-                'title' => $this->l('Save'),
+                'title' => $this->module->l('Save'),
                 'class' => $saveBtnClasses,
             ];
         }
@@ -304,32 +304,32 @@ class AdminDPDBalticsCollectionRequestController extends AbstractAdminController
         $this->addRowAction('viewCollectionRequest');
 
         $this->fields_list['id_dpd_collection_request'] = [
-            'title' => $this->l('ID'),
+            'title' => $this->module->l('ID'),
             'type' => 'text',
         ];
 
         $this->fields_list['date_add'] = [
-            'title' => $this->l('Shipment date'),
+            'title' => $this->module->l('Shipment date'),
             'type' => 'date',
         ];
 
         $this->fields_list['pickup_address_contact_name'] = [
-            'title' => $this->l('Pickup address contact name'),
+            'title' => $this->module->l('Pickup address contact name'),
             'type' => 'text',
         ];
 
         $this->fields_list['pickup_address_email'] = [
-            'title' => $this->l('Pickup address email'),
+            'title' => $this->module->l('Pickup address email'),
             'type' => 'text',
         ];
 
         $this->fields_list['receiver_address_contact_name'] = [
-            'title' => $this->l('Receiver address contact name'),
+            'title' => $this->module->l('Receiver address contact name'),
             'type' => 'text',
         ];
 
         $this->fields_list['receiver_address_email'] = [
-            'title' => $this->l('Receiver address email'),
+            'title' => $this->module->l('Receiver address email'),
             'type' => 'text',
         ];
     }
@@ -414,7 +414,7 @@ class AdminDPDBalticsCollectionRequestController extends AbstractAdminController
 
         $params = [
             'href' => $collectionRequestUrl,
-            'action' => $this->l('View'),
+            'action' => $this->module->l('View'),
             'icon' => 'icon-search-plus'
         ];
 

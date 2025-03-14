@@ -81,30 +81,30 @@ class AdminDPDBalticsCourierRequestController extends AbstractAdminController
             [
                 'form' => [
                     'legend' => [
-                        'title' => $this->l('SENDERS` INFORMATION'),
+                        'title' => $this->module->l('SENDERS` INFORMATION'),
                     ],
                     'input' => [
                         [
-                            'label' => $this->l('Prefill with selected address'),
+                            'label' => $this->module->l('Prefill with selected address'),
                             'name' => 'prefill_placeholder',
                             'type' => 'free',
                         ],
                         [
-                            'label' => $this->l('Full name/Company name'),
+                            'label' => $this->module->l('Full name/Company name'),
                             'name' => 'sender_name',
                             'type' => 'text',
                             'class' => 'fixed-width-xxl',
                             'required' => true,
                         ],
                         [
-                            'label' => $this->l('Mobile phone'),
+                            'label' => $this->module->l('Mobile phone'),
                             'name' => 'sender_phone',
                             'type' => 'free',
                             'class' => 'fixed-width-xxl',
                             'required' => true,
                         ],
                         [
-                            'label' => $this->l('Country'),
+                            'label' => $this->module->l('Country'),
                             'name' => 'sender_id_ws_country',
                             'type' => 'select',
                             'class' => 'fixed-width-xxl chosen',
@@ -116,28 +116,28 @@ class AdminDPDBalticsCourierRequestController extends AbstractAdminController
                             ],
                         ],
                         [
-                            'label' => $this->l('Zip code'),
+                            'label' => $this->module->l('Zip code'),
                             'name' => 'sender_postal_code',
                             'type' => 'text',
                             'class' => 'fixed-width-xxl',
                             'required' => true,
                         ],
                         [
-                            'label' => $this->l('City/Region'),
+                            'label' => $this->module->l('City/Region'),
                             'name' => 'sender_city',
                             'type' => 'text',
                             'class' => 'fixed-width-xxl',
                             'required' => true,
                         ],
                         [
-                            'label' => $this->l('Address'),
+                            'label' => $this->module->l('Address'),
                             'name' => 'sender_address',
                             'type' => 'text',
                             'class' => 'fixed-width-xxl',
                             'required' => true,
                         ],
                         [
-                            'label' => $this->l('Additional address information'),
+                            'label' => $this->module->l('Additional address information'),
                             'name' => 'sender_additional_information',
                             'type' => 'text',
                             'class' => 'fixed-width-xxl',
@@ -149,51 +149,51 @@ class AdminDPDBalticsCourierRequestController extends AbstractAdminController
             [
                 'form' => [
                     'legend' => [
-                        'title' => $this->l('SHIPMENT INFORMATION'),
+                        'title' => $this->module->l('SHIPMENT INFORMATION'),
                     ],
                     'input' => [
                         [
-                            'label' => $this->l('Order Nr'),
+                            'label' => $this->module->l('Order Nr'),
                             'name' => 'order_nr',
                             'type' => 'text',
                             'class' => 'fixed-width-xxl',
                             'required' => true,
                         ],
                         [
-                            'label' => $this->l('Desired pick-up time'),
+                            'label' => $this->module->l('Desired pick-up time'),
                             'name' => 'pick_up_time',
                             'type' => 'datetime',
                             'required' => true,
                         ],
                         [
-                            'label' => $this->l('Last pick-up time'),
+                            'label' => $this->module->l('Last pick-up time'),
                             'name' => 'sender_work_until',
                             'type' => 'datetime',
                             'required' => true,
                         ],
                         [
-                            'label' => $this->l('Weight'),
+                            'label' => $this->module->l('Weight'),
                             'name' => 'weight',
                             'type' => 'text',
                             'class' => 'fixed-width-xxl',
                             'required' => true,
                         ],
                         [
-                            'label' => $this->l('Parcel(s) count'),
+                            'label' => $this->module->l('Parcel(s) count'),
                             'name' => 'parcels_count',
                             'type' => 'text',
                             'class' => 'fixed-width-xxl',
                             'required' => true,
                         ],
                         [
-                            'label' => $this->l('Pallet(s) count'),
+                            'label' => $this->module->l('Pallet(s) count'),
                             'name' => 'pallets_count',
                             'type' => 'text',
                             'class' => 'fixed-width-xxl',
                             'required' => false,
                         ],
                         [
-                            'label' => $this->l('Comment for courier'),
+                            'label' => $this->module->l('Comment for courier'),
                             'name' => 'comment_for_courier',
                             'type' => 'text',
                             'class' => 'fixed-width-xxl',
@@ -213,7 +213,7 @@ class AdminDPDBalticsCourierRequestController extends AbstractAdminController
 
         if (!$this->object->id) {
             $this->fields_form[2]['form']['submit'] = [
-                'title' => $this->l('Save'),
+                'title' => $this->module->l('Save'),
                 'class' => $saveBtnClasses,
             ];
         }
@@ -265,32 +265,32 @@ class AdminDPDBalticsCourierRequestController extends AbstractAdminController
         $this->addRowAction('viewCourierRequest');
 
         $this->fields_list['id_dpd_courier_request'] = [
-            'title' => $this->l('ID'),
+            'title' => $this->module->l('ID'),
             'type' => 'text',
         ];
 
         $this->fields_list['order_nr'] = [
-            'title' => $this->l('Order Nr'),
+            'title' => $this->module->l('Order Nr'),
             'type' => 'text',
         ];
 
         $this->fields_list['pick_up_time'] = [
-            'title' => $this->l('Desired pick-up time'),
+            'title' => $this->module->l('Desired pick-up time'),
             'type' => 'datetime',
         ];
 
         $this->fields_list['sender_work_until'] = [
-            'title' => $this->l('Last pick-up time'),
+            'title' => $this->module->l('Last pick-up time'),
             'type' => 'text',
         ];
 
         $this->fields_list['weight'] = [
-            'title' => $this->l('Weight'),
+            'title' => $this->module->l('Weight'),
             'type' => 'text',
         ];
 
         $this->fields_list['parcels_count'] = [
-            'title' => $this->l('Parcel(s) count'),
+            'title' => $this->module->l('Parcel(s) count'),
             'type' => 'text',
         ];
     }
@@ -345,7 +345,7 @@ class AdminDPDBalticsCourierRequestController extends AbstractAdminController
             $countryIso = Configuration::get(Config::WEB_SERVICE_COUNTRY);
             if (!$courierRequestValidator->validate($courierRequestObj, $countryIso)) {
                 $this->errors[] = sprintf(
-                    $this->l('You can\'t create courier request because minimal time interval has to be at least %s minutes'),
+                    $this->module->l('You can\'t create courier request because minimal time interval has to be at least %s minutes'),
                     Config::getMinimalTimeIntervalForCountry($countryIso)
                 );
                 return parent::postProcess();
@@ -373,7 +373,7 @@ class AdminDPDBalticsCourierRequestController extends AbstractAdminController
                 if ($response['message'] !== 'Pickup order to time wrong for Product 1') {
                     $this->errors[] = $response['message'];
                 } else {
-                    $this->errors[] = $this->l('Your selected time frame is incorrect, please select different datetime range.');
+                    $this->errors[] = $this->module->l('Your selected time frame is incorrect, please select different datetime range.');
                 }
             }
         }
@@ -390,7 +390,7 @@ class AdminDPDBalticsCourierRequestController extends AbstractAdminController
 
         $params = [
             'href' => $courierRequestUrl,
-            'action' => $this->l('View'),
+            'action' => $this->module->l('View'),
             'icon' => 'icon-search-plus'
         ];
 

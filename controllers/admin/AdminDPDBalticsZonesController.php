@@ -73,7 +73,7 @@ class AdminDPDBalticsZonesController extends AbstractAdminController
                     [],
                     ['importContr' => Config::IMPORT_EXPORT_OPTION_ZONES]
                 ),
-                'desc' => $this->l('Import')
+                'desc' => $this->module->l('Import')
             ];
         }
     }
@@ -94,16 +94,16 @@ class AdminDPDBalticsZonesController extends AbstractAdminController
             'dpdbaltics' => [
                 'messages' => [
                     'error' => [
-                        'emptyZoneRangeValue' => $this->l('Zone ranges cannot have empty values'),
-                        'emptyZoneName' => $this->l('Zone name cannot be empty'),
-                        'emptyZoneRanges' => $this->l('No zone ranges are configured'),
+                        'emptyZoneRangeValue' => $this->module->l('Zone ranges cannot have empty values'),
+                        'emptyZoneName' => $this->module->l('Zone name cannot be empty'),
+                        'emptyZoneRanges' => $this->module->l('No zone ranges are configured'),
                     ],
                     'success' => [
-                        'saved' => $this->l('Successfully saved'),
+                        'saved' => $this->module->l('Successfully saved'),
                     ],
                 ],
                 'notifications' => [
-                    'saveProgress' => $this->l('Saving...'),
+                    'saveProgress' => $this->module->l('Saving...'),
                 ],
                 'url' => [
                     'zonesControllerUrl' => $this->context->link->getAdminLink(ModuleTabs::ADMIN_ZONES_CONTROLLER),
@@ -133,9 +133,9 @@ class AdminDPDBalticsZonesController extends AbstractAdminController
      */
     public function getList($idLlang, $orderBy = null, $orderWay = null, $start = 0, $limit = null, $idLangShop = false)
     {
-        $allZones = $this->l('All zipcodes');
-        $limitedZones = $this->l('Limited zip codes');
-        $oneZone = $this->l('One zip code');
+        $allZones = $this->module->l('All zipcodes');
+        $limitedZones = $this->module->l('Limited zip codes');
+        $oneZone = $this->module->l('One zip code');
 
         $this->_select = 'GROUP_CONCAT(DISTINCT c.iso_code) AS `countries`,';
         $this->_select .= 'COUNT(dzr.id_dpd_zone_range) AS `ranges_count`,';
@@ -172,7 +172,7 @@ class AdminDPDBalticsZonesController extends AbstractAdminController
         $countries = Country::getCountries($this->context->language->id);
 
         if (empty($countries)) {
-            $this->errors[] =  $this->l('Countries cannot be loaded');
+            $this->errors[] =  $this->module->l('Countries cannot be loaded');
             return false;
         }
 
@@ -231,7 +231,8 @@ class AdminDPDBalticsZonesController extends AbstractAdminController
             $response['error'] = $e->getMessage();
         }
 
-        $this->ajaxDie(json_encode($response));
+        $this->ajaxRender(json_encode($response));
+        die();
     }
 
     public function processDelete()
@@ -287,32 +288,32 @@ class AdminDPDBalticsZonesController extends AbstractAdminController
 
         $this->bulk_actions = [
             'delete' => [
-                'text' => $this->l('Delete selected'),
-                'confirm' => $this->l('Delete selected items?'),
+                'text' => $this->module->l('Delete selected'),
+                'confirm' => $this->module->l('Delete selected items?'),
                 'icon' => 'icon-trash'
             ]
         ];
 
         $this->fields_list = [
             'name' => [
-                'title' => $this->l('Name'),
+                'title' => $this->module->l('Name'),
                 'type' => 'text',
                 'align' => 'center',
             ],
             'countries' => [
-                'title' => $this->l('Countries'),
+                'title' => $this->module->l('Countries'),
                 'type' => 'text',
                 'align' => 'center',
                 'havingFilter' => true,
             ],
             'ranges_count' => [
-                'title' => $this->l('Ranges'),
+                'title' => $this->module->l('Ranges'),
                 'type' => 'text',
                 'align' => 'center',
                 'havingFilter' => true,
             ],
             'inclusion_type' => [
-                'title' => $this->l('Inclusion'),
+                'title' => $this->module->l('Inclusion'),
                 'type' => 'text',
                 'align' => 'center',
                 'color' => 'color_value',
@@ -328,7 +329,7 @@ class AdminDPDBalticsZonesController extends AbstractAdminController
     {
         $this->fields_form = [
             'legend' => [
-                'title' => $this->l('Zone'),
+                'title' => $this->module->l('Zone'),
             ],
             'input' => [
                 [
@@ -337,7 +338,7 @@ class AdminDPDBalticsZonesController extends AbstractAdminController
                     'name' => 'alerts',
                 ],
                 [
-                    'label' => $this->l('Name'),
+                    'label' => $this->module->l('Name'),
                     'type' => 'text',
                     'name' => 'zone_name',
                     'required' => true,
@@ -356,14 +357,14 @@ class AdminDPDBalticsZonesController extends AbstractAdminController
             ],
             'buttons' => [
                 [
-                    'title' => $this->l('Save'),
+                    'title' => $this->module->l('Save'),
                     'icon' => 'process-icon-save',
                     'name' => 'processSaveZoneRanges',
                     'type' => 'button',
                     'class' => 'pull-right',
                 ],
                 [
-                    'title' => $this->l('Save and stay'),
+                    'title' => $this->module->l('Save and stay'),
                     'icon' => 'process-icon-save',
                     'name' => 'processSaveAndStayZoneRanges',
                     'type' => 'button',

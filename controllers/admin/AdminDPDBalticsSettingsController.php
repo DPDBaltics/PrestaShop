@@ -67,79 +67,79 @@ class AdminDPDBalticsSettingsController extends AbstractAdminController
 
         $this->fields_options = [
             'web_service_configuration' => [
-                'title' => $this->l('Web service configuration'),
+                'title' => $this->module->l('Web service configuration'),
                 'icon' => 'dpd-icon-settings',
                 'fields' => [
                     Config::SHIPMENT_TEST_MODE => [
-                        'title' => $this->l('Shipment test mode'),
+                        'title' => $this->module->l('Shipment test mode'),
                         'validation' => 'isBool',
                         'cast' => 'intval',
                         'type' => 'bool',
                     ],
                     Config::WEB_SERVICE_USERNAME => [
-                        'title' => $this->l('Username'),
+                        'title' => $this->module->l('Username'),
                         'type' => 'text',
                         'validation' => 'isGenericName',
                         'class' => 'fixed-width-xl',
                     ],
                     Config::WEB_SERVICE_PASSWORD => [
-                        'title' => $this->l('Password'),
+                        'title' => $this->module->l('Password'),
                         'type' => 'text',
                         'class' => 'fixed-width-xl',
                         'auto_value' => false,
                     ],
                     Config::WEB_SERVICE_COUNTRY => [
-                        'title' => $this->l('Country'),
+                        'title' => $this->module->l('Country'),
                         'type' => 'radio',
                         'required' => true,
                         'choices' => [
-                            Config::ESTONIA_ISO_CODE => $this->l('Estonia'),
-                            Config::LATVIA_ISO_CODE => $this->l('Latvia'),
-                            Config::LITHUANIA_ISO_CODE => $this->l('Lithuania'),
+                            Config::ESTONIA_ISO_CODE => $this->module->l('Estonia'),
+                            Config::LATVIA_ISO_CODE => $this->module->l('Latvia'),
+                            Config::LITHUANIA_ISO_CODE => $this->module->l('Lithuania'),
                         ],
                     ],
                 ],
                 'submit' => [
-                    'title' => $this->l('Save'),
+                    'title' => $this->module->l('Save'),
                     'id' => 'submitDpdConnection'
                 ],
             ],
             'product_page_configuration' => [
-                'title' => $this->l('Product page configuration'),
+                'title' => $this->module->l('Product page configuration'),
                 'icon' => 'dpd-icon-settings',
                 'fields' => [
                     Config::SHOW_CARRIERS_IN_PRODUCT_PAGE => [
-                        'title' => $this->l('Show carrier options in product page'),
+                        'title' => $this->module->l('Show carrier options in product page'),
                         'type' => 'bool',
                         'validation' => 'isBool',
                         'cast' => 'intval'
                     ],
                 ],
                 'submit' => [
-                    'title' => $this->l('Save'),
+                    'title' => $this->module->l('Save'),
                 ],
             ],
             'orders_page_configuration' => [
-                'title' => $this->l('Orders listing page configuration', self::FILE_NAME),
+                'title' => $this->module->l('Orders listing page configuration', self::FILE_NAME),
                 'icon' => 'dpd-icon-settings',
                 'fields' => [
                     Config::HIDE_ORDERS_LABEL_PRINT_BUTTON => [
-                        'title' => $this->l('Hide print button in admin orders listing page'),
+                        'title' => $this->module->l('Hide print button in admin orders listing page'),
                         'type' => 'bool',
                         'validation' => 'isBool',
                         'cast' => 'intval'
                     ],
                 ],
                 'submit' => [
-                    'title' => $this->l('Save'),
+                    'title' => $this->module->l('Save'),
                 ],
             ],
             'log_configuration' => [
-                'title' => $this->l('Log configuration'),
+                'title' => $this->module->l('Log configuration'),
                 'icon' => 'dpd-icon-settings',
                 'fields' => [
                     Config::TRACK_LOGS => [
-                        'title' => $this->l('Track logs'),
+                        'title' => $this->module->l('Track logs'),
                         'type' => 'bool',
                         'validation' => 'isBool',
                         'cast' => 'intval'
@@ -147,14 +147,14 @@ class AdminDPDBalticsSettingsController extends AbstractAdminController
                 ],
                 'buttons' => [
                     'dpd_delete_logs' => [
-                        'title' => $this->l('Delete logs'),
+                        'title' => $this->module->l('Delete logs'),
                         'icon' => 'process-icon-delete',
                         'class' => 'btn btn-default pull-left',
                         'name' => 'submitDpdDeleteLogs',
                         'type' => 'submit',
                     ],
                     'dpd_download_logs' => [
-                        'title' => $this->l('Download logs'),
+                        'title' => $this->module->l('Download logs'),
                         'icon' => 'process-icon-download',
                         'class' => 'btn btn-default pull-right',
                         'name' => 'submitDpdDownloadLogs',
@@ -162,11 +162,11 @@ class AdminDPDBalticsSettingsController extends AbstractAdminController
                     ],
                 ],
                 'submit' => [
-                    'title' => $this->l('Save'),
+                    'title' => $this->module->l('Save'),
                 ],
             ],
             'dpd_on_board' => [
-                'title' => $this->l('DPD on-board'),
+                'title' => $this->module->l('DPD on-board'),
                 'icon' => 'dpd-icon-settings',
                 'fields' => [
                     Config::ON_BOARD_INFO => [
@@ -178,7 +178,7 @@ class AdminDPDBalticsSettingsController extends AbstractAdminController
                 ],
                 'buttons' => [
                     'dpd_restart_on_board' => [
-                        'title' => $this->l('Restart DPD on-board'),
+                        'title' => $this->module->l('Restart DPD on-board'),
                         'icon' => 'process-icon-refresh',
                         'class' => 'btn btn-default pull-right',
                         'name' => 'submitRestartOnBoard',
@@ -187,7 +187,7 @@ class AdminDPDBalticsSettingsController extends AbstractAdminController
                 ],
             ],
             'dpd_carrier_regeneration' => [
-                'title' => $this->l('DPD carrier rengeneration'),
+                'title' => $this->module->l('DPD carrier rengeneration'),
                 'icon' => 'dpd-icon-settings',
                 'fields' => [
                     Config::PRESTASHOP_DPD_CARRIER_REGENERATE => [
@@ -199,7 +199,7 @@ class AdminDPDBalticsSettingsController extends AbstractAdminController
                 ],
                 'buttons' => [
                     'dpd_regenerate_carriers' => [
-                        'title' => $this->l('REGENERATE'),
+                        'title' => $this->module->l('REGENERATE'),
                         'icon' => 'process-icon-refresh',
                         'class' => 'btn btn-default pull-right',
                         'name' => 'submitRegenerateCarriers',
@@ -240,17 +240,17 @@ class AdminDPDBalticsSettingsController extends AbstractAdminController
             $logger = $this->module->getModuleContainer()->get('invertus.dpdbaltics.logger.logger');
             try {
                 $regenerationHandler->handle();
-                $this->confirmations[] = $this->l('Prestashop carriers regenerated successfully');
+                $this->confirmations[] = $this->module->l('Prestashop carriers regenerated successfully');
 
             } catch (DpdCarrierException $e) {
                 $logger->error($e->getMessage());
-                $this->errors[] = $this->l('Could not regenerate carriers, please refer to module logs for more information');
+                $this->errors[] = $this->module->l('Could not regenerate carriers, please refer to module logs for more information');
             } catch (PrestaShopDatabaseException $e) {
                 $logger->error($e->getMessage());
-                $this->errors[] = $this->l('Could not regenerate carriers, please refer to module logs for more information');
+                $this->errors[] = $this->module->l('Could not regenerate carriers, please refer to module logs for more information');
             } catch (PrestaShopException $e) {
                 $logger->error($e->getMessage());
-                $this->errors[] = $this->l('Could not regenerate carriers, please refer to module logs for more information');
+                $this->errors[] = $this->module->l('Could not regenerate carriers, please refer to module logs for more information');
             }
         }
 
@@ -280,7 +280,7 @@ class AdminDPDBalticsSettingsController extends AbstractAdminController
          */
         $logService = $this->module->getModuleContainer('invertus.dpdbaltics.service.logs_service');
         if (!$logService->downloadLogsCsv()) {
-            $this->errors[] = $this->l('No logs to download.');
+            $this->errors[] = $this->module->l('No logs to download.');
         }
     }
 

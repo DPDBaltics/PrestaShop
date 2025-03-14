@@ -106,6 +106,7 @@ class AdminDPDAjaxOnBoardController extends AbstractAdminController
     private function returnResponse(array $response)
     {
         $response = json_encode($response);
-        $this->ajaxDie($response);
+        $this->ajaxRender($response);
+        exit;
     }
 }

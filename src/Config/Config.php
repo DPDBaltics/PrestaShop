@@ -322,6 +322,7 @@ class Config
     const ERROR_PHONE_HAS_INVALID_CHARACTERS = 506;
     const ERROR_PHONE_HAS_INVALID_LENGTH = 507;
     const ERROR_INVALID_PUDO_TERMINAL = 508;
+    const ERROR_COULD_NOT_LOAD_CART = 509;
 
     public static function getProducts($webServiceCountry = 'EN')
     {

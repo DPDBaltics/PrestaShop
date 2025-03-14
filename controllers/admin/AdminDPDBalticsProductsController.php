@@ -45,13 +45,13 @@ class AdminDPDBalticsProductsController extends AbstractAdminController
                 'isMultiShop' => $isMultiShop,
                 'chosenPlaceholder' => $this->module->l('Click to select'),
                 'errorMessages' => [
-                    'noZones' => $this->l('Missing zones in highlighted area.'),
-                    'noShops' => $this->l('Missing shops in highlighted area.'),
-                    'noProductName' => $this->l('Missing product name in highlighted area.'),
-                    'productSaveFailed' => $this->l('Failed to save product'),
+                    'noZones' => $this->module->l('Missing zones in highlighted area.'),
+                    'noShops' => $this->module->l('Missing shops in highlighted area.'),
+                    'noProductName' => $this->module->l('Missing product name in highlighted area.'),
+                    'productSaveFailed' => $this->module->l('Failed to save product'),
                 ],
                 'messages' => [
-                    'productSaveSuccess' => $this->l('Product successfully saved'),
+                    'productSaveSuccess' => $this->module->l('Product successfully saved'),
                 ]
             ]
         );
@@ -124,6 +124,7 @@ class AdminDPDBalticsProductsController extends AbstractAdminController
             $response['errors'][] = $e->getMessage();
         }
 
-        $this->ajaxDie(json_encode($response));
+        $this->ajaxRender(json_encode($response));
+        exit;
     }
 }

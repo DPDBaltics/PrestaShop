@@ -61,7 +61,8 @@ class AdminDPDBalticsPudoAjaxController extends AbstractAdminController
 
         $address = new Address($idAddress, $this->context->language->id);
         if (!Validate::isLoadedObject($address)) {
-            $this->ajaxDie('');
+            $this->ajaxRender('');
+            exit;
         }
 
 
@@ -70,20 +71,22 @@ class AdminDPDBalticsPudoAjaxController extends AbstractAdminController
         $product = $productRepo->findProductByCarrierReference($carrierId);
         $ispudo = $product['is_pudo'];
         if (!$ispudo) {
-            $this->ajaxDie('');
+            $this->ajaxRender('');
+            exit;
         }
 
         $searchTemplate = $this->getPudoSearch(
             $cart
         );
 
-        $this->ajaxDie(
+        $this->ajaxRender(
             json_encode(
                 array(
                     'searchTemplate' => $searchTemplate
                 )
             )
         );
+        exit;
     }
 
     public function ajaxProcessAddPudoCart()
@@ -109,7 +112,8 @@ class AdminDPDBalticsPudoAjaxController extends AbstractAdminController
         $pudoOrder->city = $city;
         $pudoOrder->street = $street;
         $pudoOrder->post_code = $postCode;
-        $this->ajaxDie($pudoOrder->save());
+        $this->ajaxRender($pudoOrder->save());
+        die();
     }
 
     private function getPudoSearch(Cart $cart)

@@ -26,6 +26,7 @@
     cursor: all-scroll;
     position: fixed;
     background-color: #ffffff;
+    color: #0a0a0a;
     border-radius: 4px;
     padding: 28px 20px 55px 50px;
     /*-webkit-box-shadow: 0px 0px 21px -6px rgba(0,0,0,1);*/

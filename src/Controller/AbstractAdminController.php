@@ -136,8 +136,8 @@ class AbstractAdminController extends ModuleAdminController
             $this->context->controller->addJS($this->module->getPathUri() . 'views/js/admin/on-board.js');
             $this->context->controller->addCSS($this->module->getPathUri() . 'views/css/admin/on-board.css');
             $jsVars['onBoard'] = array(
-                'stopWarning' => $this->l('Stop DPD on-board?'),
-                'pauseWarning' => $this->l('Pause DPD on-board?'),
+                'stopWarning' => $this->module->l('Stop DPD on-board?'),
+                'pauseWarning' => $this->module->l('Pause DPD on-board?'),
                 'ajaxUrl' => $this->context->link->getAdminLink(ModuleTabs::ADMIN_AJAX_ON_BOARD_CONTROLLER),
                 'currentStep' => Configuration::get(Config::ON_BOARD_STEP)
             );
@@ -204,15 +204,7 @@ class AbstractAdminController extends ModuleAdminController
         $countryCode = $currentCountryProvider->getCurrentCountryIsoCode();
 
         if (!$parcelShopRepo->hasAnyParcelShops($countryCode)) {
-            $this->warnings[] = $this->context->smarty->fetch(
-                $this->module->getLocalPath() . 'views/templates/admin/warning-message-with-link.tpl',
-                [
-                    'messageLink' => $this->context->link->getAdminLink(ModuleTabs::ADMIN_IMPORT_EXPORT_CONTROLLER) . "#import-Parcels-button",
-                    'messageStart' => $this->module->l('“Please note: Pick-up carrier is not available for your shop at the moment, because you don’t have pick-up points. To import pick-up points ', self::FILENAME),
-                    'messageEnd' => '',
-                    'linkText' => $this->module->l('click here', self::FILENAME)
-                ]
-            );
+            $this->warnings[] = $this->module->l('Please note: Pick-up carrier is not available for your shop at the moment, because you don’t have pick-up points. To import pick-up points, please go to the Import/Export section and import pick-up points.', self::FILENAME);
         }
     }
 

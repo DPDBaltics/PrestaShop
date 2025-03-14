@@ -58,8 +58,8 @@ class AdminDPDBalticsPriceRulesController extends AbstractAdminController
     {
         parent::setMedia($isNewTheme);
         Media::addJsDef([
-            'checkAllMessage' => $this->l('Check all'),
-            'uncheckAllMessage' => $this->l('Uncheck all')
+            'checkAllMessage' => $this->module->l('Check all'),
+            'uncheckAllMessage' => $this->module->l('Uncheck all')
         ]);
         $this->addJS($this->getModuleJSUri() . 'price_rules.js');
     }
@@ -73,7 +73,7 @@ class AdminDPDBalticsPriceRulesController extends AbstractAdminController
                 /** @var DPDFlashMessageService $flashMessageService */
                 $flashMessageService = $this->module->getModuleContainer()->get('invertus.dpdbaltics.service.dpdflash_message_service');
 
-                $msg = $this->l('Price rule duplication failed. Data is not saved.');
+                $msg = $this->module->l('Price rule duplication failed. Data is not saved.');
                 $flashMessageService->addFlash('error', $msg);
 
                 $this->redirect_after =
@@ -109,7 +109,7 @@ class AdminDPDBalticsPriceRulesController extends AbstractAdminController
                     [],
                     ['importContr' => Config::IMPORT_EXPORT_OPTION_PRICE_RULES]
                 ),
-                'desc' => $this->l('Import'),
+                'desc' => $this->module->l('Import'),
             ];
         }
     }
@@ -117,8 +117,8 @@ class AdminDPDBalticsPriceRulesController extends AbstractAdminController
     public function renderForm()
     {
         $this->context->smarty->assign([
-            'carrierName' => $this->l('Carriers'),
-            'paymentsName' => $this->l('Payment methods'),
+            'carrierName' => $this->module->l('Carriers'),
+            'paymentsName' => $this->module->l('Payment methods'),
             'checkbox_list_dir' => 'file:' . $this->module->getLocalPath() . 'views/templates/admin/checkbox-list.tpl',
         ]);
 
@@ -151,9 +151,9 @@ class AdminDPDBalticsPriceRulesController extends AbstractAdminController
         ';
 
         $this->_select .= 'IF(
-                a.`customer_type`="' . pSQL(DPDPriceRule::CUSTOMER_TYPE_ALL) . '","' . pSQL($this->l('All')) . '",
-                IF(a.`customer_type`="' . pSQL(DPDPriceRule::CUSTOMER_TYPE_REGULAR) . '","' . pSQL($this->l('Individual')) . '",
-                "' . pSQL($this->l('Company')) . '"
+                a.`customer_type`="' . pSQL(DPDPriceRule::CUSTOMER_TYPE_ALL) . '","' . pSQL($this->module->l('All')) . '",
+                IF(a.`customer_type`="' . pSQL(DPDPriceRule::CUSTOMER_TYPE_REGULAR) . '","' . pSQL($this->module->l('Individual')) . '",
+                "' . pSQL($this->module->l('Company')) . '"
                 )
                 )
             AS `customer_type`,';
@@ -245,13 +245,13 @@ class AdminDPDBalticsPriceRulesController extends AbstractAdminController
                 if ($priceRuleObject = new DPDPriceRule((int)$pos[2])) {
                     if (isset($position) && $priceRuleObject->updatePosition($way, $position)) {
                         echo sprintf(
-                            $this->l('Ok position %s for Dpd price rule %d'),
+                            $this->module->l('Ok position %s for Dpd price rule %d'),
                             (int)$position,
                             (int)$pos[1]
                         );
                     } else {
                         $message = sprintf(
-                            $this->l('Can not update Dpd price rule %s to position %d'),
+                            $this->module->l('Can not update Dpd price rule %s to position %d'),
                             (int)$idPriceRule,
                             (int)$position
                         );
@@ -259,7 +259,7 @@ class AdminDPDBalticsPriceRulesController extends AbstractAdminController
                     }
                 } else {
                     $message = sprintf(
-                        $this->l('This Dpd price rule %s can\'t be loaded'),
+                        $this->module->l('This Dpd price rule %s can\'t be loaded'),
                         (int)$idPriceRule
                     );
                     echo $this->displayAjaxErrorMessage($message);
@@ -276,15 +276,15 @@ class AdminDPDBalticsPriceRulesController extends AbstractAdminController
         $selectedZones = Tools::getValue('zones_select');
 
         if (!$selectedZones) {
-            $this->errors[] = $this->l('Please select at least one receiver zone.');
+            $this->errors[] = $this->module->l('Please select at least one receiver zone.');
         }
 
         if (!$dpdCarriers) {
-            $this->errors[] = $this->l('Please select at least one carrier.');
+            $this->errors[] = $this->module->l('Please select at least one carrier.');
         }
 
         if (!$paymentMethods) {
-            $this->errors[] = $this->l('Please select at least one payment method.');
+            $this->errors[] = $this->module->l('Please select at least one payment method.');
         }
 
         if (Tools::getValue('order_price_from') || Tools::getValue('order_price_to')) {
@@ -347,8 +347,8 @@ class AdminDPDBalticsPriceRulesController extends AbstractAdminController
                 'warning',
                 $this->context->link->getAdminLink(ModuleTabs::ADMIN_ZONES_CONTROLLER) .
                 '&add' . DPDZone::$definition['table'],
-                $this->l('There are no zones to add. '),
-                $this->l(' to add more zones.')
+                $this->module->l('There are no zones to add. '),
+                $this->module->l(' to add more zones.')
             );
         } else {
             $allZonesSelected = false;
@@ -427,67 +427,67 @@ class AdminDPDBalticsPriceRulesController extends AbstractAdminController
 
         $this->bulk_actions = [
             'delete' => [
-                'text' => $this->l('Delete selected'),
-                'confirm' => $this->l('Delete selected items?'),
+                'text' => $this->module->l('Delete selected'),
+                'confirm' => $this->module->l('Delete selected items?'),
                 'icon' => 'icon-trash'
             ]
         ];
 
         $this->fields_list = [
             'name' => [
-                'title' => $this->l('Name'),
+                'title' => $this->module->l('Name'),
                 'type' => 'text',
                 'align' => 'center',
                 'filter_key' => 'a!name',
             ],
             'customer_type' => [
-                'title' => $this->l('Customer type'),
+                'title' => $this->module->l('Customer type'),
                 'type' => 'select',
                 'list' => [
-                    DPDPriceRule::CUSTOMER_TYPE_ALL => $this->l('All'),
-                    DPDPriceRule::CUSTOMER_TYPE_REGULAR => $this->l('Individual'),
-                    DPDPriceRule::CUSTOMER_TYPE_COMPANY => $this->l('Company'),
+                    DPDPriceRule::CUSTOMER_TYPE_ALL => $this->module->l('All'),
+                    DPDPriceRule::CUSTOMER_TYPE_REGULAR => $this->module->l('Individual'),
+                    DPDPriceRule::CUSTOMER_TYPE_COMPANY => $this->module->l('Company'),
                 ],
                 'align' => 'center',
                 'color' => 'color_value',
                 'filter_key' => 'a!customer_type',
             ],
             'order_price_from' => [
-                'title' => $this->l('Order price from'),
+                'title' => $this->module->l('Order price from'),
                 'type' => 'price',
                 'align' => 'center',
                 'havingFilter' => true,
                 'filter_key' => 'a!order_price_from'
             ],
             'order_price_to' => [
-                'title' => $this->l('Order price to'),
+                'title' => $this->module->l('Order price to'),
                 'type' => 'price',
                 'align' => 'center',
                 'havingFilter' => true,
                 'filter_key' => 'a!order_price_to'
             ],
             'weight_from' => [
-                'title' => $this->l('Weight from'),
+                'title' => $this->module->l('Weight from'),
                 'type' => 'weight',
                 'align' => 'center',
                 'havingFilter' => true,
                 'filter_key' => 'a!weight_from'
             ],
             'weight_to' => [
-                'title' => $this->l('Weight to'),
+                'title' => $this->module->l('Weight to'),
                 'type' => 'weight',
                 'align' => 'center',
                 'havingFilter' => true,
                 'filter_key' => 'a!weight_to'
             ],
             'price' => [
-                'title' => $this->l('Price'),
+                'title' => $this->module->l('Price'),
                 'type' => 'price',
                 'align' => 'center',
                 'filter_key' => 'a!price'
             ],
             'payment_method' => [
-                'title' => $this->l('Payment methods'),
+                'title' => $this->module->l('Payment methods'),
                 'type' => 'text',
                 'align' => 'center',
                 'havingFilter' => true
@@ -495,13 +495,13 @@ class AdminDPDBalticsPriceRulesController extends AbstractAdminController
             'position' => [
                 'filter' => false,
                 'search' => false,
-                'title' => $this->l('Position'),
+                'title' => $this->module->l('Position'),
                 'align' => 'center',
                 'class' => 'fixed-width-sm',
                 'position' => 'position',
             ],
             'active' => [
-                'title' => $this->l('Status'),
+                'title' => $this->module->l('Status'),
                 'align' => 'text-center',
                 'active' => 'status',
                 'type' => 'bool',
@@ -520,27 +520,27 @@ class AdminDPDBalticsPriceRulesController extends AbstractAdminController
         $inputs = [
             [
                 'type' => 'switch',
-                'label' => $this->l('Active'),
+                'label' => $this->module->l('Active'),
                 'name' => 'active',
                 'is_bool' => true,
                 'values' => [
                     [
                         'id' => 'active_on',
                         'value' => true,
-                        'label' => $this->l('Enabled')
+                        'label' => $this->module->l('Enabled')
                     ],
                     [
                         'id' => 'active_off',
                         'value' => false,
-                        'label' => $this->l('Disabled')
+                        'label' => $this->module->l('Disabled')
                     ]
                 ],
             ],
             [
                 'type' => 'radio',
-                'label' => $this->l('Customer types'),
+                'label' => $this->module->l('Customer types'),
                 'name' => 'customer_type',
-                'hint' => $this->l('Do you want this rule to apply everybody or just companies or individuals?'),
+                'hint' => $this->module->l('Do you want this rule to apply everybody or just companies or individuals?'),
                 'required' => true,
                 'is_bool' => true,
                 'form_group_class' => 'dpd-price-rule-customer-types',
@@ -548,23 +548,23 @@ class AdminDPDBalticsPriceRulesController extends AbstractAdminController
                     [
                         'id' => 'customer_type' . DPDPriceRule::CUSTOMER_TYPE_ALL,
                         'value' => DPDPriceRule::CUSTOMER_TYPE_ALL,
-                        'label' => $this->l('All')
+                        'label' => $this->module->l('All')
                     ],
                     [
                         'id' => 'customer_type' . DPDPriceRule::CUSTOMER_TYPE_REGULAR,
                         'value' => DPDPriceRule::CUSTOMER_TYPE_REGULAR,
-                        'label' => $this->l('Individual')
+                        'label' => $this->module->l('Individual')
                     ],
                     [
                         'id' => 'customer_type' . DPDPriceRule::CUSTOMER_TYPE_COMPANY,
                         'value' => DPDPriceRule::CUSTOMER_TYPE_COMPANY,
-                        'label' => $this->l('Company')
+                        'label' => $this->module->l('Company')
                     ],
                 ]
             ],
             [
-                'label' => $this->l('Name'),
-                'hint' => $this->l('Name of the price rule is displayed only in back office'),
+                'label' => $this->module->l('Name'),
+                'hint' => $this->module->l('Name of the price rule is displayed only in back office'),
                 'name' => 'name',
                 'required' => true,
                 'type' => 'text',
@@ -578,14 +578,14 @@ class AdminDPDBalticsPriceRulesController extends AbstractAdminController
                 'form_group_class' => 'dpd-price-rule-ranges',
             ],
             [
-                'label' => $this->l('Carriers'),
+                'label' => $this->module->l('Carriers'),
                 'name' => 'carriers_box',
                 'type' => 'free',
                 'form_group_class' => 'dpd-price-rule-carriers',
                 'required' => true,
             ],
             [
-                'label' => $this->l('Receiver zones'),
+                'label' => $this->module->l('Receiver zones'),
                 'name' => 'search_block',
                 'type' => 'free',
                 'form_group_class' => 'dpd-price-rule-zones',
@@ -595,7 +595,7 @@ class AdminDPDBalticsPriceRulesController extends AbstractAdminController
 
         if ($isMultiShop) {
             $inputs[] = [
-                'label' => $this->l('Receiver shops'),
+                'label' => $this->module->l('Receiver shops'),
                 'name' => 'search_block_shops',
                 'type' => 'free',
                 'form_group_class' => 'dpd-price-rule-shops',
@@ -607,23 +607,23 @@ class AdminDPDBalticsPriceRulesController extends AbstractAdminController
         $this->fields_form[] = [
             'form' => [
                 'legend' => [
-                    'title' => $this->l('Conditions'),
+                    'title' => $this->module->l('Conditions'),
                     'icon' => 'icon-cogs'
                 ],
                 'input' => $inputs,
                 'submit' => [
-                    'title' => $this->l('Save'),
+                    'title' => $this->module->l('Save'),
                 ],
                 'buttons' => [
                     [
-                        'title' => $this->l('Save and stay'),
+                        'title' => $this->module->l('Save and stay'),
                         'icon' => 'process-icon-save',
                         'name' => 'submitAdddpd_price_ruleAndStay',
                         'class' => 'pull-right',
                         'type' => 'submit'
                     ],
                     [
-                        'title' => $this->l('Cancel'),
+                        'title' => $this->module->l('Cancel'),
                         'icon' => 'process-icon-cancel',
                         'label' => 'back button',
                         'name' => 'back_button',
@@ -636,12 +636,12 @@ class AdminDPDBalticsPriceRulesController extends AbstractAdminController
         $this->fields_form[] = [
             'form' => [
                 'legend' => [
-                    'title' => $this->l('Actions'),
+                    'title' => $this->module->l('Actions'),
                     'icon' => 'icon-cogs'
                 ],
                 'input' => [
                     [
-                        'label' => $this->l('Set shipping price to'),
+                        'label' => $this->module->l('Set shipping price to'),
                         'name' => 'price',
                         'type' => 'text',
                         'col' => '3',
@@ -649,7 +649,7 @@ class AdminDPDBalticsPriceRulesController extends AbstractAdminController
                         'suffix' => $this->context->currency->sign
                     ],
                     [
-                        'label' => $this->l('Enabled payment methods'),
+                        'label' => $this->module->l('Enabled payment methods'),
                         'name' => 'payment_methods',
                         'type' => 'free',
                         'form_group_class' => 'dpd-price-rule-payment-methods',
@@ -657,18 +657,18 @@ class AdminDPDBalticsPriceRulesController extends AbstractAdminController
                     ],
                 ],
                 'submit' => [
-                    'title' => $this->l('Save'),
+                    'title' => $this->module->l('Save'),
                 ],
                 'buttons' => [
                     [
-                        'title' => $this->l('Save and stay'),
+                        'title' => $this->module->l('Save and stay'),
                         'icon' => 'process-icon-save',
                         'name' => 'submitAdddpd_price_ruleAndStay',
                         'class' => 'pull-right',
                         'type' => 'submit'
                     ],
                     [
-                        'title' => $this->l('Cancel'),
+                        'title' => $this->module->l('Cancel'),
                         'icon' => 'process-icon-cancel',
                         'label' => 'back button',
                         'name' => 'back_button',

@@ -38,7 +38,7 @@ class AdminDPDBalticsRequestSupportController extends AbstractAdminController
              */
             $logService = $this->module->getModuleContainer('invertus.dpdbaltics.service.logs_service');
             if (!$logService->downloadLogsCsv()) {
-                $this->errors[] = $this->l('No logs to download.');
+                $this->errors[] = $this->module->l('No logs to download.');
             }
         }
     }
@@ -58,11 +58,11 @@ class AdminDPDBalticsRequestSupportController extends AbstractAdminController
                     'value' => phpversion(),
                 ],
                 'mySqlVersion' => [
-                    'name' => $this->l('MySQL Version'),
+                    'name' => $this->module->l('MySQL Version'),
                     'value' => $this->getMysqlVersion(),
                 ],
                 'moduleVersion' => [
-                    'name' => $this->l('DPD Module Version'),
+                    'name' => $this->module->l('DPD Module Version'),
                     'value' => $this->module->version,
                 ],
                 'dpdUsername' => [

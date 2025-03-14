@@ -30,6 +30,7 @@ if (!defined('_PS_VERSION_')) {
 
 class LabelUrlFormatter
 {
+    /** @var LinkAdapter */
     private $linkAdapter;
 
     public function __construct(LinkAdapter $linkAdapter)
@@ -50,14 +51,29 @@ class LabelUrlFormatter
         ]);
     }
 
+    /**
+     * Format URL for saving & printing label
+     *
+     * @note Additional logic with is used to be compatible with PrestaShop 9
+     *
+     * @return string URL
+     */
     public function formatJsLabelSaveAndPrintUrl()
     {
-        return $this->linkAdapter->getUrlSmarty([
+        $url = $this->linkAdapter->getUrlSmarty([
             'entity' => 'sf',
             'route' => 'dpdbaltics_save_and_download_printed_label_order_view',
             'sf-params' => [
                 'orderId' => 'orderId_',
             ]
         ]);
+
+        $parsedUrl = parse_url($url);
+
+        if (isset($parsedUrl['scheme'], $parsedUrl['host'])) {
+            return $url;
+        }
+
+        return rtrim(\Context::getContext()->shop->getBaseURL(), '/') . $url;
     }
 }

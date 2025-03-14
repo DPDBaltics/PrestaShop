@@ -67,7 +67,7 @@ class AdminDPDBalticsShipmentSettingsController extends AbstractAdminController
         $codPaymentRepo = $this->module->getModuleContainer('invertus.dpdbaltics.repository.cod_payment_repository');
 
         if (!$codPaymentRepo->removeCodPaymentModules()) {
-            $this->errors[] = $this->l('Failed to delete COD payment methods');
+            $this->errors[] = $this->module->l('Failed to delete COD payment methods');
         }
 
         if (Tools::getIsset('payments_selected')) {
@@ -80,7 +80,7 @@ class AdminDPDBalticsShipmentSettingsController extends AbstractAdminController
             }
 
             if (!$codPaymentRepo->addCodPaymentModules($codPaymentsSqlArray)) {
-                $this->errors[] = $this->l('Failed to add COD payment methods');
+                $this->errors[] = $this->module->l('Failed to add COD payment methods');
             }
         }
 
@@ -142,7 +142,7 @@ class AdminDPDBalticsShipmentSettingsController extends AbstractAdminController
             if (Configuration::get(Config::PARCEL_RETURN)) {
                 $this->warnings[] =
                     sprintf(
-                        $this->l('To allow returns for your customers, you need to create return %s address %s in Addresses tab'),
+                        $this->module->l('To allow returns for your customers, you need to create return %s address %s in Addresses tab'),
                         $this->module->display($this->module->getPathUri(), 'views/templates/admin/redirect/redirect-opening.tpl'),
                         $this->module->display($this->module->getPathUri(), 'views/templates/admin/redirect/redirect-closing.tpl')
                     );
@@ -169,7 +169,7 @@ class AdminDPDBalticsShipmentSettingsController extends AbstractAdminController
         ]);
 
         $parcelReturn = [
-            'title' => $this->l('Parcel return'),
+            'title' => $this->module->l('Parcel return'),
             'validation' => 'isBool',
             'cast' => 'intval',
             'type' => 'bool'
@@ -177,7 +177,7 @@ class AdminDPDBalticsShipmentSettingsController extends AbstractAdminController
 
         if (CountryUtility::isEstonia()) {
             $parcelReturn = [
-                'title' => $this->l('Parcel return'),
+                'title' => $this->module->l('Parcel return'),
                 'validation' => 'isBool',
                 'cast' => 'intval',
                 'type' => 'hidden',
@@ -188,24 +188,24 @@ class AdminDPDBalticsShipmentSettingsController extends AbstractAdminController
         $this->context->smarty->assign('googleMapsApiKeyLink', Config::GOOGLE_MAPS_API_KEY_LINK);
         $this->fields_options = [
             'shipping_configuration' => [
-                'title' => $this->l('Shipping configuration'),
+                'title' => $this->module->l('Shipping configuration'),
                 'icon' => 'dpd-icon-settings',
                 'fields' => [
                     Config::PARCEL_TRACKING => [
-                        'title' => $this->l('Parcel tracking'),
+                        'title' => $this->module->l('Parcel tracking'),
                         'validation' => 'isBool',
                         'cast' => 'intval',
                         'type' => 'bool',
                     ],
                     Config::PARCEL_RETURN => $parcelReturn,
                     Config::DOCUMENT_RETURN => [
-                        'title' => $this->l('Document return'),
+                        'title' => $this->module->l('Document return'),
                         'validation' => 'isBool',
                         'cast' => 'intval',
                         'type' => 'bool',
                     ],
                     Config::PICKUP_MAP => [
-                        'title' => $this->l('Pickup map'),
+                        'title' => $this->module->l('Pickup map'),
                         'validation' => 'isBool',
                         'cast' => 'intval',
                         'type' => 'bool',
@@ -218,116 +218,116 @@ class AdminDPDBalticsShipmentSettingsController extends AbstractAdminController
                         'type' => 'bool',
                     ],
                     Config::GOOGLE_API_KEY => [
-                        'title' => $this->l('Google maps Api key'),
+                        'title' => $this->module->l('Google maps Api key'),
                         'validation' => 'isCleanHtml',
                         'type' => 'text',
                         'class' => 'fixed-width-xxl',
                         'desc' => $this->context->smarty->fetch($this->getTemplatePath() . 'api-key-description.tpl'),
                     ],
                     Config::PARCEL_SHOP_DISPLAY => [
-                        'title' => $this->l('Pickup display'),
+                        'title' => $this->module->l('Pickup display'),
                         'type' => 'radio',
                         'choices' => [
                             Config::PARCEL_SHOP_DISPLAY_LIST
-                            => $this->l('Show pickup points in list'),
+                            => $this->module->l('Show pickup points in list'),
                             Config::PARCEL_SHOP_DISPLAY_BLOCK
-                            => $this->l('Show pickup points in blocks'),
+                            => $this->module->l('Show pickup points in blocks'),
                         ],
                     ],
                 ],
                 'submit' => [
-                    'title' => $this->l('Save'),
+                    'title' => $this->module->l('Save'),
                 ],
             ],
             'parcel_configuration' => [
-                'title' => $this->l('Shipment configuration'),
+                'title' => $this->module->l('Shipment configuration'),
                 'icon' => 'dpd-icon-settings',
                 'fields' => [
                     Config::PARCEL_DISTRIBUTION => [
-                        'title' => $this->l('Product distribution'),
+                        'title' => $this->module->l('Product distribution'),
                         'type' => 'radio',
                         'choices' => [
                             DPDParcel::DISTRIBUTION_NONE
-                            => $this->l('All products in same shipment'),
+                            => $this->module->l('All products in same shipment'),
                             DPDParcel::DISTRIBUTION_PARCEL_PRODUCT
-                            => $this->l('Each product in separate parcel'),
+                            => $this->module->l('Each product in separate parcel'),
                             DPDParcel::DISTRIBUTION_PARCEL_QUANTITY
-                            => $this->l('Each product quantity in separate parcel'),
+                            => $this->module->l('Each product quantity in separate parcel'),
                         ],
                     ],
                     Config::AUTO_VALUE_FOR_REF => [
-                        'title' => $this->l('Automatic value for Reference 1 in Shipment'),
+                        'title' => $this->module->l('Automatic value for Reference 1 in Shipment'),
                         'type' => 'select',
                         'list' => [
                             [
                                 'value' => DPDShipment::AUTO_VAL_REF_NONE,
-                                'name' => $this->l('None'),
+                                'name' => $this->module->l('None'),
                             ],
                             [
                                 'value' => DPDShipment::AUTO_VAL_REF_ORDER_ID,
-                                'name' => $this->l('Order Id'),
+                                'name' => $this->module->l('Order Id'),
                             ],
                             [
                                 'value' => DPDShipment::AUTO_VAL_REF_ORDER_REF,
-                                'name' => $this->l('Order Reference'),
+                                'name' => $this->module->l('Order Reference'),
                             ],
                         ],
                         'identifier' => 'value',
                     ],
                 ],
                 'submit' => [
-                    'title' => $this->l('Save'),
+                    'title' => $this->module->l('Save'),
                 ],
             ],
             'label_configuration' => [
-                'title' => $this->l('Label configuration'),
+                'title' => $this->module->l('Label configuration'),
                 'icon' => 'dpd-icon-settings',
                 'fields' => [
                     Config::LABEL_PRINT_OPTION => [
-                        'title' => $this->l('Label print option'),
-                        'desc' => $this->l('Define label to be printed directly from browser or downloaded'),
+                        'title' => $this->module->l('Label print option'),
+                        'desc' => $this->module->l('Define label to be printed directly from browser or downloaded'),
                         'type' => 'select',
                         'list' => [
                             [
                                 'value' => Config::PRINT_OPTION_DOWNLOAD,
-                                'name' => $this->l('Download'),
+                                'name' => $this->module->l('Download'),
                             ],
                             [
                                 'value' => Config::PRINT_OPTION_BROWSER,
-                                'name' => $this->l('Print from browser'),
+                                'name' => $this->module->l('Print from browser'),
                             ],
                         ],
                         'identifier' => 'value',
                     ],
                     Config::DEFAULT_LABEL_FORMAT => [
-                        'title' => $this->l('Default label format'),
-                        'desc' => $this->l('Used when printing labels in order page.'),
+                        'title' => $this->module->l('Default label format'),
+                        'desc' => $this->module->l('Used when printing labels in order page.'),
                         'type' => 'select',
                         'list' => $labelPositionService->getLabelFormatList(),
                         'identifier' => 'value',
                     ],
                     Config::DEFAULT_LABEL_POSITION => [
                         'title' => $this->module->l('Default label position'),
-                        'desc' => $this->l('Used when printing labels in order page.'),
+                        'desc' => $this->module->l('Used when printing labels in order page.'),
                         'type' => 'select',
                         'list' => $labelPositionService->getLabelPositionList(),
                         'identifier' => 'value',
                         'form_group_class' => 'DPD_DEFAULT_LABEL_POSITION'
                     ],
                     Config::SEND_EMAIL_ON_PARCEL_CREATION => [
-                        'title' => $this->l('Email on shipment creation'),
-                        'hint' => $this->l('Send email with tracking information to customer when label is generated'),
+                        'title' => $this->module->l('Email on shipment creation'),
+                        'hint' => $this->module->l('Send email with tracking information to customer when label is generated'),
                         'type' => 'bool',
                         'validation' => 'isBool',
                         'cast' => 'intval'
                     ],
                 ],
                 'submit' => [
-                    'title' => $this->l('Save'),
+                    'title' => $this->module->l('Save'),
                 ],
             ],
             'cod_payment_configuration' => [
-                'title' => $this->l('COD Payment configuration'),
+                'title' => $this->module->l('COD Payment configuration'),
                 'icon' => 'dpd-icon-settings',
                 'fields' => [
                     Config::ON_BOARD_INFO => [
@@ -337,13 +337,13 @@ class AdminDPDBalticsShipmentSettingsController extends AbstractAdminController
                         'form_group_class' => 'dpd-info-block',
                     ],
                     Config::COD_PAYMENT_SWAP => [
-                        'title' => $this->l('Payment methods'),
+                        'title' => $this->module->l('Payment methods'),
                         'type' => 'swap',
                         'class' => 'cod-payments-container',
                     ],
                 ],
                 'submit' => [
-                    'title' => $this->l('Save'),
+                    'title' => $this->module->l('Save'),
                 ],
             ],
         ];

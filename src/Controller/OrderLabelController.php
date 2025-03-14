@@ -22,6 +22,7 @@
 namespace Invertus\dpdBaltics\Controller;
 
 use Invertus\dpdBaltics\Converter\FormDataConverter;
+use Invertus\dpdBaltics\Infrastructure\Utility\VersionUtility;
 use Invertus\dpdBaltics\Service\Exception\ExceptionService;
 use Invertus\dpdBaltics\Service\Label\LabelPrintingService;
 use Invertus\dpdBaltics\Service\ShipmentService;
@@ -48,7 +49,9 @@ class OrderLabelController extends FrameworkBundleAdminController
 
     public function __construct()
     {
-        parent::__construct();
+        if (VersionUtility::isPsVersionLessThan('9.0.0')) {
+            parent::__construct();
+        }
 
         $this->module = \Module::getInstanceByName('dpdbaltics');
     }

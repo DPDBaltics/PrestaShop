@@ -71,9 +71,20 @@ class CarrierPhoneService
         $this->opcModuleCompatibilityValidator = $opcModuleCompatibilityValidator;
     }
 
-    public function getCarrierPhoneTemplate($cartId, $carrierReference)
+    public function getCarrierPhoneTemplate($cartId, $carrierReference = null)
     {
         $cart = new Cart($cartId);
+
+        if (!\Validate::isLoadedObject($cart)) {
+            throw new DpdCarrierException(
+                'Could not load cart',
+                Config::ERROR_COULD_NOT_LOAD_CART
+            );
+        }
+
+        if (!$carrierReference) {
+            $carrierReference = (new \Carrier($cart->id_carrier))->id_reference;
+        }
 
         $phone = '';
 

@@ -71,10 +71,11 @@ class DPDBaltics extends CarrierModule
 
     /**
      * Prestashop fills this property automatically with selected carrier ID in FO checkout
+     * Default value is needed because PS9 doesn't recognize property as existing
      *
      * @var int $id_carrier
      */
-    public $id_carrier;
+    public $id_carrier = -1;
 
 
     public function __construct()
@@ -84,7 +85,7 @@ class DPDBaltics extends CarrierModule
         $this->author = 'Invertus';
         $this->tab = 'shipping_logistics';
         $this->description = 'DPD Baltics shipping integration';
-        $this->version = '3.2.21';
+        $this->version = '3.2.22';
         $this->ps_versions_compliancy = ['min' => '1.7.1.0', 'max' => _PS_VERSION_];
         $this->need_instance = 0;
         parent::__construct();
@@ -766,8 +767,8 @@ class DPDBaltics extends CarrierModule
 
             Media::addJsDef(
                 [
-                    'print_url' => $labelUrlService && $isAbove177 ? $baseUrl.$labelUrlService->formatJsLabelPrintUrl() : null,
-                    'print_and_save_label_url' => $labelUrlService && $isAbove177 ? $baseUrl.$labelUrlService->formatJsLabelSaveAndPrintUrl() : null,
+                    'print_url' => $labelUrlService && $isAbove177 ? $labelUrlService->formatJsLabelPrintUrl() : null,
+                    'print_and_save_label_url' => $labelUrlService && $isAbove177 ? $labelUrlService->formatJsLabelSaveAndPrintUrl() : null,
                     'shipment' => $shipment,
                     'id_order' => $orderId,
                     'is_label_download_option' => Configuration::get(Config::LABEL_PRINT_OPTION) === 'download',

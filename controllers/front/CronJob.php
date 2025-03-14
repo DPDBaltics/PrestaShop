@@ -34,10 +34,11 @@ class DpdbalticsCronJobModuleFrontController extends ModuleFrontController
 
         $token = Tools::getValue('token');
         if ($token !== Configuration::get(Config::DPDBALTICS_HASH_TOKEN)) {
-            $this->ajaxDie([
+            $this->ajaxRender([
                 'success' => false,
                 'message' => 'wrong token'
             ]);
+            exit;
         }
 
         $action = Tools::getValue('action');
@@ -53,7 +54,8 @@ class DpdbalticsCronJobModuleFrontController extends ModuleFrontController
                     foreach ($countriesInZoneRange as $country) {
                         $response = $parcelShopImport->importParcelShops($country);
                         if (isset($response['success']) && !$response['success']) {
-                            $this->ajaxDie(json_encode($response));
+                            $this->ajaxRender(json_encode($response));
+                            exit;
                         }
                     }
                 } else {
@@ -61,11 +63,13 @@ class DpdbalticsCronJobModuleFrontController extends ModuleFrontController
                     foreach ($countries as $country) {
                         $response = $parcelShopImport->importParcelShops($country['iso_code']);
                         if (isset($response['success']) && !$response['success']) {
-                            $this->ajaxDie(json_encode($response));
+                            $this->ajaxRender(json_encode($response));
+                            exit;
                         }
                     }
                 }
-                $this->ajaxDie(json_encode($response));
+                $this->ajaxRender(json_encode($response));
+                exit;
                 break;
             default:
                 return;

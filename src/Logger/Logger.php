@@ -35,6 +35,13 @@ if (!defined('_PS_VERSION_')) {
 
 class Logger implements LoggerInterface
 {
+    const ERROR = 'ERROR';
+    const WARNING = 'WARNING';
+    const CRITICAL = 'CRITICAL';
+    const INFO = 'INFO';
+    const DEBUG = 'DEBUG';
+    const NOTICE = 'NOTICE';
+    const ALERT = 'ALERT';
 
     /**
      * @var LogsService
@@ -46,9 +53,6 @@ class Logger implements LoggerInterface
         $this->logsService = $logsService;
     }
 
-    const ERROR = 'error';
-    const WARNING = 'warning';
-    const CRITICAL = 'critical';
     /**
      * System is unusable.
      *
@@ -59,7 +63,7 @@ class Logger implements LoggerInterface
      */
     public function emergency($message, array $context = [])
     {
-        // TODO: Implement emergency() method.
+        $this->log(self::ERROR, $message, $context);
     }
 
     /**
@@ -75,7 +79,7 @@ class Logger implements LoggerInterface
      */
     public function alert($message, array $context = [])
     {
-        // TODO: Implement alert() method.
+        $this->log(self::ALERT, $message, $context);
     }
 
     /**
@@ -84,7 +88,7 @@ class Logger implements LoggerInterface
      * Example: Application component unavailable, unexpected exception.
      *
      * @param string $message
-     * @param array $context
+     * @param array $contextd
      *
      * @return void
      * @throws PrestaShopDatabaseException
@@ -138,7 +142,7 @@ class Logger implements LoggerInterface
      */
     public function warning($message, array $context = [])
     {
-        // TODO: Implement warning() method.
+        $this->log(self::WARNING, $message, $context);
     }
 
     /**
@@ -151,7 +155,7 @@ class Logger implements LoggerInterface
      */
     public function notice($message, array $context = [])
     {
-        // TODO: Implement notice() method.
+        $this->log(self::NOTICE, $message, $context);
     }
 
     /**
@@ -166,7 +170,7 @@ class Logger implements LoggerInterface
      */
     public function info($message, array $context = [])
     {
-        // TODO: Implement info() method.
+        $this->log(self::INFO, $message, $context);
     }
 
     /**
@@ -179,7 +183,7 @@ class Logger implements LoggerInterface
      */
     public function debug($message, array $context = [])
     {
-        // TODO: Implement debug() method.
+        $this->log(self::DEBUG, $message, $context);
     }
 
     /**
@@ -193,6 +197,15 @@ class Logger implements LoggerInterface
      */
     public function log($level, $message, array $context = [])
     {
-        // TODO: Implement log() method.
+        if (!Configuration::get(Config::TRACK_LOGS)) {
+            return;
+        }
+
+        $log = new DPDLog();
+        $log->response = $message;
+        $log->request = !empty($context['request']) ? $this->logsService->hideUsernameAndPasswordFromRequest($context['request']) : null;
+        $log->status = self::ERROR;
+
+        $log->add();
     }
 }

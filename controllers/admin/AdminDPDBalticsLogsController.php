@@ -19,6 +19,7 @@
  */
 
 use Invertus\dpdBaltics\Controller\AbstractAdminController;
+use Invertus\dpdBaltics\Logger\Logger;
 
 require_once dirname(__DIR__).'/../vendor/autoload.php';
 

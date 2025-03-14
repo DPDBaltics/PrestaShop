@@ -88,7 +88,7 @@ class Logger implements LoggerInterface
      * Example: Application component unavailable, unexpected exception.
      *
      * @param string $message
-     * @param array $contextd
+     * @param array $context
      *
      * @return void
      * @throws PrestaShopDatabaseException

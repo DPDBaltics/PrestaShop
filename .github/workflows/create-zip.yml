@@ -1,0 +1,31 @@
+name: Create module ZIP
+on:
+  workflow_dispatch:
+env:
+  MODULE_NAME: dpdbaltics
+jobs:
+  build_release:
+    name: build_release
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: build
+        run: |
+          composer install --no-dev --optimize-autoloader --classmap-authoritative
+          composer dump-autoload --no-dev --optimize --classmap-authoritative
+          rm -rf .git .github tests vendor.zip .gitignore
+          mkdir dpdbaltics
+          rsync -Rr ./ ./dpdbaltics
+          shopt -s extglob
+          rm -r !(dpdbaltics)
+          find . -maxdepth 1 -type f -exec rm "{}" \;
+          cd dpdbaltics && rm -rf dpdbaltics
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          include-hidden-files: true
+          name: ${{ env.MODULE_NAME }}
+          path: ./

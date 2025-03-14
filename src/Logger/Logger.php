@@ -96,14 +96,7 @@ class Logger implements LoggerInterface
      */
     public function critical($message, array $context = [])
     {
-        if (!Configuration::get(Config::TRACK_LOGS)) {
-            return;
-        }
-        $log = new DPDLog();
-        $log->response = $message;
-        $log->request = !empty($context['request']) ? $this->logsService->hideUsernameAndPasswordFromRequest($context['request']) : null;
-        $log->status = self::CRITICAL;
-        $log->add();
+        $this->log(self::CRITICAL, $message, $context);
     }
 
     /**
@@ -119,14 +112,7 @@ class Logger implements LoggerInterface
      */
     public function error($message, array $context = [])
     {
-        if (!Configuration::get(Config::TRACK_LOGS)) {
-            return;
-        }
-        $log = new DPDLog();
-        $log->response = $message;
-        $log->request = !empty($context['request']) ? $this->logsService->hideUsernameAndPasswordFromRequest($context['request']) : null;
-        $log->status = self::ERROR;
-        $log->add();
+        $this->log(self::ERROR, $message, $context);
     }
 
     /**
@@ -204,7 +190,7 @@ class Logger implements LoggerInterface
         $log = new DPDLog();
         $log->response = $message;
         $log->request = !empty($context['request']) ? $this->logsService->hideUsernameAndPasswordFromRequest($context['request']) : null;
-        $log->status = self::ERROR;
+        $log->status = $level;
 
         $log->add();
     }

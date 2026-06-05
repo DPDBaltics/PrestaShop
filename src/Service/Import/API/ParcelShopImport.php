@@ -120,6 +120,23 @@ class ParcelShopImport
         }
 
         $parcelCount = count($parcelShops);
+
+        if ($parcelCount === 0) {
+            $this->logger->warning(sprintf(
+                '[ParcelImport] API returned 0 parcel shops for %s | API took: %ss',
+                $selectedCountry,
+                $apiTime
+            ));
+
+            return [
+                'success' => false,
+                'error' => sprintf(
+                    $this->module->l('DPD returned 0 pickup points for %s. Existing pickup points were kept. The web service account may not be enabled for pickup point retrieval - please contact DPD.', self::FILE_NAME),
+                    $selectedCountry
+                )
+            ];
+        }
+
         $dbStartTime = microtime(true);
 
         try {

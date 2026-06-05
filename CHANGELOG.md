@@ -197,6 +197,7 @@
 - Fixed Lithuanian and Latvian translations for shipping label in admin order panel
 - Added Poland parcel shop import support with batch processing
 - Fixed null parameter deprecation in AddressAdapter preg_replace calls
+- Improved pickup point import to warn when DPD returns 0 points and keep existing points instead of reporting a false success
 - Fixed shipment creation failing for accounts requiring Predict SMS service
 - Fixed additional validation for supercheckout module using currentcontroller variable
 - Fixed automatic PUDO point pre-selection in LIST mode

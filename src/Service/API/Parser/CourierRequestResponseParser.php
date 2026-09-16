@@ -36,7 +36,51 @@ class CourierRequestResponseParser
             return strpos($response, Config::API_COURIER_REQUEST_SUCCESS_STATUS) !== false;
         }
 
+        // The live API answers in JSON, which Unirest hands over as an object.
+        // Only its failures carry a marker, and a success has no field we can
+        // match on, so an object without an error marker means DPD accepted it.
+        if (is_object($response)) {
+            return !$this->isErrorObject($response);
+        }
+
         return false;
+    }
+
+    /**
+     * @param object $response
+     *
+     * @return bool
+     */
+    private function isErrorObject($response)
+    {
+        if ($this->fieldEquals($response, 'level', Config::API_COURIER_REQUEST_JSON_ERROR_LEVEL)) {
+            return true;
+        }
+
+        if ($this->fieldEquals($response, 'status', Config::API_RESPONSE_ERROR_STATUS)) {
+            return true;
+        }
+
+        return isset($response->errlog) && is_scalar($response->errlog) && '' !== (string) $response->errlog;
+    }
+
+    /**
+     * Compares a response field without casting. DPD's answer is untrusted, so an
+     * array or object in a field we expect to be text must not reach a string cast.
+     *
+     * @param object $response
+     * @param string $field
+     * @param string $expected
+     *
+     * @return bool
+     */
+    private function fieldEquals($response, $field, $expected)
+    {
+        if (!isset($response->$field) || !is_scalar($response->$field)) {
+            return false;
+        }
+
+        return strtolower((string) $response->$field) === $expected;
     }
 
     /**

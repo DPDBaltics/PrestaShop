@@ -126,7 +126,7 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Invertus/dpdbaltics-api.git",
-                "reference": "665c9e8ca25afce5cf9ac1a0a62000826353975d"
+                "reference": "e372e0b66bdf71010a6a6b7368aefd5c231ec6a1"
             },
             "require": {
                 "apimatic/jsonmapper": "^2.0",
@@ -158,7 +158,7 @@
                     "email": "developers@invertus.eu"
                 }
             ],
-            "time": "2022-09-20T11:10:13+00:00"
+            "time": "2026-08-31T12:04:50+00:00"
         },
         {
             "name": "invertus/psModuleTabs",

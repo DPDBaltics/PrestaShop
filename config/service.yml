@@ -213,11 +213,15 @@ services:
       - '@invertus.dpdbaltics_api.factory.apirequest.collection_request_factory'
       - '@dpdbaltics'
 
+  invertus.dpdbaltics.service.api.parser.courier_request_response_parser:
+    class: 'Invertus\dpdBaltics\Service\API\Parser\CourierRequestResponseParser'
+
   invertus.dpdbaltics.service.api.courier_request_service:
     class: 'Invertus\dpdBaltics\Service\API\CourierRequestService'
     arguments:
       - '@invertus.dpdbaltics_api.factory.apirequest.courier_request_factory'
       - '@dpdbaltics'
+      - '@invertus.dpdbaltics.service.api.parser.courier_request_response_parser'
 
   invertus.dpdbaltics.service.parcel.parcel_update_service:
     class: 'Invertus\dpdBaltics\Service\Parcel\ParcelUpdateService'

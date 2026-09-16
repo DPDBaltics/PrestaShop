@@ -30,6 +30,7 @@ use Invertus\dpdBaltics\Repository\CourierRequestRepository;
 use Invertus\dpdBaltics\Repository\PhonePrefixRepository;
 use Invertus\dpdBaltics\Service\API\CourierRequestService;
 use Invertus\dpdBaltics\Service\Exception\ExceptionService;
+use Invertus\dpdBaltics\Util\PickupTimeSlotUtility;
 use Invertus\dpdBaltics\Util\TimeZoneUtility;
 use Invertus\dpdBaltics\Validate\CourierRequest\CourierRequestValidator;
 use Invertus\dpdBalticsApi\Exception\DPDBalticsAPIException;
@@ -160,16 +161,35 @@ class AdminDPDBalticsCourierRequestController extends AbstractAdminController
                             'required' => true,
                         ],
                         [
-                            'label' => $this->module->l('Desired pick-up time'),
-                            'name' => 'pick_up_time',
-                            'type' => 'datetime',
+                            'label' => $this->module->l('Pick-up date'),
+                            'name' => 'pick_up_date',
+                            'type' => 'date',
                             'required' => true,
                         ],
                         [
-                            'label' => $this->module->l('Last pick-up time'),
-                            'name' => 'sender_work_until',
-                            'type' => 'datetime',
+                            'label' => $this->module->l('Pick-up time from'),
+                            'name' => 'pick_up_time_from',
+                            'type' => 'select',
+                            'class' => 'fixed-width-xxl',
                             'required' => true,
+                            'desc' => $this->module->l('Only these time slots are accepted by DPD.'),
+                            'options' => [
+                                'id' => 'id',
+                                'name' => 'name',
+                                'query' => $this->getPickupTimeSlotOptions(PickupTimeSlotUtility::getPickupTimeFromSlots()),
+                            ],
+                        ],
+                        [
+                            'label' => $this->module->l('Pick-up time until'),
+                            'name' => 'pick_up_time_to',
+                            'type' => 'select',
+                            'class' => 'fixed-width-xxl',
+                            'required' => true,
+                            'options' => [
+                                'id' => 'id',
+                                'name' => 'name',
+                                'query' => $this->getPickupTimeSlotOptions(PickupTimeSlotUtility::getPickupTimeToSlots()),
+                            ],
                         ],
                         [
                             'label' => $this->module->l('Weight'),
@@ -251,9 +271,11 @@ class AdminDPDBalticsCourierRequestController extends AbstractAdminController
             $phoneData['sender_phone_code_list']
         );
 
-        if (!Tools::getValue('pick_up_time') && !Tools::getValue('sender_work_until')) {
-            $this->fields_value['pick_up_time'] = TimeZoneUtility::getCourierDefaultPickUpTime();
-            $this->fields_value['sender_work_until'] = TimeZoneUtility::getCourierDefaultWorkUntil();
+        if (!Tools::getValue('pick_up_date')) {
+            $defaultPickUpSlot = TimeZoneUtility::getCourierDefaultPickUpSlot();
+            $this->fields_value['pick_up_date'] = $defaultPickUpSlot['date'];
+            $this->fields_value['pick_up_time_from'] = $defaultPickUpSlot['from'];
+            $this->fields_value['pick_up_time_to'] = $defaultPickUpSlot['to'];
         }
         if (!Tools::getValue('order_nr')) {
             $this->fields_value['order_nr'] = (new DateTime())->getTimestamp();
@@ -315,6 +337,16 @@ class AdminDPDBalticsCourierRequestController extends AbstractAdminController
         $this->addCSS($this->module->getPathUri() . 'views/css/admin/courier_request.css');
     }
 
+    private function getPickupTimeSlotOptions(array $slots)
+    {
+        $options = [];
+        foreach ($slots as $slot) {
+            $options[] = ['id' => $slot, 'name' => $slot];
+        }
+
+        return $options;
+    }
+
     private function renderPrefillSelect($prefix)
     {
         /** @var AddressRepository $addressRepository */
@@ -337,10 +369,23 @@ class AdminDPDBalticsCourierRequestController extends AbstractAdminController
             /** @var CourierRequestValidator $courierRequestValidator */
             $formDataConverter = $this->module->getModuleContainer('invertus.dpdbaltics.converter.form_data_converter');
             $courierRequestValidator = $this->module->getModuleContainer('invertus.dpdbaltics.validate.courier_request.courier_request_validator');
+
+            $_POST['pick_up_time'] = Tools::getValue('pick_up_date') . ' ' . Tools::getValue('pick_up_time_from') . ':00';
+            $_POST['sender_work_until'] = Tools::getValue('pick_up_date') . ' ' . Tools::getValue('pick_up_time_to') . ':00';
+
             $data = Tools::getAllValues();
 
             /** @var CourierRequestData $courierRequestObj */
             $courierRequestObj = $formDataConverter->convertCourierRequestFormDataToCourierRequestObj($data);
+
+            if (!$courierRequestValidator->validatePickupTimeSlots($courierRequestObj)) {
+                $this->errors[] = sprintf(
+                    $this->module->l('Pick-up time must use the time slots DPD accepts. "From" slots: %s. "Until" slots: %s.'),
+                    implode(', ', PickupTimeSlotUtility::getPickupTimeFromSlots()),
+                    implode(', ', PickupTimeSlotUtility::getPickupTimeToSlots())
+                );
+                return parent::postProcess();
+            }
 
             $countryIso = Configuration::get(Config::WEB_SERVICE_COUNTRY);
             if (!$courierRequestValidator->validate($courierRequestObj, $countryIso)) {

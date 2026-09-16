@@ -99,6 +99,21 @@ class CourierRequestData
     /**
      * @var string
      */
+    private $pickupDate;
+
+    /**
+     * @var string
+     */
+    private $pickupTimeFrom;
+
+    /**
+     * @var string
+     */
+    private $pickupTimeTo;
+
+    /**
+     * @var string
+     */
     private $weight;
 
     /**
@@ -338,6 +353,54 @@ class CourierRequestData
     public function setPickupTime($pickupTime)
     {
         $this->pickupTime = $pickupTime;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPickupDate()
+    {
+        return $this->pickupDate;
+    }
+
+    /**
+     * @param string $pickupDate
+     */
+    public function setPickupDate($pickupDate)
+    {
+        $this->pickupDate = $pickupDate;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPickupTimeFrom()
+    {
+        return $this->pickupTimeFrom;
+    }
+
+    /**
+     * @param string $pickupTimeFrom
+     */
+    public function setPickupTimeFrom($pickupTimeFrom)
+    {
+        $this->pickupTimeFrom = $pickupTimeFrom;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPickupTimeTo()
+    {
+        return $this->pickupTimeTo;
+    }
+
+    /**
+     * @param string $pickupTimeTo
+     */
+    public function setPickupTimeTo($pickupTimeTo)
+    {
+        $this->pickupTimeTo = $pickupTimeTo;
     }
 
     /**

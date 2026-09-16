@@ -88,12 +88,69 @@ class CourierRequestResponseParserTest extends TestCase
         );
     }
 
-    public function testUnknownObjectShapeIsNotSuccessAndIsSurfacedAsJson()
+    public function testJsonSuccessObjectIsSuccess()
+    {
+        $response = json_decode(json_encode([
+            'level' => 'success',
+            'body' => ['message' => 'Pickup order saved.'],
+        ]));
+
+        $this->assertTrue($this->parser->isSuccess($response));
+    }
+
+    public function testJsonSuccessLevelIsMatchedCaseInsensitively()
+    {
+        $response = json_decode(json_encode(['level' => 'SUCCESS']));
+
+        $this->assertTrue($this->parser->isSuccess($response));
+    }
+
+    public function testJsonErrorLevelIsMatchedCaseInsensitively()
+    {
+        $response = json_decode(json_encode([
+            'level' => 'ERROR',
+            'body' => ['message' => 'No items to pick up.'],
+        ]));
+
+        $this->assertFalse($this->parser->isSuccess($response));
+        $this->assertSame('No items to pick up.', $this->parser->getError($response));
+    }
+
+    public function testJsonObjectWithoutAnErrorMarkerIsSuccess()
     {
         $response = json_decode(json_encode(['foo' => 'bar']));
 
+        $this->assertTrue($this->parser->isSuccess($response));
+    }
+
+    public function testJsonErrorObjectWithoutAMessageIsNotSuccessAndIsSurfacedAsJson()
+    {
+        $response = json_decode(json_encode(['level' => 'error']));
+
         $this->assertFalse($this->parser->isSuccess($response));
-        $this->assertSame('{"foo":"bar"}', $this->parser->getError($response));
+        $this->assertSame('{"level":"error"}', $this->parser->getError($response));
+    }
+
+    /**
+     * A nested object in one of these fields is fatal to a string cast, and the
+     * resulting Error is not an Exception, so the admin controller cannot catch it.
+     */
+    public function testNonScalarErrorFieldsDoNotCrashTheParser()
+    {
+        $response = json_decode(json_encode([
+            'level' => ['code' => 'error'],
+            'status' => ['code' => 'err'],
+            'errlog' => ['code' => 'boom'],
+        ]));
+
+        $this->assertTrue($this->parser->isSuccess($response));
+    }
+
+    public function testJsonObjectWithEmptyErrlogIsSuccess()
+    {
+        $response = json_decode(json_encode(['status' => 'ok', 'errlog' => '']));
+
+        $this->assertTrue($this->parser->isSuccess($response));
     }
 
     public function testEmptyArrayResponseIsNotSuccessAndDoesNotCrash()

@@ -211,3 +211,7 @@
 - Fixed the release build ignoring the declared PHP platform version and resolving untested dependency versions
 - Fixed the pull request indexing and licensing workflow committing a regenerated composer.lock together with its own changes
 - Changed the declared minimum requirements to PHP 7.1 and PrestaShop 1.7.4, which is what the module has required since 2021
+
+## [3.3.3]
+- Fixed DPD error messages in the back office running HTML or script code that DPD echoed back from order data; label printing, return label, courier and collection request, parcel shop import and order list messages now show them as plain text
+- Changed the order list bulk label error to separate orders with "; " instead of an HTML line break

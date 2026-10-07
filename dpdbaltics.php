@@ -46,6 +46,7 @@ use Invertus\dpdBaltics\Service\ShippingPriceCalculationService;
 use Invertus\dpdBaltics\Service\TabService;
 use Invertus\dpdBaltics\Service\TrackingService;
 use Invertus\dpdBaltics\Util\CountryUtility;
+use Invertus\dpdBaltics\Util\StringUtility;
 use Invertus\dpdBaltics\Validate\Carrier\PudoValidate;
 use Invertus\dpdBalticsApi\Api\DTO\Response\ParcelPrintResponse;
 use Invertus\dpdBalticsApi\Api\DTO\Response\ParcelShopSearchResponse;
@@ -1237,7 +1238,7 @@ class DPDBaltics extends CarrierModule
         }
 
         if (isset($this->context->cookie->dpd_error)) {
-            $this->context->controller->errors[] = json_decode($this->context->cookie->dpd_error);
+            $this->context->controller->errors[] = StringUtility::escapeHtml(json_decode($this->context->cookie->dpd_error));
             unset($this->context->cookie->dpd_error);
         }
         $href = $this->context->link->getModuleLink(
@@ -1402,18 +1403,18 @@ class DPDBaltics extends CarrierModule
             } catch (DPDBalticsAPIException $e) {
                 /** @var ExceptionService $exceptionService */
                 $exceptionService = $this->getModuleContainer('invertus.dpdbaltics.service.exception.exception_service');
-                Context::getContext()->controller->errors[] = $exceptionService->getErrorMessageForException(
+                Context::getContext()->controller->errors[] = StringUtility::escapeHtml($exceptionService->getErrorMessageForException(
                     $e,
                     $exceptionService->getAPIErrorMessages()
-                );
+                ));
                 return;
             } catch (Exception $e) {
-                Context::getContext()->controller->errors[] = $this->l('Failed to print label: ') . $e->getMessage();
+                Context::getContext()->controller->errors[] = StringUtility::escapeHtml($this->l('Failed to print label: ') . $e->getMessage());
                 return;
             }
 
             if (isset($parcelPrintResponse) && !empty($parcelPrintResponse->getErrLog())) {
-                Context::getContext()->controller->errors[] = $parcelPrintResponse->getErrLog();
+                Context::getContext()->controller->errors[] = StringUtility::escapeHtml($parcelPrintResponse->getErrLog());
             }
 
             exit;
@@ -1427,18 +1428,18 @@ class DPDBaltics extends CarrierModule
             } catch (DPDBalticsAPIException $e) {
                 /** @var ExceptionService $exceptionService */
                 $exceptionService = $this->getModuleContainer('invertus.dpdbaltics.service.exception.exception_service');
-                Context::getContext()->controller->errors[] = $exceptionService->getErrorMessageForException(
+                Context::getContext()->controller->errors[] = StringUtility::escapeHtml($exceptionService->getErrorMessageForException(
                     $e,
                     $exceptionService->getAPIErrorMessages()
-                );
+                ));
                 return;
             } catch (Exception $e) {
-                Context::getContext()->controller->errors[] = $this->l('Failed to print label: ') . $e->getMessage();
+                Context::getContext()->controller->errors[] = StringUtility::escapeHtml($this->l('Failed to print label: ') . $e->getMessage());
                 return;
             }
 
             if (isset($parcelPrintResponse) && !empty($parcelPrintResponse->getErrLog())) {
-                Context::getContext()->controller->errors[] = $parcelPrintResponse->getErrLog();
+                Context::getContext()->controller->errors[] = StringUtility::escapeHtml($parcelPrintResponse->getErrLog());
             }
 
             exit;

@@ -117,4 +117,15 @@ class StringUtility
         $string = preg_replace("/[\r\n]*/","",$string);
         return $string;
     }
+
+    /**
+     * Makes a message safe to print as HTML. Decodes first, so a message that
+     * Module::l() already escaped is not escaped twice.
+     */
+    public static function escapeHtml($message)
+    {
+        $message = html_entity_decode((string) $message, ENT_QUOTES, 'UTF-8');
+
+        return htmlspecialchars($message, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+    }
 }

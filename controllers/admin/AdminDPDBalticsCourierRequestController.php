@@ -30,6 +30,7 @@ use Invertus\dpdBaltics\Repository\CourierRequestRepository;
 use Invertus\dpdBaltics\Repository\PhonePrefixRepository;
 use Invertus\dpdBaltics\Service\API\CourierRequestService;
 use Invertus\dpdBaltics\Service\Exception\ExceptionService;
+use Invertus\dpdBaltics\Util\StringUtility;
 use Invertus\dpdBaltics\Util\TimeZoneUtility;
 use Invertus\dpdBaltics\Validate\CourierRequest\CourierRequestValidator;
 use Invertus\dpdBalticsApi\Exception\DPDBalticsAPIException;
@@ -358,20 +359,20 @@ class AdminDPDBalticsCourierRequestController extends AbstractAdminController
             } catch (DPDBalticsAPIException $e) {
                 /** @var ExceptionService $exceptionService */
                 $exceptionService = $this->module->getModuleContainer('invertus.dpdbaltics.service.exception.exception_service');
-                $this->errors[] = $exceptionService->getErrorMessageForException(
+                $this->errors[] = StringUtility::escapeHtml($exceptionService->getErrorMessageForException(
                     $e,
                     $exceptionService->getAPIErrorMessages()
-                );
+                ));
                 return parent::postProcess();
             } catch (Exception $e) {
-                $this->errors[] = $e->getMessage();
+                $this->errors[] = StringUtility::escapeHtml($e->getMessage());
                 return parent::postProcess();
             }
             if ($response['status']) {
-                $this->confirmations[] = $response['message'];
+                $this->confirmations[] = StringUtility::escapeHtml($response['message']);
             } else {
                 if ($response['message'] !== 'Pickup order to time wrong for Product 1') {
-                    $this->errors[] = $response['message'];
+                    $this->errors[] = StringUtility::escapeHtml($response['message']);
                 } else {
                     $this->errors[] = $this->module->l('Your selected time frame is incorrect, please select different datetime range.');
                 }

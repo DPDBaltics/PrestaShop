@@ -19,11 +19,13 @@
  */
 
 use Invertus\dpdBaltics\Config\Config;
-use Invertus\dpdbaltics\Controller\AbstractFrontController;
+use Invertus\dpdBaltics\Controller\AbstractFrontController;
 use Invertus\dpdBaltics\Repository\ShipmentRepository;
 use Invertus\dpdBaltics\Service\API\LabelApiService;
 use Invertus\dpdBaltics\Service\Exception\ExceptionService;
 use Invertus\dpdBaltics\Service\ShipmentService;
+use Invertus\dpdBaltics\Util\CountryUtility;
+use Invertus\dpdBaltics\Validate\ReturnLabel\ReturnLabelAccessValidator;
 use Invertus\dpdBalticsApi\Exception\DPDBalticsAPIException;
 
 if (!defined('_PS_VERSION_')) {
@@ -34,17 +36,47 @@ class DpdbalticsShipmentReturnModuleFrontController extends AbstractFrontControl
 {
     const FILENAME = 'ShipmentReturn';
     const DEFAULT_LABEL_TEMPLATE_ID = 1;
+
+    public $auth = true;
+
     public function postProcess()
     {
-//        return phpinfo();
         if (!Tools::isSubmit('dpd-return-submit')) {
             return;
         }
 
-        $orderid = Tools::getValue('id_order');
+        $orderid = (int) Tools::getValue('id_order');
         $returnTemplateId = Tools::getValue('return_template_id') ? : self::DEFAULT_LABEL_TEMPLATE_ID;
 
+        if (!$this->canPrintReturnLabel($orderid)) {
+            Tools::redirect($this->context->link->getPageLink('history', true));
+        }
+
         $this->printReturnLabel($orderid, $returnTemplateId);
+    }
+
+    private function canPrintReturnLabel($orderId)
+    {
+        $order = new Order($orderId);
+        $idCustomer = $this->context->customer->isLogged() ? (int) $this->context->customer->id : 0;
+
+        /** @var ReturnLabelAccessValidator $accessValidator */
+        $accessValidator = $this->module->getModuleContainer('invertus.dpdbaltics.validate.return_label.return_label_access_validator');
+
+        if (!$accessValidator->isOwner($idCustomer, $order->id_customer)) {
+            return false;
+        }
+
+        /** @var ShipmentRepository $shipmentRepo */
+        $shipmentRepo = $this->module->getModuleContainer('invertus.dpdbaltics.repository.shipment_repository');
+        $orderState = new OrderState($order->current_state);
+
+        return $accessValidator->isReturnAvailable(
+            (bool) Configuration::get(Config::PARCEL_RETURN),
+            CountryUtility::isEstonia(),
+            (bool) $orderState->delivery,
+            (bool) $shipmentRepo->getIdByOrderId($order->id)
+        );
     }
 
     private function printReturnLabel($orderId, $returnTemplateId)

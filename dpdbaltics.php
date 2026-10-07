@@ -47,6 +47,7 @@ use Invertus\dpdBaltics\Service\TabService;
 use Invertus\dpdBaltics\Service\TrackingService;
 use Invertus\dpdBaltics\Util\CountryUtility;
 use Invertus\dpdBaltics\Validate\Carrier\PudoValidate;
+use Invertus\dpdBaltics\Validate\ReturnLabel\ReturnLabelAccessValidator;
 use Invertus\dpdBalticsApi\Api\DTO\Response\ParcelPrintResponse;
 use Invertus\dpdBalticsApi\Api\DTO\Response\ParcelShopSearchResponse;
 use Invertus\dpdBalticsApi\Exception\DPDBalticsAPIException;
@@ -1204,12 +1205,7 @@ class DPDBaltics extends CarrierModule
 
     public function hookDisplayOrderDetail($params)
     {
-        $isReturnServiceEnabled = Configuration::get(Config::PARCEL_RETURN);
-        if (!$isReturnServiceEnabled) {
-            return;
-        }
-
-        if (CountryUtility::isEstonia()) {
+        if (!isset($params['order']) || !Validate::isLoadedObject($params['order'])) {
             return;
         }
 
@@ -1218,7 +1214,22 @@ class DPDBaltics extends CarrierModule
         $shipmentId = $shipmentRepo->getIdByOrderId($params['order']->id);
 
         $orderState = new OrderState($params['order']->current_state);
-        if (!$orderState->delivery) {
+        $idCustomer = $this->context->customer->isLogged() ? (int) $this->context->customer->id : 0;
+
+        /** @var ReturnLabelAccessValidator $returnLabelAccessValidator */
+        $returnLabelAccessValidator = $this->getModuleContainer('invertus.dpdbaltics.validate.return_label.return_label_access_validator');
+
+        if (!$returnLabelAccessValidator->isOwner($idCustomer, $params['order']->id_customer)) {
+            return;
+        }
+
+        $isReturnAvailable = $returnLabelAccessValidator->isReturnAvailable(
+            (bool) Configuration::get(Config::PARCEL_RETURN),
+            CountryUtility::isEstonia(),
+            (bool) $orderState->delivery,
+            (bool) $shipmentId
+        );
+        if (!$isReturnAvailable) {
             return;
         }
         /** @var AddressTemplateRepository $addressTemplateRepo */

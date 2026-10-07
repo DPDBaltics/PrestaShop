@@ -211,3 +211,8 @@
 - Fixed the release build ignoring the declared PHP platform version and resolving untested dependency versions
 - Fixed the pull request indexing and licensing workflow committing a regenerated composer.lock together with its own changes
 - Changed the declared minimum requirements to PHP 7.1 and PrestaShop 1.7.4, which is what the module has required since 2021
+
+## [3.3.3]
+- Fixed the customer return label page failing with a fatal error since 3.3.0
+- Fixed the return label being available to any visitor for any order: only the logged-in customer who placed the order can get it, and only when the return service is enabled, the order is delivered and it has a DPD shipment
+- Fixed the return button showing to guests and on orders without a DPD shipment

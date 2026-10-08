@@ -84,6 +84,8 @@ class AdminDPDBalticsImportExportController extends AbstractAdminController
 
         if (Tools::isSubmit('submitProcessExport')) {
             $this->postProcessExport();
+        } elseif (Tools::isSubmit('submitProcessImport') && !$this->isTabGranted('edit')) {
+            $this->addPermissionDeniedError('edit');
         } elseif (Tools::isSubmit('submitProcessImport')) {
             $importOption = Tools::getValue(Config::IMPORT_OPTION);
             $deleteOnImport = Tools::getValue(Config::IMPORT_DELETE_OLD_DATA);

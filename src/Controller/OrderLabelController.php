@@ -79,7 +79,7 @@ class OrderLabelController extends FrameworkBundleAdminController
 
     /**
      *
-     * @AdminSecurity("is_granted('read', request.get('_legacy_controller'))", redirectRoute="admin_orders_index")
+     * @AdminSecurity("is_granted('update', request.get('_legacy_controller'))", redirectRoute="admin_orders_index")
      * @param int $orderId
      * @return Response
      */
@@ -99,7 +99,7 @@ class OrderLabelController extends FrameworkBundleAdminController
     /**
      * Generates and prints label in order list
      *
-     * @AdminSecurity("is_granted('read', request.get('_legacy_controller'))", redirectRoute="admin_orders_index")
+     * @AdminSecurity("is_granted('update', request.get('_legacy_controller'))", redirectRoute="admin_orders_index")
      *
      * @param int $orderId
      *
@@ -121,7 +121,7 @@ class OrderLabelController extends FrameworkBundleAdminController
     /**
      * Generates print multiple lables in order list
      *
-     * @AdminSecurity("is_granted('read', request.get('_legacy_controller'))", redirectRoute="admin_orders_index")
+     * @AdminSecurity("is_granted('update', request.get('_legacy_controller'))", redirectRoute="admin_orders_index")
      *
      * @return Response
      */

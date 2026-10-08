@@ -38,6 +38,10 @@ $(window).load(function () {
       },
       success: function(response) {
         response = JSON.parse(response);
+        if (response && response.success === false) {
+          showErrorMessage(response.error || failMessage);
+          return;
+        }
         if (response) {
           showSuccessMessage(successMessage);
         } else {

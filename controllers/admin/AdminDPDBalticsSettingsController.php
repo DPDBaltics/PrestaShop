@@ -213,6 +213,17 @@ class AdminDPDBalticsSettingsController extends AbstractAdminController
 
     public function postProcess()
     {
+        $isEditAction = Tools::isSubmit('submitOptionsconfiguration')
+            || Tools::isSubmit('submitRestartOnBoard')
+            || Tools::isSubmit('submitRegenerateCarriers');
+
+        if ($isEditAction && !$this->isTabGranted('edit')) {
+            $this->addPermissionDeniedError('edit');
+            $this->setPasswordPlaceholder();
+
+            return false;
+        }
+
         if (Tools::isSubmit('submitOptionsconfiguration')) {
             /** @var ProductService $productService */
             $productService = $this->module->getModuleContainer()->get('invertus.dpdbaltics.service.product.product_service');
@@ -255,6 +266,13 @@ class AdminDPDBalticsSettingsController extends AbstractAdminController
             }
         }
 
+        $this->setPasswordPlaceholder();
+
+        return $parentReturn;
+    }
+
+    private function setPasswordPlaceholder()
+    {
         if (Tools::strlen(Configuration::get(Config::WEB_SERVICE_PASSWORD)) > 0) {
             $passwordPlaceholder = $this->getPasswordPlaceholder();
         } else {
@@ -263,8 +281,6 @@ class AdminDPDBalticsSettingsController extends AbstractAdminController
 
         $this->fields_options['web_service_configuration']['fields'][Config::WEB_SERVICE_PASSWORD]['value'] =
             $passwordPlaceholder;
-
-        return $parentReturn;
     }
 
     public function setMedia($isNewTheme = false)

@@ -30,6 +30,7 @@ use Invertus\dpdBaltics\OnBoard\Service\OnBoardStepActionService;
 use Invertus\dpdBaltics\Provider\CurrentCountryProvider;
 use Invertus\dpdBaltics\Provider\ImportExportURLProvider;
 use Invertus\dpdBaltics\Repository\ParcelShopRepository;
+use Invertus\dpdBaltics\Security\TabPermissionChecker;
 use Invertus\dpdBaltics\Validate\Version\ModuleLatestVersionValidator;
 use Media;
 use ModuleAdminController;
@@ -45,6 +46,11 @@ class AbstractAdminController extends ModuleAdminController
     const FILENAME = 'DPDAbstractAdminController';
 
     private $flashMessageTypes = ['success', 'info', 'warning', 'error'];
+
+    /**
+     * @var TabPermissionChecker|null
+     */
+    private $tabPermissionChecker;
 
     public function __construct()
     {
@@ -112,6 +118,12 @@ class AbstractAdminController extends ModuleAdminController
     public function postProcess()
     {
         if (Tools::isSubmit('resumeOnBoard')) {
+            if (!$this->isTabGranted('edit', ModuleTabs::ADMIN_SETTINGS_CONTROLLER)) {
+                $this->addPermissionDeniedError('edit');
+
+                return parent::postProcess();
+            }
+
             /** @var OnBoardStepActionService $onBoardActionService */
             $onBoardActionService = $this->module->getModuleContainer('invertus.dpdbaltics.on_board.service.on_board_step_action_service');
             $onBoardActionService->enableOnBoarding();
@@ -121,6 +133,25 @@ class AbstractAdminController extends ModuleAdminController
         }
 
         return parent::postProcess();
+    }
+
+    public function initProcess()
+    {
+        parent::initProcess();
+
+        if ($this->ajax || empty($this->className)) {
+            return;
+        }
+
+        $permission = $this->getTabPermissionChecker()->getListActionPermission(
+            $this->action,
+            (bool) Tools::getValue($this->identifier)
+        );
+
+        if ($permission !== null && !$this->isTabGranted($permission)) {
+            $this->action = '';
+            $this->addPermissionDeniedError($permission);
+        }
     }
 
     public function setMedia($isNewTheme = false)
@@ -240,6 +271,62 @@ class AbstractAdminController extends ModuleAdminController
             }
 
             unset($this->context->cookie->{$type});
+        }
+    }
+
+    /**
+     * Core only checks view access before rendering, so module actions that change data must check this themselves.
+     *
+     * @param string $permission one of view, add, edit, delete
+     * @param string|null $tabClassName defaults to the current controller tab
+     *
+     * @return bool
+     */
+    protected function isTabGranted($permission, $tabClassName = null)
+    {
+        return $this->getTabPermissionChecker()->isGranted(
+            $tabClassName ?: $this->controller_name,
+            $permission,
+            (int) $this->context->employee->id_profile
+        );
+    }
+
+    private function getTabPermissionChecker()
+    {
+        if ($this->tabPermissionChecker === null) {
+            $this->tabPermissionChecker = new TabPermissionChecker();
+        }
+
+        return $this->tabPermissionChecker;
+    }
+
+    /**
+     * @param string $permission add, edit or delete
+     *
+     * @return string
+     */
+    protected function getPermissionDeniedMessage($permission)
+    {
+        if ($permission === 'delete') {
+            return $this->trans('You do not have permission to delete this.', [], 'Admin.Notifications.Error');
+        }
+
+        if ($permission === 'add') {
+            return $this->trans('You do not have permission to add this.', [], 'Admin.Notifications.Error');
+        }
+
+        return $this->trans('You do not have permission to edit this.', [], 'Admin.Notifications.Error');
+    }
+
+    /**
+     * @param string $permission add, edit or delete
+     */
+    protected function addPermissionDeniedError($permission)
+    {
+        $message = $this->getPermissionDeniedMessage($permission);
+
+        if (!in_array($message, $this->errors, true)) {
+            $this->errors[] = $message;
         }
     }
 

@@ -564,6 +564,10 @@ class DPDBaltics extends CarrierModule
             return false;
         }
 
+        if (!$cartWeightValidator->isEachProductWithinWeightLimit($cart, \Configuration::get(Config::MAX_PRODUCT_WEIGHT))) {
+            return false;
+        }
+
         if ($serviceCarrier['product_reference'] === Config::PRODUCT_TYPE_SAME_DAY_DELIVERY) {
             $isSameDayAvailable = \Invertus\dpdBaltics\Util\ProductUtility::validateSameDayDelivery(
                 $countryCode,

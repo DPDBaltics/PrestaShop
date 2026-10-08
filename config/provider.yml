@@ -20,6 +20,7 @@ services:
       -  '@invertus.dpdbaltics.repository.zone_repository'
       -  '@invertus.dpdbaltics.repository.price_rule_repository'
       -  '@currency'
+      -  '@invertus.dpdbaltics.validate.weight.cart_weight_validator'
 
   invertus.dpdbaltics.provider.zone_range_provider:
     class: 'Invertus\dpdBaltics\Provider\ZoneRangeProvider'

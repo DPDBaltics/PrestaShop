@@ -55,6 +55,30 @@ class CartWeightValidator
         return false;
     }
 
+    public function isEachProductWithinWeightLimit($cart, $maxProductWeight)
+    {
+        if ((float) $maxProductWeight <= 0) {
+            return true;
+        }
+
+        foreach ($cart->getProducts() as $product) {
+            if (!$this->isProductWeightWithinLimit($product['weight'], $maxProductWeight)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public function isProductWeightWithinLimit($productWeight, $maxProductWeight)
+    {
+        if ((float) $maxProductWeight <= 0) {
+            return true;
+        }
+
+        return (float) $productWeight <= (float) $maxProductWeight;
+    }
+
     private function isProductQuantityDistributionWeightValid($cart, $maxAllowedWeight)
     {
         $cartProducts = $cart->getProducts();

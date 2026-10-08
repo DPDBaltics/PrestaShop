@@ -211,6 +211,7 @@ class Installer
             Config::PICKUP_MAP => 0,
             Config::GOOGLE_API_KEY => '',
             Config::PARCEL_DISTRIBUTION => DPDParcel::DISTRIBUTION_NONE,
+            Config::MAX_PRODUCT_WEIGHT => '',
             config::AUTO_VALUE_FOR_REF => DPDShipment::AUTO_VAL_REF_NONE,
             config::LABEL_PRINT_OPTION => config::PRINT_OPTION_DOWNLOAD,
             config::DEFAULT_LABEL_FORMAT => LabelPositionService::PDF_FORMAT_A4,

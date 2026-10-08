@@ -49,3 +49,11 @@ services:
     class: 'Invertus\dpdBaltics\Validate\Version\ModuleLatestVersionValidator'
     arguments:
       - '@invertus.dpdbaltics.utility.module_version_utility'
+
+  invertus.dpdbaltics.validator.web_service_credentials_validator:
+    class: 'Invertus\dpdBaltics\Validate\WebService\WebServiceCredentialsValidator'
+    arguments:
+      - '@invertus.dpdbaltics.service.api.web_service_auth_api_service'
+
+  invertus.dpdbaltics.validator.web_service_credentials_change_resolver:
+    class: 'Invertus\dpdBaltics\Validate\WebService\WebServiceCredentialsChangeResolver'

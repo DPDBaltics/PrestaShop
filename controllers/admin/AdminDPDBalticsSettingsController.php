@@ -62,7 +62,6 @@ class AdminDPDBalticsSettingsController extends AbstractAdminController
         /** @var InfoBlockRender $infoBlockRender */
         $infoBlockRender = $this->module->getModuleContainer()->get('invertus.dpdbaltics.templating.info_block_render');
         $infoBlockText = $this->module->l('Here you can restart DPD on-board feature.');
-        $blockRegenerateCarrierText = $this->module->l('Here you can regenerate prestashop carriers if they were accidentally deleted in back office or carriers are not visible in front end of the shop');
 
         $this->context->smarty->assign('googleMapsApiKeyLink', Config::GOOGLE_MAPS_API_KEY_LINK);
 
@@ -188,12 +187,12 @@ class AdminDPDBalticsSettingsController extends AbstractAdminController
                 ],
             ],
             'dpd_carrier_regeneration' => [
-                'title' => $this->module->l('DPD carrier rengeneration'),
+                'title' => $this->module->l('DPD carrier regeneration'),
                 'icon' => 'dpd-icon-settings',
                 'fields' => [
                     Config::PRESTASHOP_DPD_CARRIER_REGENERATE => [
                         'type' => 'free',
-                        'desc' => $infoBlockRender->getInfoBlockTemplate($blockRegenerateCarrierText),
+                        'desc' => $this->getRegenerateCarriersWarningTemplate(),
                         'class' => 'hidden',
                         'form_group_class' => 'dpd-info-block',
                     ],
@@ -202,7 +201,7 @@ class AdminDPDBalticsSettingsController extends AbstractAdminController
                     'dpd_regenerate_carriers' => [
                         'title' => $this->module->l('REGENERATE'),
                         'icon' => 'process-icon-refresh',
-                        'class' => 'btn btn-default pull-right',
+                        'class' => 'btn btn-danger pull-right',
                         'name' => 'submitRegenerateCarriers',
                         'type' => 'submit',
                     ],
@@ -272,6 +271,34 @@ class AdminDPDBalticsSettingsController extends AbstractAdminController
         parent::setMedia($isNewTheme);
 
         $this->addJS($this->getModuleJSUri() . 'settings_password.js');
+        $this->addJS($this->getModuleJSUri() . 'regenerate_carriers.js');
+
+        Media::addJsDef([
+            'dpdRegenerateCarriersConfirmation' => html_entity_decode(implode("\n\n", [
+                $this->getRegenerateCarriersWarningTitle(),
+                $this->getRegenerateCarriersWarningText(),
+            ]), ENT_QUOTES, 'UTF-8'),
+        ]);
+    }
+
+    private function getRegenerateCarriersWarningTitle()
+    {
+        return $this->module->l('WARNING: You are about to delete all DPD carriers!');
+    }
+
+    private function getRegenerateCarriersWarningText()
+    {
+        return $this->module->l('This action will remove all existing DPD carriers and replace them with newly generated ones. Carrier settings and price rule assignments may have to be set up again. It does not update parcel terminals. Use it only if DPD carriers were deleted by mistake or are not visible in the front office. Proceed only if you are certain about this.');
+    }
+
+    private function getRegenerateCarriersWarningTemplate()
+    {
+        $this->context->smarty->assign([
+            'dangerBlockTitle' => $this->getRegenerateCarriersWarningTitle(),
+            'dangerBlockText' => $this->getRegenerateCarriersWarningText(),
+        ]);
+
+        return $this->context->smarty->fetch($this->module->getLocalPath() . 'views/templates/admin/danger-block.tpl');
     }
 
     private function downloadLogs()

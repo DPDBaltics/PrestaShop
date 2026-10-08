@@ -211,3 +211,6 @@
 - Fixed the release build ignoring the declared PHP platform version and resolving untested dependency versions
 - Fixed the pull request indexing and licensing workflow committing a regenerated composer.lock together with its own changes
 - Changed the declared minimum requirements to PHP 7.1 and PrestaShop 1.7.4, which is what the module has required since 2021
+
+## [3.3.3]
+- Fixed the ZIP import leaving every file from the uploaded ZIP in the module folder; only the expected CSV files are now extracted to a private temp folder and deleted after the import, and the update removes files left by older versions

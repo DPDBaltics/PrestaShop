@@ -274,6 +274,15 @@ class AdminDPDBalticsShipmentSettingsController extends AbstractAdminController
                         ],
                         'identifier' => 'value',
                     ],
+                    Config::MAX_PRODUCT_WEIGHT => [
+                        'title' => $this->module->l('Maximum weight of a single product'),
+                        'desc' => $this->module->l('DPD carriers are hidden at checkout if any product in the cart weighs more than this. Leave empty or 0 to turn off.'),
+                        'type' => 'text',
+                        'validation' => 'isUnsignedFloat',
+                        'empty' => true,
+                        'class' => 'fixed-width-sm',
+                        'suffix' => Configuration::get('PS_WEIGHT_UNIT'),
+                    ],
                 ],
                 'submit' => [
                     'title' => $this->module->l('Save'),

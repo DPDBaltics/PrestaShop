@@ -44,6 +44,7 @@ class ModuleTabs
     const ADMIN_COLLECTION_REQUEST_CONTROLLER = 'AdminDPDBalticsCollectionRequest';
     const ADMIN_COURIER_REQUEST_CONTROLLER = 'AdminDPDBalticsCourierRequest';
     const ADMIN_AJAX_ON_BOARD_CONTROLLER = 'AdminDPDAjaxOnBoard';
+    const ADMIN_ORDERS_CONTROLLER = 'AdminOrders';
 
 
     /**

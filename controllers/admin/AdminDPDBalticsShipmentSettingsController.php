@@ -51,6 +51,12 @@ class AdminDPDBalticsShipmentSettingsController extends AbstractAdminController
             return parent::postProcess();
         }
 
+        if (!$this->isTabGranted('edit')) {
+            $this->addPermissionDeniedError('edit');
+
+            return false;
+        }
+
         parent::postProcess();
 
         // set label position to 1 if format is A6

@@ -200,6 +200,13 @@ class AdminDPDBalticsZonesController extends AbstractAdminController
             return parent::postProcess();
         }
 
+        if (!$this->isTabGranted('edit')) {
+            $this->ajaxDie(json_encode([
+                'status' => 0,
+                'error' => $this->getPermissionDeniedMessage('edit'),
+            ]));
+        }
+
         $zoneId = Tools::getValue('zone_id');
         $zoneName = Tools::getValue('zone_name');
         $zoneRanges = Tools::getValue('zone_ranges');

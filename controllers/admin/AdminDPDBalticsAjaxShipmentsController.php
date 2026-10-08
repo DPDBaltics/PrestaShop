@@ -12,6 +12,7 @@
 
 use Invertus\dpdBaltics\Config\Config;
 use Invertus\dpdBaltics\Controller\AbstractAdminController;
+use Invertus\dpdBaltics\Infrastructure\Bootstrap\ModuleTabs;
 use Invertus\dpdBaltics\Converter\FormDataConverter;
 use Invertus\dpdBaltics\DTO\ShipmentData;
 use Invertus\dpdBaltics\Factory\ShipmentDataFactory;
@@ -42,6 +43,14 @@ class AdminDPDBalticsAjaxShipmentsController extends AbstractAdminController
     protected $ajaxActions = ['save', 'save_and_print', 'updateAddressBlock', 'getProductPriceByID', 'print'];
     protected $ajaxPudoActions = ['searchPudoServices'];
     const DEFAULT_LABEL_TEMPLATE_ID = 1;
+    const ORDER_EDIT_ACTIONS = [
+        'changeReceiverAddressBlock',
+        'updateAddressBlock',
+        'save',
+        'save_and_print',
+        'printLabelFromList',
+        'printMultipleLabelsFromList',
+    ];
 
     /**
      * Process AJAX call
@@ -61,6 +70,13 @@ class AdminDPDBalticsAjaxShipmentsController extends AbstractAdminController
 
         if (!$cartId && $idOrder) {
             $cartId = $this->getCartIdByOrderId($idOrder);
+        }
+
+        if (in_array($action, self::ORDER_EDIT_ACTIONS, true) && !$this->canEditOrders()) {
+            $this->returnResponse([
+                'status' => false,
+                'message' => $this->getPermissionDeniedMessage('edit'),
+            ]);
         }
 
         switch ($action) {
@@ -323,6 +339,10 @@ class AdminDPDBalticsAjaxShipmentsController extends AbstractAdminController
                 $this->returnResponse($response);
             }
         }
+        if (!$this->canEditOrders()) {
+            exit($this->getPermissionDeniedMessage('edit'));
+        }
+
         try {
             /** @var ShipmentService $shipmentService */
             $shipmentService = $this->module->getModuleContainer('invertus.dpdbaltics.service.shipment_service');
@@ -382,6 +402,11 @@ class AdminDPDBalticsAjaxShipmentsController extends AbstractAdminController
             'parcel_name' => $pudoServices[0]->getCompany(),
             'status' => true,
         ];
+    }
+
+    private function canEditOrders()
+    {
+        return $this->isTabGranted('edit', ModuleTabs::ADMIN_ORDERS_CONTROLLER);
     }
 
     /**

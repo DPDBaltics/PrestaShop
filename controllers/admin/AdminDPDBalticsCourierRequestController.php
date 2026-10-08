@@ -332,6 +332,12 @@ class AdminDPDBalticsCourierRequestController extends AbstractAdminController
     //todo:: if Exception is caught it returns to list.
     public function postProcess()
     {
+        if (Tools::isSubmit('submitAdddpd_courier_request') && !$this->isTabGranted('add')) {
+            $this->addPermissionDeniedError('add');
+
+            return false;
+        }
+
         if (Tools::isSubmit('submitAdddpd_courier_request')) {
             /** @var FormDataConverter $formDataConverter */
             /** @var CourierRequestValidator $courierRequestValidator */

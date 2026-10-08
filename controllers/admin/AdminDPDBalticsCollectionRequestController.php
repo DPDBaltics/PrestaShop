@@ -371,6 +371,12 @@ class AdminDPDBalticsCollectionRequestController extends AbstractAdminController
     //todo:: if Exception is caught it returns to list.
     public function postProcess()
     {
+        if (Tools::isSubmit('submitAdddpd_collection_request') && !$this->isTabGranted('add')) {
+            $this->addPermissionDeniedError('add');
+
+            return false;
+        }
+
         if (Tools::isSubmit('submitAdddpd_collection_request')) {
             /** @var FormDataConverter $formDataConverter */
             $formDataConverter = $this->module->getModuleContainer('invertus.dpdbaltics.converter.form_data_converter');

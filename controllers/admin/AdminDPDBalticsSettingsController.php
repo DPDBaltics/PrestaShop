@@ -34,6 +34,8 @@ use Invertus\dpdBaltics\Service\LogsService;
 use Invertus\dpdBaltics\Service\Product\ProductService;
 use Invertus\dpdBaltics\Templating\InfoBlockRender;
 use Invertus\dpdBaltics\Validate\Version\ModuleLatestVersionValidator;
+use Invertus\dpdBaltics\Validate\WebService\WebServiceCredentialsChangeResolver;
+use Invertus\dpdBaltics\Validate\WebService\WebServiceCredentialsValidator;
 
 require_once dirname(__DIR__).'/../vendor/autoload.php';
 
@@ -214,6 +216,10 @@ class AdminDPDBalticsSettingsController extends AbstractAdminController
     public function postProcess()
     {
         if (Tools::isSubmit('submitOptionsconfiguration')) {
+            $this->validateWebServiceCredentials();
+        }
+
+        if (Tools::isSubmit('submitOptionsconfiguration') && empty($this->errors)) {
             /** @var ProductService $productService */
             $productService = $this->module->getModuleContainer()->get('invertus.dpdbaltics.service.product.product_service');
             /** @var CarrierUpdateHandler $carrierService */
@@ -295,6 +301,82 @@ class AdminDPDBalticsSettingsController extends AbstractAdminController
         Tools::redirectAdmin($this->context->link->getAdminLink(ModuleTabs::ADMIN_SETTINGS_CONTROLLER));
     }
 
+    /**
+     * Checks submitted web service credentials against DPD before they are saved.
+     * An error here stops processUpdateOptions() from saving any option.
+     */
+    private function validateWebServiceCredentials()
+    {
+        if (!Tools::getIsset(Config::WEB_SERVICE_USERNAME)) {
+            return;
+        }
+
+        $choices = $this->fields_options['web_service_configuration']['fields'][Config::WEB_SERVICE_COUNTRY]['choices'];
+        $username = (string) Tools::getValue(Config::WEB_SERVICE_USERNAME);
+        $countryIso = Tools::strtoupper((string) Tools::getValue(Config::WEB_SERVICE_COUNTRY));
+
+        if (!isset($choices[$countryIso]) || !Validate::isGenericName($username)) {
+            return;
+        }
+
+        /** @var WebServiceCredentialsChangeResolver $changeResolver */
+        $changeResolver = $this->module->getModuleContainer()->get('invertus.dpdbaltics.validator.web_service_credentials_change_resolver');
+        $credentials = $changeResolver->resolve(
+            [
+                'username' => $username,
+                'password' => Tools::getValue(Config::WEB_SERVICE_PASSWORD),
+                'country' => $countryIso,
+                'test_mode' => Tools::getValue(Config::SHIPMENT_TEST_MODE),
+            ],
+            [
+                'username' => Config::getUsername(),
+                'password' => Config::getPassword(),
+                'country' => Configuration::get(Config::WEB_SERVICE_COUNTRY),
+                'test_mode' => Configuration::get(Config::SHIPMENT_TEST_MODE),
+            ],
+            $this->getPasswordPlaceholder()
+        );
+
+        if ($credentials === null) {
+            return;
+        }
+
+        /** @var WebServiceCredentialsValidator $credentialsValidator */
+        $credentialsValidator = $this->module->getModuleContainer()->get('invertus.dpdbaltics.validator.web_service_credentials_validator');
+        $result = $credentialsValidator->validate(
+            $credentials['username'],
+            $credentials['password'],
+            $credentials['country'],
+            $credentials['test_mode']
+        );
+
+        $webServiceName = sprintf(
+            $credentials['test_mode'] ? $this->module->l('%s test') : $this->module->l('%s live'),
+            $choices[$countryIso]
+        );
+
+        switch ($result) {
+            case WebServiceCredentialsValidator::WRONG_PASSWORD:
+                $this->errors[] = $this->module->l('Settings were not saved. DPD did not accept the password for this username.');
+                break;
+            case WebServiceCredentialsValidator::UNKNOWN_USER:
+                $this->errors[] = sprintf(
+                    $this->module->l('Settings were not saved. DPD could not find this username on the %s web service. Check that Country and Shipment test mode match your DPD account.'),
+                    $webServiceName
+                );
+                break;
+            case WebServiceCredentialsValidator::REJECTED:
+                $this->errors[] = sprintf(
+                    $this->module->l('Settings were not saved. The %s web service rejected this username and password. Check both, and check that Country and Shipment test mode match your DPD account.'),
+                    $webServiceName
+                );
+                break;
+            case WebServiceCredentialsValidator::UNVERIFIED:
+                $this->warnings[] = $this->module->l('DPD could not be reached to check the web service credentials, so they were saved without a check. Run a parcel shop import to confirm they work.');
+                break;
+        }
+    }
+
     private function getPasswordPlaceholder()
     {
         return html_entity_decode(Config::WEB_SERVICE_PASSWORD_PLACEHOLDER);
@@ -309,7 +391,7 @@ class AdminDPDBalticsSettingsController extends AbstractAdminController
     {
         $passwordPlaceholder = $this->getPasswordPlaceholder();
 
-        if (empty($plainPassword) || $passwordPlaceholder === $plainPassword) {
+        if ((string) $plainPassword === '' || $passwordPlaceholder === $plainPassword) {
             return;
         }
 

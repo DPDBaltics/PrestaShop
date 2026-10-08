@@ -178,6 +178,9 @@ services:
     arguments:
       - '@invertus.dpdbaltics_api.factory.apirequest.parcel_shop_search_factory'
 
+  invertus.dpdbaltics.service.api.web_service_auth_api_service:
+    class: 'Invertus\dpdBaltics\Service\API\WebServiceAuthApiService'
+
   invertus.dpdbaltics.service.pudo_service:
     class: 'Invertus\dpdBaltics\Service\PudoService'
     arguments:

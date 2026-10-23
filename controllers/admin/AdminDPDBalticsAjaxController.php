@@ -12,6 +12,7 @@
 
 use Invertus\dpdBaltics\Config\Config;
 use Invertus\dpdBaltics\Controller\AbstractAdminController;
+use Invertus\dpdBaltics\Infrastructure\Bootstrap\ModuleTabs;
 use Invertus\dpdBaltics\Service\API\ParcelShopSearchApiService;
 use Invertus\dpdBaltics\Service\Import\API\ParcelShopImport;
 use Invertus\dpdBaltics\Service\Import\ImportMainZone;
@@ -28,6 +29,18 @@ if (!defined('_PS_VERSION_')) {
 
 class AdminDPDBalticsAjaxController extends AbstractAdminController
 {
+    public function postProcess()
+    {
+        if ($this->ajax && !$this->isTabGranted('edit', ModuleTabs::ADMIN_IMPORT_EXPORT_CONTROLLER)) {
+            $this->ajaxDie(json_encode([
+                'success' => false,
+                'error' => $this->getPermissionDeniedMessage('edit'),
+            ]));
+        }
+
+        return parent::postProcess();
+    }
+
     public function ajaxProcessImportZones()
     {
         /** @var ImportMainZone $importOnLoginService */

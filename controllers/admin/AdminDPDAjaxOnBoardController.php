@@ -12,6 +12,7 @@
 
 use Invertus\dpdBaltics\Config\Config;
 use Invertus\dpdBaltics\Controller\AbstractAdminController;
+use Invertus\dpdBaltics\Infrastructure\Bootstrap\ModuleTabs;
 use Invertus\dpdBaltics\OnBoard\Builder\OnBoardBlockBuilder;
 use Invertus\dpdBaltics\OnBoard\Provider\OnBoardStepStrategyProvider;
 use Invertus\dpdBaltics\OnBoard\Service\OnBoardService;
@@ -32,6 +33,13 @@ class AdminDPDAjaxOnBoardController extends AbstractAdminController
     {
         if (!Tools::getIsset('ajax')) {
             return;
+        }
+
+        if (!$this->isTabGranted('edit', ModuleTabs::ADMIN_SETTINGS_CONTROLLER)) {
+            return $this->returnResponse([
+                'status' => false,
+                'message' => $this->getPermissionDeniedMessage('edit'),
+            ]);
         }
 
         $action = Tools::getValue('action');

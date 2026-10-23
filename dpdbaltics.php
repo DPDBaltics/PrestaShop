@@ -368,6 +368,7 @@ class DPDBaltics extends CarrierModule
         $carrierReference = $carrier->id_reference;
         $dpdCarriers = $carrierRepo->getDpdCarriers($idShop);
         $isDpdCarrier = false;
+        $isSameDayDelivery = false;
         foreach ($dpdCarriers as $dpdCarrier) {
             if ($carrierReference == $dpdCarrier['id_reference']) {
                 $isDpdCarrier = true;

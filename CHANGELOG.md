@@ -222,3 +222,4 @@
 - Fixed DPD error messages in the back office running HTML or script code that DPD echoed back from order data; label printing, return label, courier and collection request, parcel shop import and order list messages now show them as plain text
 - Changed the order list bulk label error to separate orders with "; " instead of an HTML line break
 - Added a red warning and a confirmation prompt to DPD carrier regeneration, which deletes and recreates all DPD carriers
+- Fixed web service credentials being saved without a check. A username, password or Country that DPD rejects is now refused on the settings page with a message that names the cause

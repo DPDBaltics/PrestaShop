@@ -81,8 +81,6 @@ $( document ).ajaxComplete(function( event, request, settings ) {
 });
 
 function updateStreetSelect(city) {
-    var $container = $(this).closest('.dpd-pudo-container');
-
     $.ajax(dpdHookAjaxUrl, {
         type: 'POST',
         data: {
@@ -109,10 +107,17 @@ function updateStreetSelect(city) {
             }
         },
         error: function (response) {
-            var responseText = JSON.parse(response.responseText);
+            var $parent = $('.dpd-pudo-container');
+            var responseText = null;
 
-            if (responseText) {
-                DPDdisplayMessage($container, responseText.template);
+            try {
+                responseText = JSON.parse(response.responseText);
+            } catch (e) {
+                responseText = null;
+            }
+
+            if (responseText && responseText.template) {
+                DPDdisplayMessage($parent, responseText.template);
             }
         }
     });
@@ -146,10 +151,17 @@ function saveSelectedStreet(city, street) {
             }
         },
         error: function (response) {
-            var responseText = JSON.parse(response.responseText);
+            var $parent = $('.dpd-pudo-container');
+            var responseText = null;
 
-            if (responseText) {
-                DPDdisplayMessage($container, responseText.template);
+            try {
+                responseText = JSON.parse(response.responseText);
+            } catch (e) {
+                responseText = null;
+            }
+
+            if (responseText && responseText.template) {
+                DPDdisplayMessage($parent, responseText.template);
             }
         }
     });
@@ -178,10 +190,17 @@ function updateParcelBlock(city, street, idCarrier) {
             }
         },
         error: function (response) {
-            var responseText = JSON.parse(response.responseText);
+            var $parent = $('.dpd-pudo-container');
+            var responseText = null;
 
-            if (responseText) {
-                DPDdisplayMessage($container, responseText.template);
+            try {
+                responseText = JSON.parse(response.responseText);
+            } catch (e) {
+                responseText = null;
+            }
+
+            if (responseText && responseText.template) {
+                DPDdisplayMessage($parent, responseText.template);
             }
         }
     });

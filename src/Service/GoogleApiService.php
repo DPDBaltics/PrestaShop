@@ -51,9 +51,9 @@ class GoogleApiService
     public function __construct(Language $language, Shop $shop)
     {
         $apiKey = Configuration::get(Config::GOOGLE_API_KEY);
-        $this->geolocationApi = $this->getGeolocationUrl($apiKey);
         $this->isSslEnabled =
             (Configuration::get('PS_SSL_ENABLED')) && Configuration::get('PS_SSL_ENABLED_EVERYWHERE');
+        $this->geolocationApi = $this->getGeolocationUrl($apiKey);
         $this->language = $language;
         $this->shop = $shop;
     }
@@ -191,13 +191,8 @@ class GoogleApiService
 
     private function getGeolocationUrl($apiKey)
     {
-        $url = 'https';
-        if ($this->isSslEnabled) {
-            $url .='s';
-        }
-        $url .= '://maps.googleapis.com/maps/api/geocode/json?key='.
+        return 'https://maps.googleapis.com/maps/api/geocode/json?key='.
             $apiKey.'&sensor=false&address=';
-        return $url;
     }
 
 

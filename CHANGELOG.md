@@ -232,3 +232,5 @@
 - Improved DPD API authentication error to explain that the API credentials in Basic Settings were rejected
 - Fixed shipment creation error messages not being translated to the shop language
 - Fixed module checkout CSS overriding theme focus styles on personal information and address form fields
+- Fixed checkout pickup point selection returning a 500 error when the selected city and street do not match an imported pickup point
+- Fixed pickup point error messages not being displayed in checkout when a request fails

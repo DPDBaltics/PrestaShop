@@ -211,3 +211,6 @@
 - Fixed the release build ignoring the declared PHP platform version and resolving untested dependency versions
 - Fixed the pull request indexing and licensing workflow committing a regenerated composer.lock together with its own changes
 - Changed the declared minimum requirements to PHP 7.1 and PrestaShop 1.7.4, which is what the module has required since 2021
+
+## [3.3.3]
+- Fixed courier requests with an empty or zero weight or parcel count being sent to DPD, which rejected them with "No items to pick up." or "Parameter 'weight' is null". The form now explains what to correct before anything is sent

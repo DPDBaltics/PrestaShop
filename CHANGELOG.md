@@ -197,7 +197,6 @@
 - Fixed Lithuanian and Latvian translations for shipping label in admin order panel
 - Added Poland parcel shop import support with batch processing
 - Fixed null parameter deprecation in AddressAdapter preg_replace calls
-- Improved pickup point import to warn when DPD returns 0 points and keep existing points instead of reporting a false success
 - Fixed shipment creation failing for accounts requiring Predict SMS service
 - Fixed additional validation for supercheckout module using currentcontroller variable
 - Fixed automatic PUDO point pre-selection in LIST mode
@@ -237,3 +236,7 @@
 - Fixed pickup point error messages not being displayed in checkout when a request fails
 - Fixed pick-up point import reporting any server error as "this country has many pick-up points", which hid the real failure
 - Fixed the suggested cron command to target the selected country instead of updating every country
+- Improved pickup point import to warn when DPD returns 0 points and keep existing points instead of reporting a false success
+- Changed the courier request pick-up time to a date and "from"/"until" time slots that DPD accepts, so DPD no longer rejects requests for an unsupported pick-up time
+- Fixed the courier request page crashing on PHP 8 when DPD answers with its new JSON response
+- Fixed courier requests that DPD accepted being shown as an error and not saved

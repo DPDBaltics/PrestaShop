@@ -231,3 +231,4 @@
 - Improved shipment creation error message to be a clear, readable sentence
 - Improved DPD API authentication error to explain that the API credentials in Basic Settings were rejected
 - Fixed shipment creation error messages not being translated to the shop language
+- Fixed module checkout CSS overriding theme focus styles on personal information and address form fields

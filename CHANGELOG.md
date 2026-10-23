@@ -224,3 +224,4 @@
 - Added a red warning and a confirmation prompt to DPD carrier regeneration, which deletes and recreates all DPD carriers
 - Fixed web service credentials being saved without a check. A username, password or Country that DPD rejects is now refused on the settings page with a message that names the cause
 - Fixed back office actions ignoring employee permissions, so a view-only employee can no longer change DPD settings, start imports, change pickup points or create DPD shipments
+- Added a "Maximum weight of a single product" shipment setting that hides DPD carriers at checkout when any product in the cart is heavier than the limit

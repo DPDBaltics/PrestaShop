@@ -152,6 +152,9 @@ class Config
     const API_COURIER_REQUEST_SUCCESS_STATUS = '<p>DONE';
     const API_COLLECTION_REQUEST_ERROR_STATUS = '402 Error:';
     const API_COURIER_REQUEST_ERROR_STATUS = '402 Error:';
+
+    /** The "level" value the live JSON API uses to say a courier request failed. */
+    const API_COURIER_REQUEST_JSON_ERROR_LEVEL = 'error';
     const API_RESPONSE_ERROR_STATUS = 'err';
     const RETURN_TEMPLATE_DEFAULT_ID = 1;
 

@@ -24,9 +24,19 @@ if (!defined('_PS_VERSION_')) {
 
 use Invertus\dpdBaltics\DTO\CourierRequestData;
 use Invertus\dpdBaltics\Validate\CourierRequest\CourierRequestValidator;
+use PHPUnit\Framework\TestCase;
 
-class CourierRequestValidatorTest extends PHPUnit_Framework_TestCase
+class CourierRequestValidatorTest extends TestCase
 {
+    /**
+     * @var CourierRequestValidator
+     */
+    private $validator;
+
+    protected function setUp(): void
+    {
+        $this->validator = new CourierRequestValidator();
+    }
     /**
      * @dataProvider validWeightProvider
      */
@@ -35,7 +45,7 @@ class CourierRequestValidatorTest extends PHPUnit_Framework_TestCase
         $data = new CourierRequestData();
         $data->setWeight($weight);
 
-        $this->assertTrue((new CourierRequestValidator())->validateWeight($data));
+        $this->assertTrue($this->validator->validateWeight($data));
     }
 
     public function validWeightProvider()
@@ -51,7 +61,7 @@ class CourierRequestValidatorTest extends PHPUnit_Framework_TestCase
         $data = new CourierRequestData();
         $data->setWeight($weight);
 
-        $this->assertFalse((new CourierRequestValidator())->validateWeight($data));
+        $this->assertFalse($this->validator->validateWeight($data));
     }
 
     public function invalidWeightProvider()
@@ -67,7 +77,7 @@ class CourierRequestValidatorTest extends PHPUnit_Framework_TestCase
         $data = new CourierRequestData();
         $data->setParcelsCount($parcelsCount);
 
-        $this->assertTrue((new CourierRequestValidator())->validateParcelsCount($data));
+        $this->assertTrue($this->validator->validateParcelsCount($data));
     }
 
     public function validParcelsCountProvider()
@@ -83,11 +93,67 @@ class CourierRequestValidatorTest extends PHPUnit_Framework_TestCase
         $data = new CourierRequestData();
         $data->setParcelsCount($parcelsCount);
 
-        $this->assertFalse((new CourierRequestValidator())->validateParcelsCount($data));
+        $this->assertFalse($this->validator->validateParcelsCount($data));
     }
 
     public function invalidParcelsCountProvider()
     {
         return [[null], [''], ['0'], ['00'], ['01'], ['-1'], ['+1'], ['1.5'], ['abc'], [' 2 '], ["2\n"], ['1000000000'], ['99999999999999999999']];
+    }
+
+    public function testValidSlotPairPassesSlotValidation()
+    {
+        $data = $this->createCourierRequestData('08:00', '17:00');
+
+        $this->assertTrue($this->validator->validatePickupTimeSlots($data));
+    }
+
+    public function testNonWhitelistedFromSlotFailsSlotValidation()
+    {
+        $data = $this->createCourierRequestData('11:35', '17:00');
+
+        $this->assertFalse($this->validator->validatePickupTimeSlots($data));
+    }
+
+    public function testNonWhitelistedToSlotFailsSlotValidation()
+    {
+        $data = $this->createCourierRequestData('08:00', '12:00');
+
+        $this->assertFalse($this->validator->validatePickupTimeSlots($data));
+    }
+
+    public function testFromSlotEqualOrLaterThanToSlotFailsSlotValidation()
+    {
+        $data = $this->createCourierRequestData('15:00', '15:00');
+
+        $this->assertFalse($this->validator->validatePickupTimeSlots($data));
+    }
+
+    public function testMinimalIntervalValidationStillPassesForComposedDatetimes()
+    {
+        $data = $this->createCourierRequestData('08:00', '17:00');
+        $data->setPickupTime('2030-02-20 08:00:00');
+        $data->setSenderWorkUntil('2030-02-20 17:00:00');
+
+        $this->assertTrue($this->validator->validate($data, 'LT'));
+    }
+
+    public function testMinimalIntervalValidationStillFailsWhenIntervalTooShort()
+    {
+        $data = $this->createCourierRequestData('15:00', '16:00');
+        $data->setPickupTime('2030-02-20 15:00:00');
+        $data->setSenderWorkUntil('2030-02-20 16:00:00');
+
+        $this->assertFalse($this->validator->validate($data, 'LT'));
+    }
+
+    private function createCourierRequestData($from, $to)
+    {
+        $data = new CourierRequestData();
+        $data->setPickupDate('2030-02-20');
+        $data->setPickupTimeFrom($from);
+        $data->setPickupTimeTo($to);
+
+        return $data;
     }
 }

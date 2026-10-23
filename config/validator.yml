@@ -49,3 +49,6 @@ services:
     class: 'Invertus\dpdBaltics\Validate\Version\ModuleLatestVersionValidator'
     arguments:
       - '@invertus.dpdbaltics.utility.module_version_utility'
+
+  invertus.dpdbaltics.validate.return_label.return_label_access_validator:
+    class: 'Invertus\dpdBaltics\Validate\ReturnLabel\ReturnLabelAccessValidator'

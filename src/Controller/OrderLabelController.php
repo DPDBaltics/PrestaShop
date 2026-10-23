@@ -26,6 +26,7 @@ use Invertus\dpdBaltics\Service\Exception\ExceptionService;
 use Invertus\dpdBaltics\Service\Label\LabelPrintingService;
 use Invertus\dpdBaltics\Service\ShipmentService;
 use Invertus\dpdBaltics\Util\ServerGlobalsUtility;
+use Invertus\dpdBaltics\Util\StringUtility;
 use Invertus\dpdBalticsApi\Exception\DPDBalticsAPIException;
 use PrestaShopBundle\Controller\Admin\FrameworkBundleAdminController;
 use PrestaShopBundle\Security\Annotation\AdminSecurity;
@@ -196,7 +197,7 @@ class OrderLabelController extends FrameworkBundleAdminController
 
     private function redirectWithError($route, $error)
     {
-        $this->addFlash('error', $error);
+        $this->addFlash('error', StringUtility::escapeHtml($error));
 
         $redirectLink = ServerGlobalsUtility::getHttpReferer();
 

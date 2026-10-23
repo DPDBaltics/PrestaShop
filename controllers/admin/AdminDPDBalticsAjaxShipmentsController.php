@@ -24,6 +24,7 @@ use Invertus\dpdBaltics\Service\Exception\ExceptionService;
 use Invertus\dpdBaltics\Service\Label\LabelPrintingService;
 use Invertus\dpdBaltics\Service\PudoService;
 use Invertus\dpdBaltics\Service\ShipmentService;
+use Invertus\dpdBaltics\Util\StringUtility;
 use Invertus\dpdBaltics\Validate\ShipmentData\Exception\InvalidShipmentDataField;
 use Invertus\dpdBaltics\Validate\ShipmentData\ShipmentDataValidator;
 use Invertus\dpdBalticsApi\Api\DTO\Object\ParcelShop;
@@ -202,7 +203,7 @@ class AdminDPDBalticsAjaxShipmentsController extends AbstractAdminController
         /** @var ShipmentService $shipmentService */
         $shipmentService = $this->module->getModuleContainer('invertus.dpdbaltics.service.shipment_service');
 
-        return $shipmentService->formatLabelShipmentPrintResponse($orderId);
+        return $this->escapeResponseMessage($shipmentService->formatLabelShipmentPrintResponse($orderId));
     }
 
     public function printMultipleLabelsFromList($orderIds)
@@ -210,8 +211,16 @@ class AdminDPDBalticsAjaxShipmentsController extends AbstractAdminController
         /** @var ShipmentService $shipmentService */
         $shipmentService = $this->module->getModuleContainer('invertus.dpdbaltics.service.shipment_service');
 
-        return $shipmentService->formatMultipleLabelShipmentPrintResponse($orderIds);
+        return $this->escapeResponseMessage($shipmentService->formatMultipleLabelShipmentPrintResponse($orderIds));
+    }
 
+    private function escapeResponseMessage(array $response)
+    {
+        if (isset($response['message'])) {
+            $response['message'] = StringUtility::escapeHtml($response['message']);
+        }
+
+        return $response;
     }
 
 
@@ -338,7 +347,7 @@ class AdminDPDBalticsAjaxShipmentsController extends AbstractAdminController
             );
             $this->context->cookie->dpd_error = json_encode($errorMessage);
             //todo: it should display error somehow but now it just shows error in empty page.
-            exit($errorMessage);
+            exit(StringUtility::escapeHtml($errorMessage));
         }
     }
 

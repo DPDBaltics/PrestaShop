@@ -178,6 +178,9 @@ services:
     arguments:
       - '@invertus.dpdbaltics_api.factory.apirequest.parcel_shop_search_factory'
 
+  invertus.dpdbaltics.service.api.web_service_auth_api_service:
+    class: 'Invertus\dpdBaltics\Service\API\WebServiceAuthApiService'
+
   invertus.dpdbaltics.service.pudo_service:
     class: 'Invertus\dpdBaltics\Service\PudoService'
     arguments:
@@ -213,11 +216,15 @@ services:
       - '@invertus.dpdbaltics_api.factory.apirequest.collection_request_factory'
       - '@dpdbaltics'
 
+  invertus.dpdbaltics.service.api.parser.courier_request_response_parser:
+    class: 'Invertus\dpdBaltics\Service\API\Parser\CourierRequestResponseParser'
+
   invertus.dpdbaltics.service.api.courier_request_service:
     class: 'Invertus\dpdBaltics\Service\API\CourierRequestService'
     arguments:
       - '@invertus.dpdbaltics_api.factory.apirequest.courier_request_factory'
       - '@dpdbaltics'
+      - '@invertus.dpdbaltics.service.api.parser.courier_request_response_parser'
 
   invertus.dpdbaltics.service.parcel.parcel_update_service:
     class: 'Invertus\dpdBaltics\Service\Parcel\ParcelUpdateService'

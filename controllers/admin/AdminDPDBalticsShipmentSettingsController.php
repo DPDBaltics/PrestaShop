@@ -51,6 +51,12 @@ class AdminDPDBalticsShipmentSettingsController extends AbstractAdminController
             return parent::postProcess();
         }
 
+        if (!$this->isTabGranted('edit')) {
+            $this->addPermissionDeniedError('edit');
+
+            return false;
+        }
+
         parent::postProcess();
 
         // set label position to 1 if format is A6
@@ -273,6 +279,15 @@ class AdminDPDBalticsShipmentSettingsController extends AbstractAdminController
                             ],
                         ],
                         'identifier' => 'value',
+                    ],
+                    Config::MAX_PRODUCT_WEIGHT => [
+                        'title' => $this->module->l('Maximum weight of a single product'),
+                        'desc' => $this->module->l('DPD carriers are hidden at checkout if any product in the cart weighs more than this. Leave empty or 0 to turn off.'),
+                        'type' => 'text',
+                        'validation' => 'isUnsignedFloat',
+                        'empty' => true,
+                        'class' => 'fixed-width-sm',
+                        'suffix' => Configuration::get('PS_WEIGHT_UNIT'),
                     ],
                 ],
                 'submit' => [

@@ -115,17 +115,22 @@ class LabelPrintingService
             return $response;
 
         } catch (Exception $e) {
-            $exception = $e->getMessage(). ' ID order: '. $orderId;
-            $response['message'] = $this->module->l("Failed to create DPD shipment: {$exception}");
+            $response['message'] = sprintf(
+                $this->module->l('Failed to create DPD shipment: %s (order ID: %s)'),
+                $e->getMessage(),
+                $orderId
+            );
             $this->logger->error($response['message']);
 
             return $response;
         }
 
         if ($shipmentCreationResponse->getStatus() !== Config::API_SUCCESS_STATUS) {
-            $exception = $shipmentCreationResponse->getErrLog(). ' ID order: '. $orderId;
-            $response['message'] = $this->module->l(
-                "Failed to create DPD shipment API status failed : {$exception}"
+            $apiError = $this->exceptionService->getApiErrorMessage($shipmentCreationResponse->getErrLog());
+            $response['message'] = sprintf(
+                $this->module->l('Failed to create DPD shipment: %s (order ID: %s)'),
+                $apiError,
+                $orderId
             );
             $this->logger->error($response['message']);
 

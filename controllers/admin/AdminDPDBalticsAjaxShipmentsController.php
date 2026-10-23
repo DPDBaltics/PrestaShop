@@ -12,6 +12,7 @@
 
 use Invertus\dpdBaltics\Config\Config;
 use Invertus\dpdBaltics\Controller\AbstractAdminController;
+use Invertus\dpdBaltics\Infrastructure\Bootstrap\ModuleTabs;
 use Invertus\dpdBaltics\Converter\FormDataConverter;
 use Invertus\dpdBaltics\DTO\ShipmentData;
 use Invertus\dpdBaltics\Factory\ShipmentDataFactory;
@@ -24,6 +25,7 @@ use Invertus\dpdBaltics\Service\Exception\ExceptionService;
 use Invertus\dpdBaltics\Service\Label\LabelPrintingService;
 use Invertus\dpdBaltics\Service\PudoService;
 use Invertus\dpdBaltics\Service\ShipmentService;
+use Invertus\dpdBaltics\Util\StringUtility;
 use Invertus\dpdBaltics\Validate\ShipmentData\Exception\InvalidShipmentDataField;
 use Invertus\dpdBaltics\Validate\ShipmentData\ShipmentDataValidator;
 use Invertus\dpdBalticsApi\Api\DTO\Object\ParcelShop;
@@ -42,6 +44,14 @@ class AdminDPDBalticsAjaxShipmentsController extends AbstractAdminController
     protected $ajaxActions = ['save', 'save_and_print', 'updateAddressBlock', 'getProductPriceByID', 'print'];
     protected $ajaxPudoActions = ['searchPudoServices'];
     const DEFAULT_LABEL_TEMPLATE_ID = 1;
+    const ORDER_EDIT_ACTIONS = [
+        'changeReceiverAddressBlock',
+        'updateAddressBlock',
+        'save',
+        'save_and_print',
+        'printLabelFromList',
+        'printMultipleLabelsFromList',
+    ];
 
     /**
      * Process AJAX call
@@ -61,6 +71,13 @@ class AdminDPDBalticsAjaxShipmentsController extends AbstractAdminController
 
         if (!$cartId && $idOrder) {
             $cartId = $this->getCartIdByOrderId($idOrder);
+        }
+
+        if (in_array($action, self::ORDER_EDIT_ACTIONS, true) && !$this->canEditOrders()) {
+            $this->returnResponse([
+                'status' => false,
+                'message' => $this->getPermissionDeniedMessage('edit'),
+            ]);
         }
 
         switch ($action) {
@@ -202,7 +219,7 @@ class AdminDPDBalticsAjaxShipmentsController extends AbstractAdminController
         /** @var ShipmentService $shipmentService */
         $shipmentService = $this->module->getModuleContainer('invertus.dpdbaltics.service.shipment_service');
 
-        return $shipmentService->formatLabelShipmentPrintResponse($orderId);
+        return $this->escapeResponseMessage($shipmentService->formatLabelShipmentPrintResponse($orderId));
     }
 
     public function printMultipleLabelsFromList($orderIds)
@@ -210,8 +227,16 @@ class AdminDPDBalticsAjaxShipmentsController extends AbstractAdminController
         /** @var ShipmentService $shipmentService */
         $shipmentService = $this->module->getModuleContainer('invertus.dpdbaltics.service.shipment_service');
 
-        return $shipmentService->formatMultipleLabelShipmentPrintResponse($orderIds);
+        return $this->escapeResponseMessage($shipmentService->formatMultipleLabelShipmentPrintResponse($orderIds));
+    }
 
+    private function escapeResponseMessage(array $response)
+    {
+        if (isset($response['message'])) {
+            $response['message'] = StringUtility::escapeHtml($response['message']);
+        }
+
+        return $response;
     }
 
 
@@ -323,6 +348,10 @@ class AdminDPDBalticsAjaxShipmentsController extends AbstractAdminController
                 $this->returnResponse($response);
             }
         }
+        if (!$this->canEditOrders()) {
+            exit($this->getPermissionDeniedMessage('edit'));
+        }
+
         try {
             /** @var ShipmentService $shipmentService */
             $shipmentService = $this->module->getModuleContainer('invertus.dpdbaltics.service.shipment_service');
@@ -338,7 +367,7 @@ class AdminDPDBalticsAjaxShipmentsController extends AbstractAdminController
             );
             $this->context->cookie->dpd_error = json_encode($errorMessage);
             //todo: it should display error somehow but now it just shows error in empty page.
-            exit($errorMessage);
+            exit(StringUtility::escapeHtml($errorMessage));
         }
     }
 
@@ -382,6 +411,11 @@ class AdminDPDBalticsAjaxShipmentsController extends AbstractAdminController
             'parcel_name' => $pudoServices[0]->getCompany(),
             'status' => true,
         ];
+    }
+
+    private function canEditOrders()
+    {
+        return $this->isTabGranted('edit', ModuleTabs::ADMIN_ORDERS_CONTROLLER);
     }
 
     /**

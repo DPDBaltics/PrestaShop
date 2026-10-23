@@ -62,13 +62,13 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title">
                     <i class="icon-info-circle"></i>
-                    {l s='Automatic Update Required' mod='dpdbaltics'}
+                    {l s='Update timed out' mod='dpdbaltics'}
                 </h4>
             </div>
             <div class="modal-body">
                 <div class="alert alert-info">
-                    <p><strong>{l s='This country has many pick-up points and requires automatic updates.' mod='dpdbaltics'}</strong></p>
-                    <p>{l s='Due to server limitations, large countries cannot be updated through the browser. Please set up automatic updates using the cron job below.' mod='dpdbaltics'}</p>
+                    <p><strong>{l s='The update did not finish before your server closed the connection.' mod='dpdbaltics'}</strong></p>
+                    <p>{l s='This usually happens when a country has a lot of pick-up points. Running the update from the command line has no time limit, so schedule the cron job below instead.' mod='dpdbaltics'}</p>
                 </div>
 
                 <div class="panel panel-default" style="margin-top: 15px;">

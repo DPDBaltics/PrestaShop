@@ -34,6 +34,8 @@ use Invertus\dpdBaltics\Service\LogsService;
 use Invertus\dpdBaltics\Service\Product\ProductService;
 use Invertus\dpdBaltics\Templating\InfoBlockRender;
 use Invertus\dpdBaltics\Validate\Version\ModuleLatestVersionValidator;
+use Invertus\dpdBaltics\Validate\WebService\WebServiceCredentialsChangeResolver;
+use Invertus\dpdBaltics\Validate\WebService\WebServiceCredentialsValidator;
 
 require_once dirname(__DIR__).'/../vendor/autoload.php';
 
@@ -62,7 +64,6 @@ class AdminDPDBalticsSettingsController extends AbstractAdminController
         /** @var InfoBlockRender $infoBlockRender */
         $infoBlockRender = $this->module->getModuleContainer()->get('invertus.dpdbaltics.templating.info_block_render');
         $infoBlockText = $this->module->l('Here you can restart DPD on-board feature.');
-        $blockRegenerateCarrierText = $this->module->l('Here you can regenerate prestashop carriers if they were accidentally deleted in back office or carriers are not visible in front end of the shop');
 
         $this->context->smarty->assign('googleMapsApiKeyLink', Config::GOOGLE_MAPS_API_KEY_LINK);
 
@@ -188,12 +189,12 @@ class AdminDPDBalticsSettingsController extends AbstractAdminController
                 ],
             ],
             'dpd_carrier_regeneration' => [
-                'title' => $this->module->l('DPD carrier rengeneration'),
+                'title' => $this->module->l('DPD carrier regeneration'),
                 'icon' => 'dpd-icon-settings',
                 'fields' => [
                     Config::PRESTASHOP_DPD_CARRIER_REGENERATE => [
                         'type' => 'free',
-                        'desc' => $infoBlockRender->getInfoBlockTemplate($blockRegenerateCarrierText),
+                        'desc' => $this->getRegenerateCarriersWarningTemplate(),
                         'class' => 'hidden',
                         'form_group_class' => 'dpd-info-block',
                     ],
@@ -202,7 +203,7 @@ class AdminDPDBalticsSettingsController extends AbstractAdminController
                     'dpd_regenerate_carriers' => [
                         'title' => $this->module->l('REGENERATE'),
                         'icon' => 'process-icon-refresh',
-                        'class' => 'btn btn-default pull-right',
+                        'class' => 'btn btn-danger pull-right',
                         'name' => 'submitRegenerateCarriers',
                         'type' => 'submit',
                     ],
@@ -213,7 +214,22 @@ class AdminDPDBalticsSettingsController extends AbstractAdminController
 
     public function postProcess()
     {
+        $isEditAction = Tools::isSubmit('submitOptionsconfiguration')
+            || Tools::isSubmit('submitRestartOnBoard')
+            || Tools::isSubmit('submitRegenerateCarriers');
+
+        if ($isEditAction && !$this->isTabGranted('edit')) {
+            $this->addPermissionDeniedError('edit');
+            $this->setPasswordPlaceholder();
+
+            return false;
+        }
+
         if (Tools::isSubmit('submitOptionsconfiguration')) {
+            $this->validateWebServiceCredentials();
+        }
+
+        if (Tools::isSubmit('submitOptionsconfiguration') && empty($this->errors)) {
             /** @var ProductService $productService */
             $productService = $this->module->getModuleContainer()->get('invertus.dpdbaltics.service.product.product_service');
             /** @var CarrierUpdateHandler $carrierService */
@@ -255,6 +271,13 @@ class AdminDPDBalticsSettingsController extends AbstractAdminController
             }
         }
 
+        $this->setPasswordPlaceholder();
+
+        return $parentReturn;
+    }
+
+    private function setPasswordPlaceholder()
+    {
         if (Tools::strlen(Configuration::get(Config::WEB_SERVICE_PASSWORD)) > 0) {
             $passwordPlaceholder = $this->getPasswordPlaceholder();
         } else {
@@ -263,8 +286,6 @@ class AdminDPDBalticsSettingsController extends AbstractAdminController
 
         $this->fields_options['web_service_configuration']['fields'][Config::WEB_SERVICE_PASSWORD]['value'] =
             $passwordPlaceholder;
-
-        return $parentReturn;
     }
 
     public function setMedia($isNewTheme = false)
@@ -272,6 +293,34 @@ class AdminDPDBalticsSettingsController extends AbstractAdminController
         parent::setMedia($isNewTheme);
 
         $this->addJS($this->getModuleJSUri() . 'settings_password.js');
+        $this->addJS($this->getModuleJSUri() . 'regenerate_carriers.js');
+
+        Media::addJsDef([
+            'dpdRegenerateCarriersConfirmation' => html_entity_decode(implode("\n\n", [
+                $this->getRegenerateCarriersWarningTitle(),
+                $this->getRegenerateCarriersWarningText(),
+            ]), ENT_QUOTES, 'UTF-8'),
+        ]);
+    }
+
+    private function getRegenerateCarriersWarningTitle()
+    {
+        return $this->module->l('WARNING: You are about to delete all DPD carriers!');
+    }
+
+    private function getRegenerateCarriersWarningText()
+    {
+        return $this->module->l('This action will remove all existing DPD carriers and replace them with newly generated ones. Carrier settings and price rule assignments may have to be set up again. It does not update parcel terminals. Use it only if DPD carriers were deleted by mistake or are not visible in the front office. Proceed only if you are certain about this.');
+    }
+
+    private function getRegenerateCarriersWarningTemplate()
+    {
+        $this->context->smarty->assign([
+            'dangerBlockTitle' => $this->getRegenerateCarriersWarningTitle(),
+            'dangerBlockText' => $this->getRegenerateCarriersWarningText(),
+        ]);
+
+        return $this->context->smarty->fetch($this->module->getLocalPath() . 'views/templates/admin/danger-block.tpl');
     }
 
     private function downloadLogs()
@@ -295,6 +344,82 @@ class AdminDPDBalticsSettingsController extends AbstractAdminController
         Tools::redirectAdmin($this->context->link->getAdminLink(ModuleTabs::ADMIN_SETTINGS_CONTROLLER));
     }
 
+    /**
+     * Checks submitted web service credentials against DPD before they are saved.
+     * An error here stops processUpdateOptions() from saving any option.
+     */
+    private function validateWebServiceCredentials()
+    {
+        if (!Tools::getIsset(Config::WEB_SERVICE_USERNAME)) {
+            return;
+        }
+
+        $choices = $this->fields_options['web_service_configuration']['fields'][Config::WEB_SERVICE_COUNTRY]['choices'];
+        $username = (string) Tools::getValue(Config::WEB_SERVICE_USERNAME);
+        $countryIso = Tools::strtoupper((string) Tools::getValue(Config::WEB_SERVICE_COUNTRY));
+
+        if (!isset($choices[$countryIso]) || !Validate::isGenericName($username)) {
+            return;
+        }
+
+        /** @var WebServiceCredentialsChangeResolver $changeResolver */
+        $changeResolver = $this->module->getModuleContainer()->get('invertus.dpdbaltics.validator.web_service_credentials_change_resolver');
+        $credentials = $changeResolver->resolve(
+            [
+                'username' => $username,
+                'password' => Tools::getValue(Config::WEB_SERVICE_PASSWORD),
+                'country' => $countryIso,
+                'test_mode' => Tools::getValue(Config::SHIPMENT_TEST_MODE),
+            ],
+            [
+                'username' => Config::getUsername(),
+                'password' => Config::getPassword(),
+                'country' => Configuration::get(Config::WEB_SERVICE_COUNTRY),
+                'test_mode' => Configuration::get(Config::SHIPMENT_TEST_MODE),
+            ],
+            $this->getPasswordPlaceholder()
+        );
+
+        if ($credentials === null) {
+            return;
+        }
+
+        /** @var WebServiceCredentialsValidator $credentialsValidator */
+        $credentialsValidator = $this->module->getModuleContainer()->get('invertus.dpdbaltics.validator.web_service_credentials_validator');
+        $result = $credentialsValidator->validate(
+            $credentials['username'],
+            $credentials['password'],
+            $credentials['country'],
+            $credentials['test_mode']
+        );
+
+        $webServiceName = sprintf(
+            $credentials['test_mode'] ? $this->module->l('%s test') : $this->module->l('%s live'),
+            $choices[$countryIso]
+        );
+
+        switch ($result) {
+            case WebServiceCredentialsValidator::WRONG_PASSWORD:
+                $this->errors[] = $this->module->l('Settings were not saved. DPD did not accept the password for this username.');
+                break;
+            case WebServiceCredentialsValidator::UNKNOWN_USER:
+                $this->errors[] = sprintf(
+                    $this->module->l('Settings were not saved. DPD could not find this username on the %s web service. Check that Country and Shipment test mode match your DPD account.'),
+                    $webServiceName
+                );
+                break;
+            case WebServiceCredentialsValidator::REJECTED:
+                $this->errors[] = sprintf(
+                    $this->module->l('Settings were not saved. The %s web service rejected this username and password. Check both, and check that Country and Shipment test mode match your DPD account.'),
+                    $webServiceName
+                );
+                break;
+            case WebServiceCredentialsValidator::UNVERIFIED:
+                $this->warnings[] = $this->module->l('DPD could not be reached to check the web service credentials, so they were saved without a check. Run a parcel shop import to confirm they work.');
+                break;
+        }
+    }
+
     private function getPasswordPlaceholder()
     {
         return html_entity_decode(Config::WEB_SERVICE_PASSWORD_PLACEHOLDER);
@@ -309,7 +434,7 @@ class AdminDPDBalticsSettingsController extends AbstractAdminController
     {
         $passwordPlaceholder = $this->getPasswordPlaceholder();
 
-        if (empty($plainPassword) || $passwordPlaceholder === $plainPassword) {
+        if ((string) $plainPassword === '' || $passwordPlaceholder === $plainPassword) {
             return;
         }
 

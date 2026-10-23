@@ -201,10 +201,10 @@
   text-shadow: 0 0 0 #000;
 }
 
-.search-block-container .dpd-input-wrapper select.form-control:focus, input.form-control:focus {
+.search-block-container .dpd-input-wrapper select.form-control:focus,
+.dpd-input-wrapper input.form-control:focus {
   box-shadow: 0 0 0 2px #2fb5d2;
   outline: none;
-
 }
 
 .dpd-input-wrapper input:not([disabled]):focus ~ .dpd-input-placeholder,

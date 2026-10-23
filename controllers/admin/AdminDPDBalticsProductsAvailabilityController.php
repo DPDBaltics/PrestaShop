@@ -147,6 +147,13 @@ class AdminDPDBalticsProductsAvailabilityController extends AbstractAdminControl
             return parent::postProcess();
         }
 
+        if (!$this->isTabGranted('edit')) {
+            $this->ajaxDie(json_encode([
+                'status' => 0,
+                'error' => $this->getPermissionDeniedMessage('edit'),
+            ]));
+        }
+
         if (!Tools::getValue('buttonName') === 'processSaveProductAvailabilities' ||
             !Tools::getValue('buttonName') === 'processSaveAndStayProductAvailabilities') {
             return true;

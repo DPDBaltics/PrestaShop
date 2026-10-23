@@ -211,3 +211,32 @@
 - Fixed the release build ignoring the declared PHP platform version and resolving untested dependency versions
 - Fixed the pull request indexing and licensing workflow committing a regenerated composer.lock together with its own changes
 - Changed the declared minimum requirements to PHP 7.1 and PrestaShop 1.7.4, which is what the module has required since 2021
+
+## [3.3.3]
+- Fixed home delivery shipments sending a parcel shop ID to DPD, which DPD can reject with "PUDO id is provided but main service type is not PUDO"
+- Fixed checkout dropdowns in the DPD carrier block being cut off and unusable on the Hummingbird theme
+- Fixed the customer return label page failing with a fatal error since 3.3.0
+- Fixed the return label being available to any visitor for any order: only the logged-in customer who placed the order can get it, and only when the return service is enabled, the order is delivered and it has a DPD shipment
+- Fixed the return button showing to guests and on orders without a DPD shipment
+- Fixed slow back office order page, checkout pickup point step and pickup point re-import on shops with many imported countries, caused by missing pickup point table indexes on installs and resets since 3.2.22
+- Fixed DPD error messages in the back office running HTML or script code that DPD echoed back from order data; label printing, return label, courier and collection request, parcel shop import and order list messages now show them as plain text
+- Changed the order list bulk label error to separate orders with "; " instead of an HTML line break
+- Added a red warning and a confirmation prompt to DPD carrier regeneration, which deletes and recreates all DPD carriers
+- Fixed web service credentials being saved without a check. A username, password or Country that DPD rejects is now refused on the settings page with a message that names the cause
+- Fixed back office actions ignoring employee permissions, so a view-only employee can no longer change DPD settings, start imports, change pickup points or create DPD shipments
+- Added a "Maximum weight of a single product" shipment setting that hides DPD carriers at checkout when any product in the cart is heavier than the limit
+- Fixed the ZIP import leaving every file from the uploaded ZIP in the module folder; only the expected CSV files are now extracted to a private temp folder and deleted after the import, and the update removes files left by older versions
+- Fixed a code quality warning in the checkout delivery step validation
+- Fixed courier requests with an empty or zero weight or parcel count being sent to DPD, which rejected them with "No items to pick up." or "Parameter 'weight' is null". The form now explains what to correct before anything is sent
+- Improved shipment creation error message to be a clear, readable sentence
+- Improved DPD API authentication error to explain that the API credentials in Basic Settings were rejected
+- Fixed shipment creation error messages not being translated to the shop language
+- Fixed module checkout CSS overriding theme focus styles on personal information and address form fields
+- Fixed checkout pickup point selection returning a 500 error when the selected city and street do not match an imported pickup point
+- Fixed pickup point error messages not being displayed in checkout when a request fails
+- Fixed pick-up point import reporting any server error as "this country has many pick-up points", which hid the real failure
+- Fixed the suggested cron command to target the selected country instead of updating every country
+- Improved pickup point import to warn when DPD returns 0 points and keep existing points instead of reporting a false success
+- Changed the courier request pick-up time to a date and "from"/"until" time slots that DPD accepts, so DPD no longer rejects requests for an unsupported pick-up time
+- Fixed the courier request page crashing on PHP 8 when DPD answers with its new JSON response
+- Fixed courier requests that DPD accepted being shown as an error and not saved

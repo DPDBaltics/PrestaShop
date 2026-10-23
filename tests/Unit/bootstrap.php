@@ -22,3 +22,7 @@
 $projectDir = __DIR__ . '/../../';
 
 require_once $projectDir . 'vendor/autoload.php';
+
+if (!defined('_PS_VERSION_')) {
+    define('_PS_VERSION_', '8.2.7');
+}

@@ -218,3 +218,4 @@
 - Fixed the customer return label page failing with a fatal error since 3.3.0
 - Fixed the return label being available to any visitor for any order: only the logged-in customer who placed the order can get it, and only when the return service is enabled, the order is delivered and it has a DPD shipment
 - Fixed the return button showing to guests and on orders without a DPD shipment
+- Fixed slow back office order page, checkout pickup point step and pickup point re-import on shops with many imported countries, caused by missing pickup point table indexes on installs and resets since 3.2.22

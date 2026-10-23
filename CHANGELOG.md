@@ -228,3 +228,6 @@
 - Fixed the ZIP import leaving every file from the uploaded ZIP in the module folder; only the expected CSV files are now extracted to a private temp folder and deleted after the import, and the update removes files left by older versions
 - Fixed a code quality warning in the checkout delivery step validation
 - Fixed courier requests with an empty or zero weight or parcel count being sent to DPD, which rejected them with "No items to pick up." or "Parameter 'weight' is null". The form now explains what to correct before anything is sent
+- Improved shipment creation error message to be a clear, readable sentence
+- Improved DPD API authentication error to explain that the API credentials in Basic Settings were rejected
+- Fixed shipment creation error messages not being translated to the shop language

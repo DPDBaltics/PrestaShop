@@ -217,6 +217,11 @@ div.form-control-chosen:focus-within {
   min-width: 100px;
 }
 
+/* Hummingbird clips carrier extra content to animate its height, lift the clip only while a dropdown is open */
+.delivery-option__extra:has(.chosen-container.chosen-with-drop) {
+  overflow: visible;
+}
+
 @media screen and (max-width: 1025px) {
   .dpd-checkout-pickup-container .search-block-container select {
     max-width: 100%;

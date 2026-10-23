@@ -214,3 +214,4 @@
 
 ## [3.3.3]
 - Fixed home delivery shipments sending a parcel shop ID to DPD, which DPD can reject with "PUDO id is provided but main service type is not PUDO"
+- Fixed checkout dropdowns in the DPD carrier block being cut off and unusable on the Hummingbird theme

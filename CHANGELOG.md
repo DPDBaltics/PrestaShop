@@ -234,3 +234,5 @@
 - Fixed module checkout CSS overriding theme focus styles on personal information and address form fields
 - Fixed checkout pickup point selection returning a 500 error when the selected city and street do not match an imported pickup point
 - Fixed pickup point error messages not being displayed in checkout when a request fails
+- Fixed pick-up point import reporting any server error as "this country has many pick-up points", which hid the real failure
+- Fixed the suggested cron command to target the selected country instead of updating every country

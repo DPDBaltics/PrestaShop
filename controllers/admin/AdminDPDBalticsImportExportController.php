@@ -76,7 +76,11 @@ class AdminDPDBalticsImportExportController extends AbstractAdminController
                     $this->context->link->getAdminLink(ModuleTabs::ADMIN_AJAX_CONTROLLER),
                 'successMessage' => $this->module->l('Parcels successfully updated'),
                 'failMessage' => $this->module->l('Parcels update failed'),
-                'countryId' => Tools::getValue('DPD_PARCEL_IMPORT_COUNTRY_SELECTOR')
+                'serverErrorMessage' => $this->module->l('The import failed on the server. Check the DPD logs page for the full error.'),
+                'countryId' => Tools::getValue('DPD_PARCEL_IMPORT_COUNTRY_SELECTOR'),
+                'countryIso' => Country::getIsoById(
+                    (int) Tools::getValue('DPD_PARCEL_IMPORT_COUNTRY_SELECTOR')
+                )
             ]);
 
             $this->addJS($this->getModuleJSUri() . 'import/import_parcels.js');

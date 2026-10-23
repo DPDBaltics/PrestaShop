@@ -349,6 +349,20 @@ class AdminDPDBalticsCourierRequestController extends AbstractAdminController
             /** @var CourierRequestData $courierRequestObj */
             $courierRequestObj = $formDataConverter->convertCourierRequestFormDataToCourierRequestObj($data);
 
+            $isWeightValid = $courierRequestValidator->validateWeight($courierRequestObj);
+            if (!$isWeightValid) {
+                $this->errors[] = $this->module->l('Weight must be a number greater than 0. Use a dot for decimals, for example 0.5.');
+            }
+
+            $isParcelsCountValid = $courierRequestValidator->validateParcelsCount($courierRequestObj);
+            if (!$isParcelsCountValid) {
+                $this->errors[] = $this->module->l('Parcel(s) count must be a whole number greater than 0.');
+            }
+
+            if (!$isWeightValid || !$isParcelsCountValid) {
+                return parent::postProcess();
+            }
+
             $countryIso = Configuration::get(Config::WEB_SERVICE_COUNTRY);
             if (!$courierRequestValidator->validate($courierRequestObj, $countryIso)) {
                 $this->errors[] = sprintf(

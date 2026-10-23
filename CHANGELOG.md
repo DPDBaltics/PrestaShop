@@ -227,3 +227,4 @@
 - Added a "Maximum weight of a single product" shipment setting that hides DPD carriers at checkout when any product in the cart is heavier than the limit
 - Fixed the ZIP import leaving every file from the uploaded ZIP in the module folder; only the expected CSV files are now extracted to a private temp folder and deleted after the import, and the update removes files left by older versions
 - Fixed a code quality warning in the checkout delivery step validation
+- Fixed courier requests with an empty or zero weight or parcel count being sent to DPD, which rejected them with "No items to pick up." or "Parameter 'weight' is null". The form now explains what to correct before anything is sent

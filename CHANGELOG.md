@@ -213,4 +213,4 @@
 - Changed the declared minimum requirements to PHP 7.1 and PrestaShop 1.7.4, which is what the module has required since 2021
 
 ## [3.3.3]
-- Fixed "Variable $isSameDayDelivery might not be defined" static analysis warning in the checkout delivery step validation
+- Fixed a code quality warning in the checkout delivery step validation

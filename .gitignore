@@ -6,3 +6,5 @@
 config.xml
 .DS_Store
 *.zip
+/build
+php-scoper.phar

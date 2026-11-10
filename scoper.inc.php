@@ -63,15 +63,8 @@ return [
 
     'exclude-files' => [
         'vendor/autoload.php',
-        'vendor/composer/autoload_real.php',
         'vendor/composer/autoload_static.php',
         'vendor/composer/autoload_classmap.php',
-        'vendor/composer/autoload_files.php',
-        'vendor/composer/autoload_namespaces.php',
         'vendor/composer/autoload_psr4.php',
-        'vendor/composer/ClassLoader.php',
-        'vendor/composer/InstalledVersions.php',
-        'vendor/composer/installed.php',
-        'vendor/composer/platform_check.php',
     ],
 ];

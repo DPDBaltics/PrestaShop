@@ -27,7 +27,6 @@ else
     echo "${PHP_SCOPER_SHA256}  ${PHP_SCOPER_PHAR}" | shasum -a 256 -c -
 fi
 
-rm -rf build
 php "$PHP_SCOPER_PHAR" add-prefix --output-dir=build --force --no-interaction
 rm -f build/composer.json
 (cd build && tar cf - .) | tar xf -

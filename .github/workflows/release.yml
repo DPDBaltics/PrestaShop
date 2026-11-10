@@ -18,8 +18,7 @@ jobs:
           tools: composer:v2
       - name: build
         run: |
-          composer install --no-dev --optimize-autoloader --classmap-authoritative
-          composer dump-autoload --no-dev --optimize --classmap-authoritative
+          composer install --no-dev
           bash scripts/scope-vendor.sh
           rm -rf scripts scoper.inc.php
           rm -rf .git

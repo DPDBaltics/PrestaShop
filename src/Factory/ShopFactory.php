@@ -48,19 +48,11 @@ class ShopFactory
     public function createShop(array $shops)
     {
         $shopsArray = [];
+        $openingHoursByShopId = $this->getOpeningHoursByShopId($shops);
         foreach ($shops as $shop) {
-            $workHoursArray = [];
-            $workHours = $this->parcelShopRepository->getShopWorkHoursByShopId($shop['parcel_shop_id']);
-            foreach ($workHours as $workHour) {
-                $workHourObj = new OpeningHours(
-                    $workHour['week_day'],
-                    $workHour['open_morning'],
-                    $workHour['close_morning'],
-                    $workHour['close_afternoon'],
-                    $workHour['open_afternoon']
-                );
-                $workHoursArray[] = $workHourObj;
-            }
+            $workHoursArray = isset($openingHoursByShopId[$shop['parcel_shop_id']])
+                ? $openingHoursByShopId[$shop['parcel_shop_id']]
+                : [];
 
             $shopObj = new ParcelShop();
             $shopObj->setParcelShopId($shop['parcel_shop_id']);
@@ -78,5 +70,29 @@ class ShopFactory
         }
 
         return $shopsArray;
+    }
+
+    private function getOpeningHoursByShopId(array $shops)
+    {
+        if (empty($shops)) {
+            return [];
+        }
+
+        $workHours = $this->parcelShopRepository->getShopWorkHoursByShopIds(
+            array_column($shops, 'parcel_shop_id')
+        );
+
+        $openingHoursByShopId = [];
+        foreach ($workHours as $workHour) {
+            $openingHoursByShopId[$workHour['parcel_shop_id']][] = new OpeningHours(
+                $workHour['week_day'],
+                $workHour['open_morning'],
+                $workHour['close_morning'],
+                $workHour['close_afternoon'],
+                $workHour['open_afternoon']
+            );
+        }
+
+        return $openingHoursByShopId;
     }
 }

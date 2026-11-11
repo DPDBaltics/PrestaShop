@@ -77,11 +77,6 @@ class ParcelShopRepository extends AbstractEntityRepository
         return $this->db->executeS($query);
     }
 
-    /**
-     * @param string[] $parcelShopIds
-     *
-     * @return array
-     */
     public function getShopWorkHoursByShopIds(array $parcelShopIds)
     {
         if (empty($parcelShopIds)) {

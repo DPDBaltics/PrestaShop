@@ -72,11 +72,6 @@ class ShopFactory
         return $shopsArray;
     }
 
-    /**
-     * @param array $shops
-     *
-     * @return array<string, OpeningHours[]>
-     */
     private function getOpeningHoursByShopId(array $shops)
     {
         if (empty($shops)) {

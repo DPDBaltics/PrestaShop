@@ -214,4 +214,4 @@
 
 ## [3.3.3]
 - Fixed the receiver zones box missing on the pricing rule form, so rules could not be saved, on shops whose modules folder is reached through a linked or aliased server path
-- Fixed the courier request, collection request and address template scripts being skipped on the same shops
+- Fixed the courier request and collection request form scripts, and the shop search box on address templates, being skipped on the same shops

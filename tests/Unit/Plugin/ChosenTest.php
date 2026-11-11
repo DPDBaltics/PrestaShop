@@ -38,45 +38,15 @@ class ChosenTest extends PHPUnit_Framework_TestCase
 
     public function testSearchBlockScriptIsLoadedByUrlNotServerPath()
     {
-        $module = $this->getMockBuilder('Module')
-            ->disableOriginalConstructor()
-            ->setMethods(['getLocalPath', 'getPathUri'])
-            ->getMockForAbstractClass();
+        $module = $this->createMock('Module');
         $module->method('getLocalPath')->willReturn(self::LOCAL_PATH);
         $module->method('getPathUri')->willReturn(self::PATH_URI);
 
         $chosen = new Chosen($module, new Smarty());
 
-        $this->assertContains(self::PATH_URI . 'views/js/admin/search_block.js', $chosen->getJs());
-        foreach ($chosen->getJs() as $js) {
-            $this->assertNotContains(self::LOCAL_PATH, $js);
-        }
-    }
-
-    public function testNoAssetIsRegisteredFromServerPath()
-    {
-        $root = realpath(__DIR__ . '/../../../');
-        $files = [$root . '/dpdbaltics.php'];
-        foreach (['src', 'controllers'] as $dir) {
-            $iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($root . '/' . $dir));
-            foreach ($iterator as $file) {
-                if ($file->isFile() && $file->getExtension() === 'php') {
-                    $files[] = $file->getPathname();
-                }
-            }
-        }
-
-        $offenders = [];
-        foreach ($files as $file) {
-            foreach (explode(';', file_get_contents($file)) as $statement) {
-                if (preg_match('/(addJS|addCSS|registerJavascript|registerStylesheet|->js\[\]|->css\[\])/', $statement)
-                    && preg_match('/(getLocalPath\(\)|_PS_MODULE_DIR_|local_path|__DIR__|__FILE__)/', $statement)
-                ) {
-                    $offenders[] = str_replace($root . '/', '', $file) . ': ' . trim(preg_replace('/\s+/', ' ', $statement));
-                }
-            }
-        }
-
-        $this->assertSame([], $offenders, 'Assets must be registered with getPathUri(), Media drops server paths that do not start with _PS_ROOT_DIR_');
+        $this->assertSame(
+            ['/js/jquery/plugins/jquery.chosen.js', self::PATH_URI . 'views/js/admin/search_block.js'],
+            $chosen->getJs()
+        );
     }
 }

@@ -342,7 +342,7 @@ class AdminDPDBalticsCollectionRequestController extends AbstractAdminController
         if (Tools::isSubmit('adddpd_collection_request')
             || Tools::isSubmit('updatedpd_collection_request')
             || Tools::isSubmit('submitAdddpd_collection_request')) {
-            $this->addJS($this->module->getPathUri() . 'views/js/admin/collection_request.js');
+            $this->addJS($this->getModuleJSUri() . 'collection_request.js');
 
             Media::addJsDef([
                 'dpdAjaxUrl' =>

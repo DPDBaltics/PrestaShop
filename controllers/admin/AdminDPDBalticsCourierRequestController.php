@@ -303,7 +303,7 @@ class AdminDPDBalticsCourierRequestController extends AbstractAdminController
         if (Tools::isSubmit('adddpd_courier_request')
             || Tools::isSubmit('updatedpd_courier_request')
             || Tools::isSubmit('submitAdddpd_courier_request')) {
-            $this->addJS($this->module->getPathUri() . 'views/js/admin/courier_request.js');
+            $this->addJS($this->getModuleJSUri() . 'courier_request.js');
 
             Media::addJsDef([
                 'dpdAjaxUrl' =>

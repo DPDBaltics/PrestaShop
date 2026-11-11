@@ -101,7 +101,6 @@ class AdminDPDBalticsAddressTemplateController extends AbstractAdminController
             || Tools::isSubmit('updatedpd_address_template')
             || Tools::isSubmit('submitAdddpd_address_template')
         ) {
-            $this->addJS($this->module->getLocalPath() . 'views/js/admin/zip_code_hint.js');
             $this->addJS($this->module->getPathUri() . 'views/js/admin/addresses.js');
 
             Media::addJsDef([

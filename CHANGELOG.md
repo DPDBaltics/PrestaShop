@@ -211,3 +211,7 @@
 - Fixed the release build ignoring the declared PHP platform version and resolving untested dependency versions
 - Fixed the pull request indexing and licensing workflow committing a regenerated composer.lock together with its own changes
 - Changed the declared minimum requirements to PHP 7.1 and PrestaShop 1.7.4, which is what the module has required since 2021
+
+## [3.3.3]
+- Fixed the receiver zones box missing on the pricing rule form, so rules could not be saved, on shops whose modules folder is reached through a linked or aliased server path
+- Fixed the courier request and collection request form scripts, and the shop search box on address templates, being skipped on the same shops

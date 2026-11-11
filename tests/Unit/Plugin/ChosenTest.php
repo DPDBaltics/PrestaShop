@@ -18,48 +18,23 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
  */
 
-if (!defined('_PS_VERSION_')) {
-    define('_PS_VERSION_', '9.1.3');
-}
-
-if (!class_exists('Media')) {
-    class Media
-    {
-        public static function getJqueryPluginPath($name)
-        {
-            return [
-                'js' => '/js/jquery/plugins/jquery.' . $name . '.js',
-                'css' => ['/js/jquery/plugins/' . $name . '/jquery.' . $name . '.css' => 'all'],
-            ];
-        }
-    }
-}
-
-if (!class_exists('Module')) {
-    abstract class Module
-    {
-        public function getLocalPath()
-        {
-        }
-
-        public function getPathUri()
-        {
-        }
-    }
-}
-
-if (!class_exists('Smarty')) {
-    class Smarty
-    {
-    }
-}
-
 use Invertus\dpdBaltics\Plugin\SearchBox\Chosen;
 
+/**
+ * Runs in a separate process so the PrestaShop stubs never reach other tests.
+ *
+ * @runTestsInSeparateProcesses
+ * @preserveGlobalState disabled
+ */
 class ChosenTest extends PHPUnit_Framework_TestCase
 {
     const LOCAL_PATH = '/var/www/shop-alias/modules/dpdbaltics/';
     const PATH_URI = '/modules/dpdbaltics/';
+
+    protected function setUp()
+    {
+        require_once __DIR__ . '/ChosenStubs.php';
+    }
 
     public function testSearchBlockScriptIsLoadedByUrlNotServerPath()
     {
@@ -94,7 +69,9 @@ class ChosenTest extends PHPUnit_Framework_TestCase
         $offenders = [];
         foreach ($files as $file) {
             foreach (explode(';', file_get_contents($file)) as $statement) {
-                if (preg_match('/(getLocalPath\(\)|_PS_MODULE_DIR_|local_path)[^;]*\.(js|css)[\'"]/', $statement)) {
+                if (preg_match('/(addJS|addCSS|registerJavascript|registerStylesheet|->js\[\]|->css\[\])/', $statement)
+                    && preg_match('/(getLocalPath\(\)|_PS_MODULE_DIR_|local_path|__DIR__|__FILE__)/', $statement)
+                ) {
                     $offenders[] = str_replace($root . '/', '', $file) . ': ' . trim(preg_replace('/\s+/', ' ', $statement));
                 }
             }

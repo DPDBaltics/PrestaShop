@@ -211,3 +211,6 @@
 - Fixed the release build ignoring the declared PHP platform version and resolving untested dependency versions
 - Fixed the pull request indexing and licensing workflow committing a regenerated composer.lock together with its own changes
 - Changed the declared minimum requirements to PHP 7.1 and PrestaShop 1.7.4, which is what the module has required since 2021
+
+## [3.3.3]
+- Fixed slow checkout delivery step when a pickup point carrier is shown, by loading the opening hours of all pickup points in a city with one query instead of one query per pickup point

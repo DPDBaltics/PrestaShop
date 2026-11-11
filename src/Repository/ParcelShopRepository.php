@@ -77,6 +77,32 @@ class ParcelShopRepository extends AbstractEntityRepository
         return $this->db->executeS($query);
     }
 
+    /**
+     * @param string[] $parcelShopIds
+     *
+     * @return array
+     */
+    public function getShopWorkHoursByShopIds(array $parcelShopIds)
+    {
+        if (empty($parcelShopIds)) {
+            return [];
+        }
+
+        $escapedIds = array_map(function ($parcelShopId) {
+            return '"' . pSQL($parcelShopId) . '"';
+        }, array_unique($parcelShopIds));
+
+        $query = new DbQuery();
+        $query->select('*');
+        $query->from('dpd_shop_work_hours', 's');
+        $query->where('s.`parcel_shop_id` IN (' . implode(',', $escapedIds) . ')');
+        $query->orderBy('s.`id_dpd_shop_work_hours` ASC');
+
+        $result = $this->db->executeS($query);
+
+        return is_array($result) ? $result : [];
+    }
+
     public function getAllCitiesByCountryCode($countryCode)
     {
         $query = new DbQuery();

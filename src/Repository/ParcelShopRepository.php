@@ -69,12 +69,7 @@ class ParcelShopRepository extends AbstractEntityRepository
 
     public function getShopWorkHoursByShopId($parcelShopId)
     {
-        $query = new DbQuery();
-        $query->select('*');
-        $query->from('dpd_shop_work_hours', 's');
-        $query->where('s.`parcel_shop_id` = "' . pSQL($parcelShopId) . '"');
-
-        return $this->db->executeS($query);
+        return $this->getShopWorkHoursByShopIds([$parcelShopId]);
     }
 
     public function getShopWorkHoursByShopIds(array $parcelShopIds)
@@ -93,9 +88,7 @@ class ParcelShopRepository extends AbstractEntityRepository
         $query->where('s.`parcel_shop_id` IN (' . implode(',', $escapedIds) . ')');
         $query->orderBy('s.`id_dpd_shop_work_hours` ASC');
 
-        $result = $this->db->executeS($query);
-
-        return is_array($result) ? $result : [];
+        return $this->db->executeS($query) ?: [];
     }
 
     public function getAllCitiesByCountryCode($countryCode)

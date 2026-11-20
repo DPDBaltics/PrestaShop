@@ -214,6 +214,7 @@
 
 ## [3.3.3]
 - Fixed slow checkout delivery step when a pickup point carrier is shown, by loading the opening hours of all pickup points in a city with one query instead of one query per pickup point
+- Fixed the release zip shipping hidden version-control folders in bundled libraries, whose read-only files could make a back office upgrade fail with "Permission denied"
 - Fixed home delivery shipments sending a parcel shop ID to DPD, which DPD can reject with "PUDO id is provided but main service type is not PUDO"
 - Fixed checkout dropdowns in the DPD carrier block being cut off and unusable on the Hummingbird theme
 - Fixed the customer return label page failing with a fatal error since 3.3.0

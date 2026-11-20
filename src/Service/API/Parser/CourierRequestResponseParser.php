@@ -23,6 +23,10 @@ namespace Invertus\dpdBaltics\Service\API\Parser;
 
 use Invertus\dpdBaltics\Config\Config;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class CourierRequestResponseParser
 {
     /**

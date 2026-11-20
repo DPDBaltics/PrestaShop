@@ -456,23 +456,18 @@ class AdminDPDBalticsImportExportController extends AbstractAdminController
                 case Config::IMPORT_EXPORT_OPTION_ZONES:
                     /** @var ZoneImport */
                     return $this->module->getModuleContainer('invertus.dpdbaltics.service.import.zone_import');
-                    break;
                 case Config::IMPORT_EXPORT_OPTION_SETTINGS:
                     /** @var ZoneImport */
                     return $this->module->getModuleContainer('invertus.dpdbaltics.service.import.settings_import');
-                    break;
                 case Config::IMPORT_EXPORT_OPTION_PRICE_RULES:
                     /** @var PriceRulesImport */
                     return $this->module->getModuleContainer('invertus.dpdbaltics.service.import.price_rules_import');
-                    break;
                 case Config::IMPORT_EXPORT_OPTION_ADDRESS_TEMPLATES:
                     /** @var AddressTemplatesImport */
                     return $this->module->getModuleContainer('invertus.dpdbaltics.service.import.address_templates_import');
-                    break;
                 case Config::IMPORT_EXPORT_OPTION_PRODUCTS:
                     /** @var ProductImport */
                     return $this->module->getModuleContainer('invertus.dpdbaltics.service.import.product_import');
-                    break;
                 default:
                     $this->errors[] = $this->module->l('Invalid export option selected');
                     return;

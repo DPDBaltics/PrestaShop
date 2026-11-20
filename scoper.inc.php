@@ -61,6 +61,12 @@ return [
         '~^(?!Unirest(\\\\|$))~i',
     ],
 
+    'patchers' => [
+        static function (string $filePath, string $prefix, string $contents): string {
+            return preg_replace('/\A<\?php\R\R+(?=\/\*\*)/', "<?php\n", $contents, 1);
+        },
+    ],
+
     'exclude-files' => [
         'vendor/autoload.php',
         'vendor/composer/autoload_static.php',

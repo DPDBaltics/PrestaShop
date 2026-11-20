@@ -40,6 +40,10 @@ use Symfony\Component\Console\Output\OutputInterface;
  * Cron setup (daily at 2 AM):
  *   0 2 * * * cd /var/www/html && php bin/console dpdbaltics:update-parcel-shops --all
  */
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class UpdateParcelShopsCommand extends Command
 {
     protected static $defaultName = 'dpdbaltics:update-parcel-shops';

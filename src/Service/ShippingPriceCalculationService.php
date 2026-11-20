@@ -22,7 +22,7 @@ namespace Invertus\dpdBaltics\Service;
 
 use Address;
 use Cart;
-use Context;
+use Invertus\dpdBaltics\Factory\ContextFactory;
 use Invertus\dpdBaltics\Repository\PriceRuleRepository;
 
 if (!defined('_PS_VERSION_')) {
@@ -67,7 +67,7 @@ class ShippingPriceCalculationService
         $result = $this->priceRuleService->applyPriceRuleForCarrier(
             $cart,
             $priceRulesIds,
-            Context::getContext()->shop->id
+            ContextFactory::getShop()->id
         );
 
         if (!$result) {

@@ -20,6 +20,10 @@
 
 namespace Invertus\dpdBaltics\Validate;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 interface ValidatorInterface
 {
     public function validate(): bool;

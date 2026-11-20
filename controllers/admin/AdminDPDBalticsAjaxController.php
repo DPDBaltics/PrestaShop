@@ -12,11 +12,13 @@
 
 use Invertus\dpdBaltics\Config\Config;
 use Invertus\dpdBaltics\Controller\AbstractAdminController;
+use Invertus\dpdBaltics\Infrastructure\Bootstrap\ModuleTabs;
 use Invertus\dpdBaltics\Service\API\ParcelShopSearchApiService;
 use Invertus\dpdBaltics\Service\Import\API\ParcelShopImport;
 use Invertus\dpdBaltics\Service\Import\ImportMainZone;
 use Invertus\dpdBaltics\Service\Parcel\ParcelUpdateService;
 use Invertus\dpdBaltics\Service\PudoService;
+use Invertus\dpdBaltics\Util\StringUtility;
 use Invertus\dpdBalticsApi\Api\DTO\Response\ParcelShopSearchResponse;
 
 require_once dirname(__DIR__).'/../vendor/autoload.php';
@@ -27,6 +29,18 @@ if (!defined('_PS_VERSION_')) {
 
 class AdminDPDBalticsAjaxController extends AbstractAdminController
 {
+    public function postProcess()
+    {
+        if ($this->ajax && !$this->isTabGranted('edit', ModuleTabs::ADMIN_IMPORT_EXPORT_CONTROLLER)) {
+            $this->ajaxDie(json_encode([
+                'success' => false,
+                'error' => $this->getPermissionDeniedMessage('edit'),
+            ]));
+        }
+
+        return parent::postProcess();
+    }
+
     public function ajaxProcessImportZones()
     {
         /** @var ImportMainZone $importOnLoginService */
@@ -67,6 +81,9 @@ class AdminDPDBalticsAjaxController extends AbstractAdminController
 
         try {
             $result = $parcelShopImport->importParcelShops($countryIso);
+            if (isset($result['error'])) {
+                $result['error'] = StringUtility::escapeHtml($result['error']);
+            }
             $this->ajaxDie(json_encode($result));
         } catch (\Exception $e) {
             $this->handleImportError($e, $countryIso);
@@ -93,9 +110,9 @@ class AdminDPDBalticsAjaxController extends AbstractAdminController
         } else {
             $this->ajaxDie(json_encode([
                 'success' => false,
-                'error' => $e instanceof \Error
+                'error' => StringUtility::escapeHtml($e instanceof \Error
                     ? 'PHP Error: ' . $errorMsg
-                    : 'Error: ' . $errorMsg
+                    : 'Error: ' . $errorMsg)
             ]));
         }
     }

@@ -129,6 +129,7 @@ class Config
 
     const IS_CANCEL_BUTTON_DEFAULT = false;
     const PARCEL_DISTRIBUTION = 'DPD_PARCEL_DISTRIBUTION';
+    const MAX_PRODUCT_WEIGHT = 'DPD_MAX_PRODUCT_WEIGHT';
 
     const PARCEL_TRACKING = 'DPD_PARCEL_TRACKING';
     const SECRET_TEST_MODE = 'DPD_SECRET_TEST_MODE';
@@ -151,6 +152,9 @@ class Config
     const API_COURIER_REQUEST_SUCCESS_STATUS = '<p>DONE';
     const API_COLLECTION_REQUEST_ERROR_STATUS = '402 Error:';
     const API_COURIER_REQUEST_ERROR_STATUS = '402 Error:';
+
+    /** The "level" value the live JSON API uses to say a courier request failed. */
+    const API_COURIER_REQUEST_JSON_ERROR_LEVEL = 'error';
     const API_RESPONSE_ERROR_STATUS = 'err';
     const RETURN_TEMPLATE_DEFAULT_ID = 1;
 
@@ -249,6 +253,13 @@ class Config
 
     const COURIER_SAME_DAY_TIME_LIMITATION = '15:00';
     const COURIER_SAME_DAY_TIME_ADDITIONAL_MINUTES = '30';
+
+    const COURIER_PICKUP_TIME_FROM_SLOTS = [
+        '08:00', '09:00', '10:00', '11:00', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00',
+    ];
+    const COURIER_PICKUP_TIME_TO_SLOTS = ['15:00', '16:00', '17:00', '18:00'];
+    const COURIER_DEFAULT_PICKUP_TIME_FROM_SLOT = '08:00';
+    const COURIER_DEFAULT_PICKUP_TIME_TO_SLOT = '17:00';
 
     const SAME_DAY_DELIVERY_CITY =  'Rīga';
     const DOCUMENT_RETURN_CODE = '-DOCRET';

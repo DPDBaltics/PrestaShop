@@ -43,6 +43,7 @@ use Invertus\ViaBill\Adapter\Context;
 use Language;
 use Smarty;
 use Tools;
+use Validate;
 
 if (!defined('_PS_VERSION_')) {
     exit;
@@ -325,12 +326,20 @@ class PudoService
         /** @var DPDShop $pudo */
         $pudo = DPDShop::getShopByPudoId($pudoId);
 
+        if (!Validate::isLoadedObject($pudo)) {
+            return [];
+        }
+
         $parcelShops = $this->parcelShopRepository->getClosestPudoShops(
             $pudo->longitude,
             $pudo->latitude,
             Config::PARCEL_SHOP_MAP_DISTANCE,
             Config::PARCEL_SHOP_MAP_POINTS_LIMIT
         );
+
+        if (!is_array($parcelShops)) {
+            return [];
+        }
 
         return $this->shopFactory->createShop($parcelShops);
     }

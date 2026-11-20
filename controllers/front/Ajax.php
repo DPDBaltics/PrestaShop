@@ -334,15 +334,20 @@ class DpdBalticsAjaxModuleFrontController extends AbstractFrontController
 
         $pudoId = $pudoService->getPudoIdByCityAndAddress($city, $street);
         $parcelShops = $pudoService->getClosestParcelShops($pudoId);
-        $coordinates = [];
-        $selectedPudo = null;
-        if (isset($parcelShops[0])) {
-            $coordinates = [
-                'lat' => $parcelShops[0]->getLatitude(),
-                'lng' => $parcelShops[0]->getLongitude(),
-            ];
-            $selectedPudo = $parcelShops[0];
+
+        if (!isset($parcelShops[0])) {
+            $this->messages[] = $this->module->l('No pickup points found for the selected address.', self::FILENAME);
+            $this->ajaxDie(json_encode([
+                'template' => $this->getMessageTemplate('danger'),
+                'status' => false
+            ]));
         }
+
+        $selectedPudo = $parcelShops[0];
+        $coordinates = [
+            'lat' => $selectedPudo->getLatitude(),
+            'lng' => $selectedPudo->getLongitude(),
+        ];
         $pudoServices = $pudoService->setPudoServiceTypes($parcelShops);
         $pudoServices = $pudoService->formatPudoServicesWorkHours($pudoServices);
 

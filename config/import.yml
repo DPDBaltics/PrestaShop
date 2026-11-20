@@ -56,3 +56,7 @@ services:
     arguments:
       - '@dpdbaltics'
       - '@smarty'
+      - '@invertus.dpdbaltics.service.import.import_zip_extractor'
+
+  invertus.dpdbaltics.service.import.import_zip_extractor:
+    class: 'Invertus\dpdBaltics\Service\Import\ImportZipExtractor'

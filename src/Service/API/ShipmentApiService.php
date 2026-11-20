@@ -158,7 +158,7 @@ class ShipmentApiService
             $shipmentCreationRequest->setRemark(StringUtility::removeSpecialCharacters($trimmedRemarkMessage));
         }
 
-        if ($shipmentData->getSelectedPudoId()) {
+        if ($dpdProduct->is_pudo && $shipmentData->getSelectedPudoId()) {
             $shipmentCreationRequest = $this->setPudoData($shipmentCreationRequest, $shipmentData);
         }
 

@@ -71,13 +71,24 @@ class ZipImport
     private $smarty;
 
     /**
+     * @var ImportZipExtractor
+     */
+    private $zipExtractor;
+
+    /**
+     * @var string|false
+     */
+    private $importDir = false;
+
+    /**
      * DPDZoneRangeValidate constructor.
      * @param DPDBaltics $module
      */
-    public function __construct(DPDBaltics $module, Smarty $smarty)
+    public function __construct(DPDBaltics $module, Smarty $smarty, ImportZipExtractor $zipExtractor)
     {
         $this->module = $module;
         $this->smarty = $smarty;
+        $this->zipExtractor = $zipExtractor;
     }
 
     public function importAllFromZip()
@@ -102,8 +113,26 @@ class ZipImport
             return;
         }
 
-        $this->clearTmpDir('import');
-        Tools::ZipExtract($file, $this->module->getLocalPath() . 'tmp/import');
+        try {
+            $this->importDir = $this->zipExtractor->extract($file);
+
+            return $this->importExtractedFiles();
+        } finally {
+            $this->zipExtractor->remove($this->importDir);
+            $this->importDir = false;
+        }
+    }
+
+    private function importExtractedFiles()
+    {
+        $types = $this->returnImportedTypes();
+
+        if (!$types) {
+            $this->errors[] = $this->module->l(
+                'Import ZIP was not extracted correctly. Check ZIP file structure.'
+            );
+            return false;
+        }
 
         $db = Db::getInstance();
         // wrap import in transaction
@@ -115,15 +144,6 @@ class ZipImport
         $commit = true;
         if (Tools::getValue(Config::IMPORT_DELETE_OLD_DATA)) {
             $this->deleteOldDataZip();
-        }
-
-        $types = $this->returnImportedTypes();
-
-        if (!$types) {
-            $this->errors[] = $this->module->l(
-                'Import ZIP was not extracted correctly. Check ZIP file structure.'
-            );
-            return;
         }
 
         foreach ($types as $type) {
@@ -145,8 +165,6 @@ class ZipImport
             $db->execute('COMMIT');
         }
 
-        $this->clearTmpDir('import');
-
         return $commit;
     }
 
@@ -157,14 +175,17 @@ class ZipImport
      */
     private function getTempImportFile($fileType)
     {
-        $csvFiles = glob($this->module->getLocalPath() . 'tmp/import/*.csv');
+        if (!$this->importDir) {
+            return false;
+        }
+
+        $csvFiles = glob($this->importDir . '/*.csv');
         if (!$csvFiles) {
             return false;
         }
 
         foreach ($csvFiles as $csvFile) {
-            $parts = explode('/', $csvFile);
-            $fileName = end($parts);
+            $fileName = basename($csvFile);
             if (preg_match('/^' . $fileType . '/', $fileName)) {
                 return $csvFile;
             }
@@ -190,20 +211,6 @@ class ZipImport
                     $this->module->l('Some price rules need to be deleted before you can delete zones');
             }
         }
-    }
-
-    /**
-     * Clear temporary import file dir
-     * @param $folder
-     */
-    private function clearTmpDir($folder)
-    {
-        $files = glob($this->module->getLocalPath() . 'tmp/' . $folder . '/*.csv');
-        if (!$files) {
-            return;
-        }
-
-        array_map('unlink', $files);
     }
 
     private function deleteOldDataZip()

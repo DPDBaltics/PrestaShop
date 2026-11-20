@@ -73,7 +73,7 @@ class Chosen implements SearchBoxPluginInterface, PluginInterface
         $plugin = 'chosen';
         $pluginPath = Media::getJqueryPluginPath($plugin);
         $this->js[] = $pluginPath['js'];
-        $this->js[] = $module->getLocalPath().'views/js/admin/search_block.js';
+        $this->js[] = $module->getPathUri().'views/js/admin/search_block.js';
         $this->css[] = key($pluginPath['css']);
     }
 

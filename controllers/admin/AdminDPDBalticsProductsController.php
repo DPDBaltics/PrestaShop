@@ -90,6 +90,13 @@ class AdminDPDBalticsProductsController extends AbstractAdminController
             return;
         }
 
+        if (!$this->isTabGranted('edit')) {
+            $this->ajaxDie(json_encode([
+                'status' => false,
+                'errors' => [$this->getPermissionDeniedMessage('edit')],
+            ]));
+        }
+
         $response['status'] = true;
 
         $params = [];

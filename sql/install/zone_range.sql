@@ -8,6 +8,6 @@ CREATE TABLE IF NOT EXISTS `PREFIX_dpd_zone_range` (
     `zip_code_from_numeric` INT(12) NOT NULL,
     `zip_code_to_numeric` INT(12) NOT NULL,
     PRIMARY KEY (`id_dpd_zone_range`),
-    INDEX (`id_dpd_zone_range`, `id_dpd_zone`, `id_country`),
+    INDEX (`id_country`),
     UNIQUE (`id_dpd_zone`, `id_country`, `zip_code_from`, `zip_code_to`)
 ) ENGINE=ENGINE_TYPE DEFAULT CHARSET=utf8;

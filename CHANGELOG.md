@@ -213,6 +213,7 @@
 - Changed the declared minimum requirements to PHP 7.1 and PrestaShop 1.7.4, which is what the module has required since 2021
 
 ## [3.3.3]
+- Fixed all DPD API calls failing when another installed module, such as Click to Pay, bundles a different version of the Unirest HTTP library
 - Fixed the release zip shipping hidden version-control folders in bundled libraries, whose read-only files could make a back office upgrade fail with "Permission denied"
 - Fixed home delivery shipments sending a parcel shop ID to DPD, which DPD can reject with "PUDO id is provided but main service type is not PUDO"
 - Fixed checkout dropdowns in the DPD carrier block being cut off and unusable on the Hummingbird theme

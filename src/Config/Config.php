@@ -440,7 +440,6 @@ class Config
                 $product->setIsPudo(0);
                 $product->setIsCod(0);
                 return $product;
-                break;
             case self::PRODUCT_TYPE_PUDO:
                 $product = new DPDProductInstall();
                 $product->setName(self::PRODUCT_NAME_PUDO[$countryCode]);
@@ -449,7 +448,6 @@ class Config
                 $product->setIsPudo(1);
                 $product->setIsCod(0);
                 return $product;
-                break;
             case self::PRODUCT_TYPE_B2B_COD:
                 $product = new DPDProductInstall();
                 $product->setName(self::PRODUCT_NAME_B2B_COD[$countryCode]);
@@ -458,7 +456,6 @@ class Config
                 $product->setIsPudo(0);
                 $product->setIsCod(1);
                 return $product;
-                break;
             case self::PRODUCT_TYPE_PUDO_COD:
                 $product = new DPDProductInstall();
                 $product->setName(self::PRODUCT_NAME_PUDO_COD[$countryCode]);
@@ -467,7 +464,6 @@ class Config
                 $product->setIsPudo(1);
                 $product->setIsCod(1);
                 return $product;
-                break;
             case self::PRODUCT_TYPE_SATURDAY_DELIVERY:
                 $product = new DPDProductInstall();
                 $product->setName(self::PRODUCT_NAME_SATURDAY_DELIVERY[$countryCode]);
@@ -476,7 +472,6 @@ class Config
                 $product->setIsPudo(0);
                 $product->setIsCod(0);
                 return $product;
-                break;
             case self::PRODUCT_TYPE_SATURDAY_DELIVERY_COD:
                 $product = new DPDProductInstall();
                 $product->setName(self::PRODUCT_NAME_SATURDAY_DELIVERY_COD[$countryCode]);
@@ -485,7 +480,6 @@ class Config
                 $product->setIsPudo(0);
                 $product->setIsCod(1);
                 return $product;
-                break;
             case self::PRODUCT_TYPE_SAME_DAY_DELIVERY:
                 $product = new DPDProductInstall();
                 $product->setName(self::PRODUCT_NAME_SAME_DAY_DELIVERY[$countryCode]);
@@ -494,10 +488,8 @@ class Config
                 $product->setIsPudo(1);
                 $product->setIsCod(0);
                 return $product;
-                break;
             default:
                 return false;
-                break;
         }
     }
 

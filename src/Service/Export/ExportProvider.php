@@ -101,22 +101,18 @@ class ExportProvider
                 /** @var SettingsExport $exportable */
                 $exportable = $this->module->getModuleContainer('invertus.dpdbaltics.service.export.settings_export');
                 return $exportable;
-                break;
             case Config::IMPORT_EXPORT_OPTION_PRODUCTS:
                 /** @var ProductExport $exportable */
                 $exportable = $this->module->getModuleContainer('invertus.dpdbaltics.service.export.product_export');
                 return $exportable;
-                break;
             case Config::IMPORT_EXPORT_OPTION_PRICE_RULES:
                 /** @var PriceRulesExport $exportable */
                 $exportable = $this->module->getModuleContainer('invertus.dpdbaltics.service.export.price_rules_export');
                 return $exportable;
-                break;
             case Config::IMPORT_EXPORT_OPTION_ADDRESS_TEMPLATES:
                 /** @var AddressTemplatesExport $exportable */
                 $exportable = $this->module->getModuleContainer('invertus.dpdbaltics.service.export.address_templates_export');
                 return $exportable;
-                break;
             default:
                 $this->errors[] = $this->module->l('Invalid export option selected', self::FILE_NAME);
                 return '';

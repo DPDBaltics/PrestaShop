@@ -699,7 +699,6 @@ class AdminDPDBalticsPriceRulesController extends AbstractAdminController
      */
     protected function updateAssoShop($id_object)
     {
-        return;
     }
 
     private function displayAjaxErrorMessage($message)

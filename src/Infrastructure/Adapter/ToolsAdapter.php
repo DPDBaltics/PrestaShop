@@ -42,7 +42,7 @@ class ToolsAdapter
      */
     public static function displayPrice($price, $context = null)
     {
-        $context = $context ?: \Context::getContext();
+        $context = $context ?: \Invertus\dpdBaltics\Factory\ContextFactory::getContext();
         
         if (VersionUtility::isPsVersionGreaterOrEqualTo('9.0.0')) {
             // PrestaShop 9+ approach

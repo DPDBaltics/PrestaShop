@@ -18,18 +18,18 @@
  *}
 
 <select
-        id="{$inputName}_code"
+        id="{$inputName|escape:'html':'UTF-8':false}_code"
         class="dpd-phone-and-code fixed-width-sm chosen hidden d-none"
-        name="{$inputName}_code"
+        name="{$inputName|escape:'html':'UTF-8':false}_code"
         required="required">
         {html_options class='fixed-width-xlg' options=$countryCallingCodes selected=$countryCallingCode}
  </select>
 <input
-        id="{$inputName}"
+        id="{$inputName|escape:'html':'UTF-8':false}"
         class="dpd-phone-and-code fixed-width-xlg"
         type="text"
-        name="{$inputName}"
+        name="{$inputName|escape:'html':'UTF-8':false}"
         required="required"
         placeholder="Phone"
-        {if isset($phoneNumber) && $phoneNumber} value="{$phoneNumber}" {/if}
+        {if isset($phoneNumber) && $phoneNumber} value="{$phoneNumber|escape:'html':'UTF-8':false}" {/if}
 >

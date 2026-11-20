@@ -17,5 +17,5 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
  *}
 <div>
-    <p>{$sameDayDeliveryMessage}</p>
+    <p>{$sameDayDeliveryMessage|escape:'html':'UTF-8':false}</p>
 </div>

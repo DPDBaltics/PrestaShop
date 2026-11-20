@@ -26,7 +26,7 @@
                    name="date_shipment"
                    class="js-dpd-datepicker"
                    title="{l s='Shipment date' mod='dpdbaltics'}"
-                   value="{$shipment->date_shipment}"
+                   value="{$shipment->date_shipment|escape:'html':'UTF-8':false}"
             >
             <div class="input-group-addon">
                 <i class="icon-calendar-o"></i>

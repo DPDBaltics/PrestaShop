@@ -22,7 +22,7 @@
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
             <div class="text-left">
-                <img style="padding: 10px" src="{$loading_gif}"/>
+                <img style="padding: 10px" src="{$loading_gif|escape:'html':'UTF-8':false}"/>
                 <label id="js-loading-parcels" for="message-text"
                        class="col-form-label">{l s='Loading...' mod='dpdbaltics'}</label>
                 <label id="js-importing-parcels" for="message-text" class="col-form-label"

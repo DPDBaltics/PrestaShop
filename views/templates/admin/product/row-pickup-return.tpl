@@ -17,36 +17,36 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
  *}
 
-<form id="product-service-form-{$idProduct}" class="js-product-form js-product-pickup-return">
+<form id="product-service-form-{$idProduct|escape:'html':'UTF-8':false}" class="js-product-form js-product-pickup-return">
     <div class="row custom-product-row {if $isOddRow == true}odd-row{else}even-row{/if}">
-        <input type="hidden" name="id-product" value="{$idProduct}" disabled>
+        <input type="hidden" name="id-product" value="{$idProduct|escape:'html':'UTF-8':false}" disabled>
         <div class="col-xs-10">
-            <h4>{$productName}</h4>
+            <h4>{$productName|escape:'html':'UTF-8':false}</h4>
         </div>
 
         <div class="col-xs-1">
             <span class="switch prestashop-switch">
                 <input type="radio"
-                       name="product-active-{$idProduct}"
-                       id="product-active-{$idProduct}-on"
+                       name="product-active-{$idProduct|escape:'html':'UTF-8':false}"
+                       id="product-active-{$idProduct|escape:'html':'UTF-8':false}-on"
                        value="1"
                        disabled
                        {if $isActive}checked="checked"{/if}
                 >
-                <label for="product-active-{$idProduct}-on" class="radioCheck">Yes</label>
+                <label for="product-active-{$idProduct|escape:'html':'UTF-8':false}-on" class="radioCheck">Yes</label>
                 <input type="radio"
-                       name="product-active-{$idProduct}"
-                       id="product-active-{$idProduct}-off"
+                       name="product-active-{$idProduct|escape:'html':'UTF-8':false}"
+                       id="product-active-{$idProduct|escape:'html':'UTF-8':false}-off"
                        value="0"
                        disabled
                        {if !$isActive}checked="checked"{/if}
                 >
-                <label for="product-active-{$idProduct}-off" class="radioCheck">No</label>
+                <label for="product-active-{$idProduct|escape:'html':'UTF-8':false}-off" class="radioCheck">No</label>
                 <a class="slide-button btn"></a>
             </span>
         </div>
         <div class="col-xs-1">
-            {include file='./buttons.tpl' dpd_product_id_identifier={$idProduct}}
+            {include file='./buttons.tpl' dpd_product_id_identifier=$idProduct}
         </div>
     </div>
 </form>

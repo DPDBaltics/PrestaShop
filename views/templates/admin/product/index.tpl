@@ -46,6 +46,6 @@
         </div>
     </div>
     {foreach $rows as $row}
-        {$row}
+        {$row nofilter}
     {/foreach}
 </div>

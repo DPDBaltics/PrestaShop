@@ -20,7 +20,7 @@
     <ul>
     {foreach from=$tracking_urls item=url key=parcel_number}
         <li>
-            <a target="_blank" href="{$url}">{$parcel_number}</a>
+            <a target="_blank" href="{$url|escape:'html':'UTF-8':false}">{$parcel_number|escape:'html':'UTF-8':false}</a>
         </li>
     {/foreach}
     </ul>

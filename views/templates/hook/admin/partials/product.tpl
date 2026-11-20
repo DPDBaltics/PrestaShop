@@ -18,12 +18,12 @@
  *}
 {foreach $products as $product}
 <tr class="js-product">
-    <td data-content="{l s='ID' mod='dpdbaltics'}" class="text-center js-product-id" scope="row">{$product.id_product}</td>
-    <td data-content="{l s='Product' mod='dpdbaltics'}" class="text-center js-product-name">{$product.name}</td>
+    <td data-content="{l s='ID' mod='dpdbaltics'}" class="text-center js-product-id" scope="row">{$product.id_product|escape:'html':'UTF-8':false}</td>
+    <td data-content="{l s='Product' mod='dpdbaltics'}" class="text-center js-product-name">{$product.name|escape:'html':'UTF-8':false}</td>
     {*todo: if weight by default is not in kg?*}
-    <td data-content="{l s='Weight (kg)' mod='dpdbaltics'}" class="text-center js-product-weight">{$product.weight}</td>
+    <td data-content="{l s='Weight (kg)' mod='dpdbaltics'}" class="text-center js-product-weight">{$product.weight|escape:'html':'UTF-8':false}</td>
     <td data-content="{l s='Parcel' mod='dpdbaltics'}" class="text-center js-product-parcel-number">1</td>
-    <td data-content="{l s='Quantity' mod='dpdbaltics'}" class="text-center js-product-quantity">{$product.quantity}</td>
+    <td data-content="{l s='Quantity' mod='dpdbaltics'}" class="text-center js-product-quantity">{$product.quantity|escape:'html':'UTF-8':false}</td>
     <td data-content="{l s='Action' mod='dpdbaltics'}" class="text-center js-product-actions product-actions">
         <div class="row">
             <div class="col-md-4">

@@ -77,10 +77,10 @@
                                     name="product">
                                 {foreach $dpdProducts as $product}
                                     <option
-                                            value="{$product.id_dpd_product}"
+                                            value="{$product.id_dpd_product|escape:'html':'UTF-8':false}"
                                             {if $product.id_dpd_product === $shipment->id_service}selected{/if}
                                     >
-                                        {$product.name}
+                                        {$product.name|escape:'html':'UTF-8':false}
                                     </option>
                                 {/foreach}
                             </select>
@@ -111,7 +111,7 @@
                                    name="reference1"
                                    title="{l s='Reference 1' mod='dpdbaltics'}"
                                    class="form-control js-shipment-reference-input"
-                                   value="{$shipment->reference1}"
+                                   value="{$shipment->reference1|escape:'html':'UTF-8':false}"
                             >
                         </div>
                     </div>
@@ -126,7 +126,7 @@
                                    name="reference2"
                                    title="{l s='Reference 2' mod='dpdbaltics'}"
                                    class="form-control js-shipment-reference-input"
-                                   value="{$shipment->reference2}"
+                                   value="{$shipment->reference2|escape:'html':'UTF-8':false}"
                             >
                         </div>
                     </div>
@@ -142,7 +142,7 @@
                                    name="reference3"
                                    title="{l s='Reference 3' mod='dpdbaltics'}"
                                    class=" form-control js-shipment-reference-input"
-                                   value="{$shipment->reference3}"
+                                   value="{$shipment->reference3|escape:'html':'UTF-8':false}"
                             >
                         </div>
                     </div>
@@ -158,7 +158,7 @@
                                    name="reference4"
                                    title="{l s='Reference 4' mod='dpdbaltics'}"
                                    class=" form-control js-shipment-reference-input"
-                                   value="{$shipment->reference4}"
+                                   value="{$shipment->reference4|escape:'html':'UTF-8':false}"
                             >
                         </div>
                     </div>
@@ -177,7 +177,7 @@
                                    name="weight"
                                    title="{l s='Weight (kg)' mod='dpdbaltics'}"
                                    class=" form-control js-shipment-weight-input"
-                                   value="{$shipment->weight}"
+                                   value="{$shipment->weight|escape:'html':'UTF-8':false}"
                             >
                         </div>
                     </div>
@@ -193,7 +193,7 @@
                                    name="parcel_amount"
                                    title="{l s='Parcels amount' mod='dpdbaltics'}"
                                    class="form-control js-shipment-parcels-input"
-                                   value="{$shipment->num_of_parcels}"
+                                   value="{$shipment->num_of_parcels|escape:'html':'UTF-8':false}"
                             >
                         </div>
                     </div>
@@ -208,7 +208,7 @@
                                    name="goods_price"
                                    title="{l s='Goods price' mod='dpdbaltics'}"
                                    class="form-control js-shipment-price-input"
-                                   value="{$shipment->goods_price}"
+                                   value="{$shipment->goods_price|escape:'html':'UTF-8':false}"
                             >
                         </div>
                     </div>

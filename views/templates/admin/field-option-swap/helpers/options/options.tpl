@@ -21,12 +21,12 @@
 
 {block name="input" append}
     {if $field['type'] == 'swap'}
-        <div class="col-lg-5 {if isset($field['class'])}{$field['class']}{/if}" style="max-width: 500px;">
+        <div class="col-lg-5 {if isset($field['class'])}{$field['class']|escape:'html':'UTF-8':false}{/if}" style="max-width: 500px;">
             {include file="../../../partials/swap.tpl"}
         </div>
     {/if}
     {if $field['type'] == 'custom_image_select'}
-        <div class="col-lg-5 {if isset($field['class'])}{$field['class']}{/if}" style="max-width: 500px;">
+        <div class="col-lg-5 {if isset($field['class'])}{$field['class']|escape:'html':'UTF-8':false}{/if}" style="max-width: 500px;">
             {include file="../../../partials/custom-image-select.tpl"}
         </div>
     {/if}

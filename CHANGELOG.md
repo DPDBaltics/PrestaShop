@@ -213,6 +213,7 @@
 - Changed the declared minimum requirements to PHP 7.1 and PrestaShop 1.7.4, which is what the module has required since 2021
 
 ## [3.3.3]
+- Fixed slow checkout delivery step when a pickup point carrier is shown, by loading the opening hours of all pickup points in a city with one query instead of one query per pickup point
 - Fixed the receiver zones box missing on the pricing rule form, so rules could not be saved, on shops whose modules folder is reached through a linked or aliased server path
 - Fixed the courier request and collection request form scripts, and the shop search box on address templates, being skipped on the same shops
 - Fixed all DPD API calls failing when another installed module, such as Click to Pay, bundles a different version of the Unirest HTTP library

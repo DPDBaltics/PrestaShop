@@ -1322,12 +1322,6 @@ class DPDBaltics extends CarrierModule
             'message',
             $dpdBaltics->l('Print label(s) from DPD system. Once label is saved you won\'t be able to modify contents of shipments')
         );
-        $icon = $dpdBaltics->context->smarty->fetch(
-            $dpdBaltics->getLocalPath() . 'views/templates/hook/admin/order-list-save-label-icon.tpl'
-        );
-
-
-        $dpdBaltics->context->smarty->assign('icon', $icon);
 
         return $dpdBaltics->context->smarty->fetch($dpdBaltics->getLocalPath() . 'views/templates/hook/admin/order-list-icon-container.tpl');
     }

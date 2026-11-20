@@ -18,5 +18,5 @@
  *}
 
 <div class="dpd-icon-container" data-id-order="{$idOrder|escape:'html':'UTF-8':false}">
-    {$icon nofilter}
+    {include file='./order-list-save-label-icon.tpl'}
 </div>

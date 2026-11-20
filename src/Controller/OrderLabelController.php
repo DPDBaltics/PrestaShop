@@ -26,6 +26,7 @@ use Invertus\dpdBaltics\Service\Exception\ExceptionService;
 use Invertus\dpdBaltics\Service\Label\LabelPrintingService;
 use Invertus\dpdBaltics\Service\ShipmentService;
 use Invertus\dpdBaltics\Util\ServerGlobalsUtility;
+use Invertus\dpdBaltics\Util\StringUtility;
 use Invertus\dpdBalticsApi\Exception\DPDBalticsAPIException;
 use PrestaShopBundle\Controller\Admin\FrameworkBundleAdminController;
 use PrestaShopBundle\Security\Annotation\AdminSecurity;
@@ -79,7 +80,7 @@ class OrderLabelController extends FrameworkBundleAdminController
 
     /**
      *
-     * @AdminSecurity("is_granted('read', request.get('_legacy_controller'))", redirectRoute="admin_orders_index")
+     * @AdminSecurity("is_granted('update', request.get('_legacy_controller'))", redirectRoute="admin_orders_index")
      * @param int $orderId
      * @return Response
      */
@@ -99,7 +100,7 @@ class OrderLabelController extends FrameworkBundleAdminController
     /**
      * Generates and prints label in order list
      *
-     * @AdminSecurity("is_granted('read', request.get('_legacy_controller'))", redirectRoute="admin_orders_index")
+     * @AdminSecurity("is_granted('update', request.get('_legacy_controller'))", redirectRoute="admin_orders_index")
      *
      * @param int $orderId
      *
@@ -121,7 +122,7 @@ class OrderLabelController extends FrameworkBundleAdminController
     /**
      * Generates print multiple lables in order list
      *
-     * @AdminSecurity("is_granted('read', request.get('_legacy_controller'))", redirectRoute="admin_orders_index")
+     * @AdminSecurity("is_granted('update', request.get('_legacy_controller'))", redirectRoute="admin_orders_index")
      *
      * @return Response
      */
@@ -196,7 +197,7 @@ class OrderLabelController extends FrameworkBundleAdminController
 
     private function redirectWithError($route, $error)
     {
-        $this->addFlash('error', $error);
+        $this->addFlash('error', StringUtility::escapeHtml($error));
 
         $redirectLink = ServerGlobalsUtility::getHttpReferer();
 

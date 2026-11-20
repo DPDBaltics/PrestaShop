@@ -23,13 +23,16 @@ namespace Invertus\dpdBaltics\Provider;
 
 use Address;
 use Carrier;
+use Configuration;
 use Currency;
 use DPDBaltics;
 use DPDPriceRule;
 use DPDZone;
+use Invertus\dpdBaltics\Config\Config;
 use Invertus\dpdBaltics\Repository\PriceRuleRepository;
 use Invertus\dpdBaltics\Repository\ProductRepository;
 use Invertus\dpdBaltics\Repository\ZoneRepository;
+use Invertus\dpdBaltics\Validate\Weight\CartWeightValidator;
 use Invertus\dpdBaltics\Verification\IsAddressInZone;
 use Product;
 use Tools;
@@ -65,18 +68,25 @@ class ProductShippingCostProvider
      */
     private $currency;
 
+    /**
+     * @var CartWeightValidator
+     */
+    private $cartWeightValidator;
+
     public function __construct(
         DPDBaltics $module,
         ProductRepository $productRepository,
         ZoneRepository $zoneRepository,
         PriceRuleRepository $priceRuleRepository,
-        Currency $currency
+        Currency $currency,
+        CartWeightValidator $cartWeightValidator
     ) {
         $this->module = $module;
         $this->productRepository = $productRepository;
         $this->zoneRepository = $zoneRepository;
         $this->priceRuleRepository = $priceRuleRepository;
         $this->currency = $currency;
+        $this->cartWeightValidator = $cartWeightValidator;
     }
 
     public function getProductShippingCost($carrierReference, $idAddress)
@@ -107,6 +117,10 @@ class ProductShippingCostProvider
         $price = $currentProduct->price;
         $currency = $this->currency->id;
         $weight = $currentProduct->weight;
+
+        if (!$this->cartWeightValidator->isProductWeightWithinLimit($weight, Configuration::get(Config::MAX_PRODUCT_WEIGHT))) {
+            return false;
+        }
 
         if ($idAddress) {
             foreach ($priceRulesIds as $priceRuleId) {

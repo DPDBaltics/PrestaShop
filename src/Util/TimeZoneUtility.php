@@ -76,6 +76,35 @@ class TimeZoneUtility
         }
     }
 
+    /**
+     * @return array ['date' => 'Y-m-d', 'from' => 'H:i', 'to' => 'H:i']
+     */
+    public static function getCourierDefaultPickUpSlot()
+    {
+        $now = self::getBalticTimeZoneAsDateTime();
+        $earliest = clone $now;
+        $earliest->modify('+' . Config::COURIER_SAME_DAY_TIME_ADDITIONAL_MINUTES . ' minutes');
+
+        $fromSlot = PickupTimeSlotUtility::findNextPickupTimeFromSlot($earliest->format('H:i'));
+
+        if ($fromSlot !== null && $earliest->format('Y-m-d') === $now->format('Y-m-d')) {
+            return [
+                'date' => $now->format('Y-m-d'),
+                'from' => $fromSlot,
+                'to' => Config::COURIER_DEFAULT_PICKUP_TIME_TO_SLOT,
+            ];
+        }
+
+        $tomorrow = clone $now;
+        $tomorrow->modify('+1 day');
+
+        return [
+            'date' => $tomorrow->format('Y-m-d'),
+            'from' => Config::COURIER_DEFAULT_PICKUP_TIME_FROM_SLOT,
+            'to' => Config::COURIER_DEFAULT_PICKUP_TIME_TO_SLOT,
+        ];
+    }
+
     public static function getBalticTimeZoneAsDateTime()
     {
         $tz = 'Europe/Vilnius';

@@ -23,6 +23,7 @@ namespace Invertus\dpdBaltics\Service\Exception;
 
 use DPDBaltics;
 use Exception;
+use Invertus\dpdBaltics\Util\ApiErrorUtility;
 use Invertus\dpdBaltics\Validate\ShipmentData\Exception\InvalidShipmentDataField;
 use Invertus\dpdBalticsApi\Exception\DPDBalticsAPIException;
 
@@ -62,6 +63,18 @@ class ExceptionService
                 $this->module->l('Failed to create courier request', self::SHORT_CLASS_NAME),
             ]
         ];
+    }
+
+    public function getApiErrorMessage($rawErrorLog)
+    {
+        if (ApiErrorUtility::isAuthenticationError($rawErrorLog)) {
+            return $this->module->l(
+                'DPD rejected the API credentials. Please check that the API username and password in Basic Settings match the web service credentials provided by DPD, not your DPD web portal login.',
+                self::SHORT_CLASS_NAME
+            );
+        }
+
+        return $rawErrorLog;
     }
 
     public function getShipmentFieldErrorMessages()

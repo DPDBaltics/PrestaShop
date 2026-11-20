@@ -28,6 +28,7 @@ use Invertus\dpdBaltics\Repository\CollectionRequestRepository;
 use Invertus\dpdBaltics\Repository\PhonePrefixRepository;
 use Invertus\dpdBaltics\Service\API\CollectionRequestService;
 use Invertus\dpdBaltics\Service\Exception\ExceptionService;
+use Invertus\dpdBaltics\Util\StringUtility;
 use Invertus\dpdBalticsApi\Exception\DPDBalticsAPIException;
 
 require_once dirname(__DIR__).'/../vendor/autoload.php';
@@ -371,6 +372,12 @@ class AdminDPDBalticsCollectionRequestController extends AbstractAdminController
     //todo:: if Exception is caught it returns to list.
     public function postProcess()
     {
+        if (Tools::isSubmit('submitAdddpd_collection_request') && !$this->isTabGranted('add')) {
+            $this->addPermissionDeniedError('add');
+
+            return false;
+        }
+
         if (Tools::isSubmit('submitAdddpd_collection_request')) {
             /** @var FormDataConverter $formDataConverter */
             $formDataConverter = $this->module->getModuleContainer('invertus.dpdbaltics.converter.form_data_converter');
@@ -386,19 +393,19 @@ class AdminDPDBalticsCollectionRequestController extends AbstractAdminController
             } catch (DPDBalticsAPIException $e) {
                 /** @var ExceptionService $exceptionService */
                 $exceptionService = $this->module->getModuleContainer('invertus.dpdbaltics.service.exception.exception_service');
-                $this->errors[] = $exceptionService->getErrorMessageForException(
+                $this->errors[] = StringUtility::escapeHtml($exceptionService->getErrorMessageForException(
                     $e,
                     $exceptionService->getAPIErrorMessages()
-                );
+                ));
                 return;
             } catch (Exception $e) {
-                $this->errors[] = $e->getMessage();
+                $this->errors[] = StringUtility::escapeHtml($e->getMessage());
                 return;
             }
             if ($response['status']) {
-                $this->confirmations[] = $response['message'];
+                $this->confirmations[] = StringUtility::escapeHtml($response['message']);
             } else {
-                $this->errors[] = $response['message'];
+                $this->errors[] = StringUtility::escapeHtml($response['message']);
             }
         }
 

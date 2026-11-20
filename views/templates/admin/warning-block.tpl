@@ -18,5 +18,5 @@
  *}
 
 <div class="alert alert-warning">
-    <span>{$warningBlockText}</span>
+    <span>{$warningBlockText|escape:'html':'UTF-8':false}</span>
 </div>

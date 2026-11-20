@@ -27,14 +27,14 @@
 
         {foreach $requestSupportData as $requestSupportType => $requestSupportItem}
             <div class="form-group clearfix">
-                <div id="{$requestSupportType}">
+                <div id="{$requestSupportType|escape:'html':'UTF-8':false}">
                     <label class="control-label col-lg-3">
-                        {$requestSupportItem.name}
+                        {$requestSupportItem.name|escape:'html':'UTF-8':false}
                     </label>
 
                     <div class="col-lg-9">
                     <span class="fixed-width-lg">
-                        {$requestSupportItem.value}
+                        {$requestSupportItem.value|escape:'html':'UTF-8':false}
                     </span>
                     </div>
                 </div>
@@ -48,7 +48,7 @@
                         {l s='DPD Logs' mod='dpdbaltics'}
                     </label>
 
-                    <form action="{$downloadLogsAction}" method="post" enctype="multipart/form-data">
+                    <form action="{$downloadLogsAction|escape:'html':'UTF-8':false}" method="post" enctype="multipart/form-data">
                         <div class="col-lg-9">
                             <button
                                     class="btn btn-default"

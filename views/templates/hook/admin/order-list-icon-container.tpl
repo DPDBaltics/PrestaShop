@@ -17,6 +17,6 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
  *}
 
-<div class="dpd-icon-container" data-id-order="{$idOrder}">
-    {$icon}
+<div class="dpd-icon-container" data-id-order="{$idOrder|escape:'html':'UTF-8':false}">
+    {include file='./order-list-save-label-icon.tpl'}
 </div>

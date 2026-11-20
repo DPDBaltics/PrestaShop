@@ -17,5 +17,5 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
  *}
 
-<i class="print-dpd-label icon-error-dpd" data-id-order="{$idOrder}"></i>
-<div class="dpd-print-error-container">{$message}</div>
+<i class="print-dpd-label icon-error-dpd" data-id-order="{$idOrder|escape:'html':'UTF-8':false}"></i>
+<div class="dpd-print-error-container">{$message|escape:'html':'UTF-8':false}</div>

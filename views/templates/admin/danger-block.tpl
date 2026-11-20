@@ -18,6 +18,6 @@
  *}
 
 <div class="alert alert-danger">
-    <p><strong>{$dangerBlockTitle}</strong></p>
-    <p>{$dangerBlockText}</p>
+    <p><strong>{$dangerBlockTitle|escape:'html':'UTF-8':false}</strong></p>
+    <p>{$dangerBlockText|escape:'html':'UTF-8':false}</p>
 </div>

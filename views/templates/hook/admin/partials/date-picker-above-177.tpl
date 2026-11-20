@@ -27,7 +27,7 @@
                    name="date_shipment"
                    class="js-dpd-datepicker form-control"
                    title="{l s='Shipment date' mod='dpdbaltics'}"
-                   value="{$shipment->date_shipment}"
+                   value="{$shipment->date_shipment|escape:'html':'UTF-8':false}"
             >
             <div class="input-group-text"><i class="material-icons">date_range</i></div>
         </div>

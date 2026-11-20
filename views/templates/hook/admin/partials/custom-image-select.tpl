@@ -16,24 +16,24 @@
  * @copyright Since 2007 PrestaShop SA and Contributors
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
  *}
-<input name="label_position" class="label-position-input hidden d-none" value="{$selectedOptionId}">
+<input name="label_position" class="label-position-input hidden d-none" value="{$selectedOptionId|escape:'html':'UTF-8':false}">
 <div class="btn-group">
     {foreach $dpdSelectOptions as $option}
         {if $option.value == $selectedOptionId}
             <a class="btn dropdown-toggle js-printout-position-select printout-position-select fixed-width-xxl"
-               data-selected-id="{$option.value}"
+               data-selected-id="{$option.value|escape:'html':'UTF-8':false}"
                data-toggle="dropdown"
                href="#">
-                <img src="{$option.image}">
-                {$option.name}
+                <img src="{$option.image|escape:'html':'UTF-8':false}">
+                {$option.name|escape:'html':'UTF-8':false}
                 <span class="caret"></span>
             </a>
         {/if}
     {/foreach}
     <ul class="dropdown-menu">
         {foreach $dpdSelectOptions as $option}
-            <li><a data-select-id="{$option.value}" href="javascript:void(0);">
-                    <img src="{$option.image}"/> {$option.name}</a>
+            <li><a data-select-id="{$option.value|escape:'html':'UTF-8':false}" href="javascript:void(0);">
+                    <img src="{$option.image|escape:'html':'UTF-8':false}"/> {$option.name|escape:'html':'UTF-8':false}</a>
             </li>
         {/foreach}
     </ul>

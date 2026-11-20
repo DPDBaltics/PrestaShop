@@ -56,7 +56,7 @@
                             </thead>
                             <tbody>
                             <tr>
-                                <td class="text-center">{l s='id: ' mod='dpdbaltics'} {$shipment->id}</td>
+                                <td class="text-center">{l s='id: ' mod='dpdbaltics'} {$shipment->id|escape:'html':'UTF-8':false}</td>
                                 <td class="text-center">{$shipment->num_of_parcels|intval}</td>
                                 <td class="text-center">{$total_products|intval}</td>
                                 <td class="text-center">{if $shipment->printed_label}{l s='Yes' mod='dpdbaltics'}{else}{l s='No' mod='dpdbaltics'}{/if}</td>
@@ -65,7 +65,7 @@
                                        class="btn btn-default pull-right js-print-label-btn"
                                        style="display: none"
                                        data-action="print"
-                                       data-shipment-id={$shipment->id}
+                                       data-shipment-id={$shipment->id|escape:'html':'UTF-8':false}
                                     >
                                         <i class="process-icon-save"></i>
                                         {if 'download' == $printLabelOption}
@@ -77,7 +77,7 @@
                                 </td>
                                 {if !$isAutomated}
                                 <td>
-                                    <a href="{$adminLabelLink}&shipment_id={$shipment->id}"
+                                    <a href="{$adminLabelLink|escape:'html':'UTF-8':false}&shipment_id={$shipment->id|escape:'html':'UTF-8':false}"
                                        class="btn btn-default pull-right pull-right"
                                     >
                                         <i class="process-icon-save"></i>

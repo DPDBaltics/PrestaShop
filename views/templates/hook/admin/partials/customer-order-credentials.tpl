@@ -194,7 +194,7 @@
                         <select name="state" id="dpd-id-state" class="js-dpd-rec-input">
                         </select>
                     </div>
-                    <input class="dpd-selected-state hidden d-none" value="{$orderDetails.order_address.id_state}">
+                    <input class="dpd-selected-state hidden d-none" value="{$orderDetails.order_address.id_state|escape:'html':'UTF-8':false}">
                 </div>
 
                 <div class="dpd-recipient-detail js-dpd-recipient-detail">

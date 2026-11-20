@@ -17,8 +17,8 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
  *}
 {if (!isset($disableMap) || (isset($disableMap) && !$disableMap))}
-    <div class=" {if $currentController == 'supercheckout'}supercheckout-pudo-container {/if}dpd-checkout-pickup-container dpd-pudo-container pickup-map-{$carrierId}"
-         data-id="{$carrierId}" {if isset($dpdIdCarrier) && $dpdIdCarrier}data-pudo-id-carrier="{$dpdIdCarrier}"{/if}>
+    <div class=" {if $currentController == 'supercheckout'}supercheckout-pudo-container {/if}dpd-checkout-pickup-container dpd-pudo-container pickup-map-{$carrierId|escape:'html':'UTF-8':false}"
+         data-id="{$carrierId|escape:'html':'UTF-8':false}" {if isset($dpdIdCarrier) && $dpdIdCarrier}data-pudo-id-carrier="{$dpdIdCarrier|escape:'html':'UTF-8':false}"{/if}>
         <div class="panel panel-default">
             {include file='module:dpdbaltics/views/templates/hook/front/partials/dpd-message.tpl' messageType='error'}
             <div class="col-lg-12 col-12 ">
@@ -30,7 +30,7 @@
                     &nbsp;
                 </div>
                 {if $pickUpMap}
-                    <div id="dpd-pudo-map-{$carrierId}"></div>
+                    <div id="dpd-pudo-map-{$carrierId|escape:'html':'UTF-8':false}"></div>
                 {/if}
                 <div class="points-container {if $show_shop_list === 'LIST'}dpd-hidden{/if}">
                     {include file='module:dpdbaltics/views/templates/hook/front/partials/markers-list.tpl' pudoServices=$pudoServices}

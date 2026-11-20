@@ -16,4 +16,4 @@
  * @copyright Since 2007 PrestaShop SA and Contributors
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
  *}
-<a target="_blank" href="{$addressTabRedirect}">
+<a target="_blank" href="{$addressTabRedirect|escape:'html':'UTF-8':false}">

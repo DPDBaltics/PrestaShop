@@ -66,6 +66,12 @@ class AdminDPDBalticsPriceRulesController extends AbstractAdminController
 
     public function postProcess()
     {
+        if (Tools::getIsset('duplicatePriceRule') && !$this->isTabGranted('add')) {
+            $this->addPermissionDeniedError('add');
+
+            return parent::postProcess();
+        }
+
         if (Tools::getIsset('duplicatePriceRule')) {
             $idPriceRule = Tools::getValue('idPriceRule');
 
@@ -234,6 +240,13 @@ class AdminDPDBalticsPriceRulesController extends AbstractAdminController
 
     public function ajaxProcessUpdatePositions()
     {
+        if (!$this->isTabGranted('edit')) {
+            $this->ajaxDie(json_encode([
+                'hasError' => true,
+                'errors' => $this->getPermissionDeniedMessage('edit'),
+            ]));
+        }
+
         $way = (int)(Tools::getValue('way'));
         $idPriceRule = (int)(Tools::getValue('id'));
         $positions = Tools::getValue($this->table);
@@ -686,7 +699,6 @@ class AdminDPDBalticsPriceRulesController extends AbstractAdminController
      */
     protected function updateAssoShop($id_object)
     {
-        return;
     }
 
     private function displayAjaxErrorMessage($message)

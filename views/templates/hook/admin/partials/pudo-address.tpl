@@ -20,13 +20,13 @@
     <div class="js-pickup-point panel card col-lg-9">
         <div class="panel-heading card-header">
             {if isset($selectedPudo)}
-                {l s='Pickup point: ' mod='dpdbaltics'}<b class="js-parcel-name">{$selectedPudo->getCompany()}</b>
+                {l s='Pickup point: ' mod='dpdbaltics'}<b class="js-parcel-name">{$selectedPudo->getCompany()|escape:'html':'UTF-8':false}</b>
             {else}
                 {l s='Please select pick up point.' mod='dpdbaltics'}
             {/if}
         </div>
         <div class="panel-body">
-            <input name="is_pudo" hidden class="hidden d-none form-control" value="{$is_pudo}">
+            <input name="is_pudo" hidden class="hidden d-none form-control" value="{$is_pudo|escape:'html':'UTF-8':false}">
             {include file='../../admin/partials/pudo-info.tpl'}
             <div class="col-lg-12 hidden search-container">
                 <div class="dpd-pudo-container">

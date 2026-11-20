@@ -157,13 +157,10 @@ class OnBoardStepDataService
         switch ($importOption) {
             case Config::IMPORT_EXPORT_OPTION_ZONES:
                 return $this->module->l('Zones');
-                break;
             case Config::IMPORT_EXPORT_OPTION_PRICE_RULES:
                 return $this->module->l('Price rules');
-                break;
             case Config::IMPORT_EXPORT_OPTION_PRODUCTS:
                 return $this->module->l('Products');
-                break;
             default:
                 return $this->module->l('Invalid export option selected');
         }

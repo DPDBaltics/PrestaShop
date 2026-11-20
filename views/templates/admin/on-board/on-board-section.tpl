@@ -21,7 +21,7 @@
     <div id="dpd-on-board"
          class="dpd-on-board-main-container
         {if $onBoardTemplateData.containerClass}
-            {$onBoardTemplateData.containerClass}
+            {$onBoardTemplateData.containerClass|escape:'html':'UTF-8':false}
         {/if}"
     >
         {include file="./on-board-pop-up.tpl"}

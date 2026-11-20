@@ -53,14 +53,28 @@ $(window).load(function () {
         }
       },
       error: function(xhr, status, error) {
-        if (status === 'timeout' || xhr.status === 500 || xhr.status === 504) {
-          // Server timeout - show cron modal
-          showCronRequiredModal('php bin/console dpdbaltics:update-parcel-shops --all');
-        } else if (xhr.status === 0) {
-          showErrorMessage('Network error. Please check your connection.');
-        } else {
-          showErrorMessage('Import failed: ' + (error || status || 'Unknown error'));
+        // Only a real timeout justifies the cron advice; a 500 would fail under cron too.
+        if (status === 'timeout' || xhr.status === 504) {
+          showCronRequiredModal(buildCronCommand());
+
+          return;
         }
+
+        if (xhr.status === 500) {
+          showErrorMessage(typeof serverErrorMessage !== 'undefined'
+            ? serverErrorMessage
+            : 'The import failed on the server. Check the DPD logs page for the full error.');
+
+          return;
+        }
+
+        if (xhr.status === 0) {
+          showErrorMessage('Network error. Please check your connection.');
+
+          return;
+        }
+
+        showErrorMessage('Import failed: ' + (error || status || 'Unknown error'));
       },
       complete: function () {
         // Hide image container
@@ -86,9 +100,17 @@ $(window).load(function () {
     clearInterval(toggleInterval);
   }
 
+  function buildCronCommand() {
+    if (typeof countryIso !== 'undefined' && countryIso) {
+      return 'php bin/console dpdbaltics:update-parcel-shops --country=' + countryIso;
+    }
+
+    return 'php bin/console dpdbaltics:update-parcel-shops --all';
+  }
+
   function showCronRequiredModal(cronCommand) {
     var $modal = $('#import-cron-required-modal');
-    $('#cron-command-display').text(cronCommand || 'php bin/console dpdbaltics:update-parcel-shops --all');
+    $('#cron-command-display').text(cronCommand || buildCronCommand());
     $modal.modal('show');
   }
 

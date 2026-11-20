@@ -21,7 +21,7 @@
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
             <div class="text-left">
-                <img style="padding: 10px" src="{$loading_gif}"/>
+                <img style="padding: 10px" src="{$loading_gif|escape:'html':'UTF-8':false}"/>
                 <label id="js-loading" for="message-text" class="col-form-label">{l s='Loading...' mod='dpdbaltics'}</label>
                 <label id="js-importing-zones" for="message-text" class="col-form-label" style="display: none">{l s='Importing zones...' mod='dpdbaltics'}</label>
             </div>

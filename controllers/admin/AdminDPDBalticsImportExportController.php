@@ -76,7 +76,11 @@ class AdminDPDBalticsImportExportController extends AbstractAdminController
                     $this->context->link->getAdminLink(ModuleTabs::ADMIN_AJAX_CONTROLLER),
                 'successMessage' => $this->module->l('Parcels successfully updated'),
                 'failMessage' => $this->module->l('Parcels update failed'),
-                'countryId' => Tools::getValue('DPD_PARCEL_IMPORT_COUNTRY_SELECTOR')
+                'serverErrorMessage' => $this->module->l('The import failed on the server. Check the DPD logs page for the full error.'),
+                'countryId' => Tools::getValue('DPD_PARCEL_IMPORT_COUNTRY_SELECTOR'),
+                'countryIso' => Country::getIsoById(
+                    (int) Tools::getValue('DPD_PARCEL_IMPORT_COUNTRY_SELECTOR')
+                )
             ]);
 
             $this->addJS($this->getModuleJSUri() . 'import/import_parcels.js');
@@ -84,6 +88,8 @@ class AdminDPDBalticsImportExportController extends AbstractAdminController
 
         if (Tools::isSubmit('submitProcessExport')) {
             $this->postProcessExport();
+        } elseif (Tools::isSubmit('submitProcessImport') && !$this->isTabGranted('edit')) {
+            $this->addPermissionDeniedError('edit');
         } elseif (Tools::isSubmit('submitProcessImport')) {
             $importOption = Tools::getValue(Config::IMPORT_OPTION);
             $deleteOnImport = Tools::getValue(Config::IMPORT_DELETE_OLD_DATA);
@@ -450,23 +456,18 @@ class AdminDPDBalticsImportExportController extends AbstractAdminController
                 case Config::IMPORT_EXPORT_OPTION_ZONES:
                     /** @var ZoneImport */
                     return $this->module->getModuleContainer('invertus.dpdbaltics.service.import.zone_import');
-                    break;
                 case Config::IMPORT_EXPORT_OPTION_SETTINGS:
                     /** @var ZoneImport */
                     return $this->module->getModuleContainer('invertus.dpdbaltics.service.import.settings_import');
-                    break;
                 case Config::IMPORT_EXPORT_OPTION_PRICE_RULES:
                     /** @var PriceRulesImport */
                     return $this->module->getModuleContainer('invertus.dpdbaltics.service.import.price_rules_import');
-                    break;
                 case Config::IMPORT_EXPORT_OPTION_ADDRESS_TEMPLATES:
                     /** @var AddressTemplatesImport */
                     return $this->module->getModuleContainer('invertus.dpdbaltics.service.import.address_templates_import');
-                    break;
                 case Config::IMPORT_EXPORT_OPTION_PRODUCTS:
                     /** @var ProductImport */
                     return $this->module->getModuleContainer('invertus.dpdbaltics.service.import.product_import');
-                    break;
                 default:
                     $this->errors[] = $this->module->l('Invalid export option selected');
                     return;

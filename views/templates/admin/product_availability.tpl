@@ -18,7 +18,7 @@
  *}
 
 <div id="productAvailabilityBlock">
-    <input type="hidden" name="product_id" value="{$productId}">
+    <input type="hidden" name="product_id" value="{$productId|escape:'html':'UTF-8':false}">
     <div class="row">
         <div class="col-md-8">
             <table class="table table-bordered">
@@ -36,8 +36,8 @@
                         <td class="text-center">
                             <select title="{l s='Day' mod='dpdbaltics'}" class="js-range-input js-day-select">
                                 {foreach $daysList as $day}
-                                    <option value="{$day}">
-                                        {$day}
+                                    <option value="{$day|escape:'html':'UTF-8':false}">
+                                        {$day|escape:'html':'UTF-8':false}
                                     </option>
                                 {/foreach}
                             </select>
@@ -76,8 +76,8 @@
             <td class="text-center">
                 <select title="{l s='Day' mod='dpdbaltics'}" class="js-range-input js-day-select">
                     {foreach $daysList as $day}
-                        <option value="{$day}">
-                            {$day}
+                        <option value="{$day|escape:'html':'UTF-8':false}">
+                            {$day|escape:'html':'UTF-8':false}
                         </option>
                     {/foreach}
                 </select>

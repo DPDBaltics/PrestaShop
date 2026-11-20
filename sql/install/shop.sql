@@ -11,6 +11,7 @@ CREATE TABLE IF NOT EXISTS `PREFIX_dpd_shop` (
   `longitude` decimal(20,6) NOT NULL,
   `latitude` decimal(20,6) NOT NULL,
   PRIMARY KEY (`id_dpd_shop`),
-  INDEX (`id_dpd_shop`, `parcel_shop_id`)
+  INDEX (`parcel_shop_id`),
+  INDEX (`country`, `city`)
 ) ENGINE=ENGINE_TYPE DEFAULT CHARSET=utf8;
 

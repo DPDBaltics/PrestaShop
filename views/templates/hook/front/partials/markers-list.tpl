@@ -24,11 +24,11 @@
                 <li class="list-group-item list-inline-item" data-listid="{$service->getParcelShopId()|escape:'htmlall':'UTF-8'}">
                     <h4 class="list-group-item-heading" style="padding-right:40px">
                         {if $service->type === 'locker'}
-                            <img class="dpd-pickup-logo" height="40px" width="40px" src="{$dpd_locker_logo}"
+                            <img class="dpd-pickup-logo" height="40px" width="40px" src="{$dpd_locker_logo|escape:'html':'UTF-8':false}"
                                  alt="{l s='DPD pickup point' mod='dpdbaltics'}">
                         {/if}
                         {if $service->type === 'parcel_shop'}
-                            <img class="dpd-pickup-logo" height="40px" width="40px" src="{$dpd_pickup_logo}"
+                            <img class="dpd-pickup-logo" height="40px" width="40px" src="{$dpd_pickup_logo|escape:'html':'UTF-8':false}"
                                  alt="{l s='DPD pickup point' mod='dpdbaltics'}">
                         {/if}
                         {$service->getCompany()|escape:'htmlall':'UTF-8'}
@@ -57,7 +57,7 @@
                                         data-html="true"
                                         data-container=".dpd-pudo-container"
                                         title="{l s='Working hours' mod='dpdbaltics'}"
-                                        data-content="{include file='module:dpdbaltics/views/templates/hook/front/partials/working-hours.tpl' workingHours=$service->getOpeningHours()}{if isset($service->extraInfo)}{$service->extraInfo}{/if}">
+                                        data-content="{include file='module:dpdbaltics/views/templates/hook/front/partials/working-hours.tpl' workingHours=$service->getOpeningHours()}{if isset($service->extraInfo)}{$service->extraInfo|escape:'html':'UTF-8':false}{/if}">
                                     {l s='more information' mod='dpdbaltics'}
                                 </p>
                             </div>
@@ -66,15 +66,15 @@
                             <button
                                     class="dpd-action-button btn btn-secondary button button-medium dpd-pudo-select"
                                     type="button"
-                                    data-id="{$service->getParcelShopId()}"
+                                    data-id="{$service->getParcelShopId()|escape:'html':'UTF-8':false}"
                                     data-select="{l s='Select' mod='dpdbaltics'}"
                                     data-selected="{l s='Selected' mod='dpdbaltics'}"
                                     data-change="{l s='Change' mod='dpdbaltics'}"
-                                    data-countrycode="{$service->getCountry()}"
-                                    data-zipcode="{$service->getPCode()}"
-                                    data-address="{$service->getStreet()}"
-                                    data-city="{$service->getCity()}"
-                                    data-countryId="{$service->getCountry()}"
+                                    data-countrycode="{$service->getCountry()|escape:'html':'UTF-8':false}"
+                                    data-zipcode="{$service->getPCode()|escape:'html':'UTF-8':false}"
+                                    data-address="{$service->getStreet()|escape:'html':'UTF-8':false}"
+                                    data-city="{$service->getCity()|escape:'html':'UTF-8':false}"
+                                    data-countryId="{$service->getCountry()|escape:'html':'UTF-8':false}"
                             >
 
                                 <span>
@@ -100,10 +100,10 @@
                             &nbsp;
                         </div>
                     </div>
-                    <input name="saved_pudo_id" class="dpd-hidden hidden" hidden value="{$saved_pudo_id}">
-                    <input name="pudo-type" class="dpd-hidden hidden" hidden value="{$service->type}">
-                    <input name="pudo-lat" class="dpd-hidden hidden" hidden value="{$service->getLatitude()}">
-                    <input name="pudo-lng" class="dpd-hidden hidden" hidden value="{$service->getLongitude()}">
+                    <input name="saved_pudo_id" class="dpd-hidden hidden" hidden value="{$saved_pudo_id|escape:'html':'UTF-8':false}">
+                    <input name="pudo-type" class="dpd-hidden hidden" hidden value="{$service->type|escape:'html':'UTF-8':false}">
+                    <input name="pudo-lat" class="dpd-hidden hidden" hidden value="{$service->getLatitude()|escape:'html':'UTF-8':false}">
+                    <input name="pudo-lng" class="dpd-hidden hidden" hidden value="{$service->getLongitude()|escape:'html':'UTF-8':false}">
                 </li>
             {/foreach}
         </ul>

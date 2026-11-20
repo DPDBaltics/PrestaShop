@@ -43,7 +43,7 @@
            class="btn btn-default btn-secondary  pull-right js-print-label-btn mr-1"
            style="display: none"
            data-action="print"
-           data-shipment-id={$shipment->id}
+           data-shipment-id={$shipment->id|escape:'html':'UTF-8':false}
         >
             <i class="process-icon-save"></i>
             {if 'download' == $printLabelOption}
@@ -53,7 +53,7 @@
             {/if}
         </a>
         {if !$isAutomated}
-        <a href="{$adminLabelLink}&shipment_id={$shipment->id}"
+        <a href="{$adminLabelLink|escape:'html':'UTF-8':false}&shipment_id={$shipment->id|escape:'html':'UTF-8':false}"
            class="btn btn-default btn-secondary pull-right"
         >
             <i class="process-icon-save"></i>
@@ -67,10 +67,10 @@
             <div class="col-lg-6 form-row">
                 <label class="control-label" >{l s='Printout format' mod='dpdbaltics'}:</label>
                 <select name="label_format" class=" col-lg-8 form-control js-printout-format-select"
-                        id="{$default_label_format}">
+                        id="{$default_label_format|escape:'html':'UTF-8':false}">
                     {foreach $dpdSelectFormatOptions as $option}
-                        <option {if $option.value == $selectedFormatOptionId}selected{/if} value="{$option.value}">
-                            {$option.name}
+                        <option {if $option.value == $selectedFormatOptionId}selected{/if} value="{$option.value|escape:'html':'UTF-8':false}">
+                            {$option.name|escape:'html':'UTF-8':false}
                         </option>
                     {/foreach}
                 </select>

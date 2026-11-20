@@ -22,9 +22,9 @@ declare(strict_types=1);
 
 namespace Invertus\dpdBaltics\Service\Label;
 
-use Context;
 use Configuration;
 use Invertus\dpdBaltics\Adapter\LinkAdapter;
+use Invertus\dpdBaltics\Factory\ContextFactory;
 
 if (!defined('_PS_VERSION_')) {
     exit;
@@ -80,6 +80,6 @@ class LabelUrlFormatter
             return $url;
         }
 
-        return rtrim(\Context::getContext()->shop->getBaseURL(true), '/') . $url;
+        return rtrim(ContextFactory::getShop()->getBaseURL(true), '/') . $url;
     }
 }

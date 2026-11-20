@@ -18,7 +18,7 @@
  *}
 
 <div class="dpd-on-board-images-container">
-    <img class="dpd-on-board-mascot" src="{$dpdPathUri}views/img/on-board/mascot.png" alt="{l s='On-board mascot' mod='dpdbaltics'}">
+    <img class="dpd-on-board-mascot" src="{$dpdPathUri|escape:'html':'UTF-8':false}views/img/on-board/mascot.png" alt="{l s='On-board mascot' mod='dpdbaltics'}">
 </div>
 
 <div class="dpd-on-board-icons-container">
@@ -36,12 +36,12 @@
 
     {if !empty($onBoardTemplateData.fastMoveButtons)}
         {foreach $onBoardTemplateData.fastMoveButtons as $fastMoveButton}
-            <div class="dpd-on-fast-move-container  {$fastMoveButton->direction}">
+            <div class="dpd-on-fast-move-container  {$fastMoveButton->direction|escape:'html':'UTF-8':false}">
                 <div
                     class="dpd-on-fast-move dpd-on-board-top-button js-dpd-next-step"
-                    data-next-step="{$fastMoveButton->step}"
+                    data-next-step="{$fastMoveButton->step|escape:'html':'UTF-8':false}"
                 >
-                    <i class="icon-{$fastMoveButton->direction}"></i>
+                    <i class="icon-{$fastMoveButton->direction|escape:'html':'UTF-8':false}"></i>
                 </div>
             </div>
         {/foreach}
@@ -49,11 +49,11 @@
 </div>
 
 <div class="dpd-on-board-text-container">
-    <p class="dpd-on-board-heading">{if $onBoardTemplateData.heading}{$onBoardTemplateData.heading}{/if}</p>
+    <p class="dpd-on-board-heading">{if $onBoardTemplateData.heading}{$onBoardTemplateData.heading|escape:'html':'UTF-8':false}{/if}</p>
 
     {if !empty($onBoardTemplateData.paragraphs)}
         {foreach $onBoardTemplateData.paragraphs as $paragraph}
-            <p class="dpd-on-board-text {if $paragraph->class}{$paragraph->class}{/if}">{$paragraph->text}</p>
+            <p class="dpd-on-board-text {if $paragraph->class}{$paragraph->class|escape:'html':'UTF-8':false}{/if}">{$paragraph->text|escape:'html':'UTF-8':false}</p>
         {/foreach}
     {/if}
 </div>
@@ -62,7 +62,7 @@
     <div class="dpd-on-board-main-import-container">
         {foreach $onBoardTemplateData.importedMainFilesDataArray as $importedMainFile}
             <div class="dpd-on-board-main-import-item">
-                <i class="{$importedMainFile.iconClass}"></i><span>{$importedMainFile.name}</span>
+                <i class="{$importedMainFile.iconClass|escape:'html':'UTF-8':false}"></i><span>{$importedMainFile.name|escape:'html':'UTF-8':false}</span>
             </div>
         {/foreach}
     </div>
@@ -72,16 +72,16 @@
     {if !empty($onBoardTemplateData.buttons)}
         {foreach $onBoardTemplateData.buttons as $button}
             <button
-                    class="dpd-on-board-button btn {if $button->class}{$button->class}{/if}"
-                    {if $button->nextStep}data-next-step="{$button->nextStep}"{/if}
-                    {if $button->validateField}data-validate="{$button->validateField}"{/if}
+                    class="dpd-on-board-button btn {if $button->class}{$button->class|escape:'html':'UTF-8':false}{/if}"
+                    {if $button->nextStep}data-next-step="{$button->nextStep|escape:'html':'UTF-8':false}"{/if}
+                    {if $button->validateField}data-validate="{$button->validateField|escape:'html':'UTF-8':false}"{/if}
             >
-                {$button->text}
+                {$button->text|escape:'html':'UTF-8':false}
             </button>
         {/foreach}
     {/if}
 </div>
 
 {if $onBoardTemplateData.manualConfigProgress}
-    <p class="dpd-on-board-manual-config-progress">{$onBoardTemplateData.manualConfigProgress}</p>
+    <p class="dpd-on-board-manual-config-progress">{$onBoardTemplateData.manualConfigProgress|escape:'html':'UTF-8':false}</p>
 {/if}

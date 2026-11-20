@@ -80,7 +80,7 @@ class DpdBalticsAjaxModuleFrontController extends AbstractFrontController
         $carrierId = (int)Tools::getValue('id_carrier');
         switch ($action) {
             case 'searchPudoServices':
-                $cartId = Context::getContext()->cart->id;
+                $cartId = $this->context->cart->id;
                 try {
                     $response = $this->searchPudoServices($countryCode, $city, $carrierId, $cartId);
                 } catch (Exception $e) {
@@ -106,7 +106,7 @@ class DpdBalticsAjaxModuleFrontController extends AbstractFrontController
                 $phoneNumberValidator = $this->module->getModuleContainer('invertus.dpdbaltics.validate.phone.phone_number_validator');
                 try {
                     $carrier = new Carrier($carrierId);
-                    $cartId = Context::getContext()->cart->id;
+                    $cartId = $this->context->cart->id;
 
                     $phoneNumberValidator->isPhoneAddedInOrder($cartId);
                     $pudoValidator->isPudoSelected($cartId, $carrier->id_reference);
@@ -128,7 +128,7 @@ class DpdBalticsAjaxModuleFrontController extends AbstractFrontController
                 $this->updateStreetSelect($countryCode, $city);
                 break;
             case 'saveSelectedPhoneNumber':
-                $cartId = Context::getContext()->cart->id;
+                $cartId = $this->context->cart->id;
                 /** @var  \Invertus\dpdBaltics\Service\CarrierPhoneService $phoneService */
                 $phoneService = $this->module->getModuleContainer('invertus.dpdbaltics.service.carrier_phone_service');
                 /** @var  \Invertus\dpdBaltics\Validate\Phone\PhoneNumberValidator $phoneNumberValidator */
@@ -153,7 +153,7 @@ class DpdBalticsAjaxModuleFrontController extends AbstractFrontController
             case 'updateParcelBlock':
                 $street = Tools::getValue('street');
                 $city = Tools::getValue('city');
-                $cartId = Context::getContext()->cart->id;
+                $cartId = $this->context->cart->id;
                 try {
                     $response = $this->searchPudoServices($countryCode, $city, $carrierId, $cartId, $street);
                 } catch (Exception $e) {
@@ -334,15 +334,20 @@ class DpdBalticsAjaxModuleFrontController extends AbstractFrontController
 
         $pudoId = $pudoService->getPudoIdByCityAndAddress($city, $street);
         $parcelShops = $pudoService->getClosestParcelShops($pudoId);
-        $coordinates = [];
-        $selectedPudo = null;
-        if (isset($parcelShops[0])) {
-            $coordinates = [
-                'lat' => $parcelShops[0]->getLatitude(),
-                'lng' => $parcelShops[0]->getLongitude(),
-            ];
-            $selectedPudo = $parcelShops[0];
+
+        if (!isset($parcelShops[0])) {
+            $this->messages[] = $this->module->l('No pickup points found for the selected address.', self::FILENAME);
+            $this->ajaxDie(json_encode([
+                'template' => $this->getMessageTemplate('danger'),
+                'status' => false
+            ]));
         }
+
+        $selectedPudo = $parcelShops[0];
+        $coordinates = [
+            'lat' => $selectedPudo->getLatitude(),
+            'lng' => $selectedPudo->getLongitude(),
+        ];
         $pudoServices = $pudoService->setPudoServiceTypes($parcelShops);
         $pudoServices = $pudoService->formatPudoServicesWorkHours($pudoServices);
 

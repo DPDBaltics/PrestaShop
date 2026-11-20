@@ -530,7 +530,7 @@ class ShipmentService
             }
 
             if (!$response['status']) {
-                $message .= sprintf($this->module->l('Failed to save shipment for order %s Error: %s'), $orderId, $response['message']) . '</br>';
+                $message .= sprintf($this->module->l('Failed to save shipment for order %s Error: %s'), $orderId, $response['message']) . '; ';
                 $success = false;
             }
         }

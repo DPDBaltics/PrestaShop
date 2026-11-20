@@ -16,7 +16,7 @@
  * @copyright Since 2007 PrestaShop SA and Contributors
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
  *}
-<form id="order-return-form" action="{$href}" method="post">
+<form id="order-return-form" action="{$href|escape:'html':'UTF-8':false}" method="post">
     <div class="box">
         <h3>
             {l s='DPD Baltics' d='dpdbaltics'}
@@ -34,8 +34,8 @@
                             data-style="btn-primary"
                     >
                         {foreach $return_template_ids as $key => $return_template_id}
-                            <option value="{$key}">
-                                {$return_template_id}
+                            <option value="{$key|escape:'html':'UTF-8':false}">
+                                {$return_template_id|escape:'html':'UTF-8':false}
                             </option>
                         {/foreach}
                     </select>

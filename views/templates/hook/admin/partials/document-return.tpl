@@ -56,7 +56,7 @@
         </label>
         <div class="col-xs-4">
             <input name="dpd_document_return_number" class="form-control fixed-width-lg" type="text"
-                   value="{$shipment->document_return_number}">
+                   value="{$shipment->document_return_number|escape:'html':'UTF-8':false}">
         </div>
     </div>
 </div>

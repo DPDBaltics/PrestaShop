@@ -16,6 +16,6 @@
  * @copyright Since 2007 PrestaShop SA and Contributors
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
  *}
-<i class="icon-save-label-dpd print-dpd-label" data-id-order="{$idOrder}"></i>
+<i class="icon-save-label-dpd print-dpd-label" data-id-order="{$idOrder|escape:'html':'UTF-8':false}"></i>
 
-<div class="dpd-print-message-container">{$message}</div>
+<div class="dpd-print-message-container">{$message|escape:'html':'UTF-8':false}</div>

@@ -17,21 +17,21 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
  *}
 
-<form id="product-home-collection-form-{$idProduct}" class="js-product-form js-product-home-collection">
+<form id="product-home-collection-form-{$idProduct|escape:'html':'UTF-8':false}" class="js-product-form js-product-home-collection">
     <div class="row custom-product-row {if $isOddRow == true}odd-row{else}even-row{/if}">
-        <input type="hidden" name="home-collection-product-id" value="{$idProduct}" disabled>
+        <input type="hidden" name="home-collection-product-id" value="{$idProduct|escape:'html':'UTF-8':false}" disabled>
         <div class="col-xs-8">
-            <h4>{$productName} {l s=' Home collection' mod='dpdbaltics'}</h4>
+            <h4>{$productName|escape:'html':'UTF-8':false} {l s=' Home collection' mod='dpdbaltics'}</h4>
         </div>
 
         <div class="product-select-wrapper js-home-collection-select col-xs-2">
             <select class="chosen" name="id_service" disabled>
                 {foreach $homeCollectionProducts as $homeCollectionProduct}
                     <option
-                        value="{$homeCollectionProduct.id_dpd_service_carrier}"
+                        value="{$homeCollectionProduct.id_dpd_service_carrier|escape:'html':'UTF-8':false}"
                         {if $activeHomeColService && $activeHomeColService == $homeCollectionProduct.id_dpd_service_carrier} selected="selected"{/if}
                     >
-                        {$homeCollectionProduct.service_name}
+                        {$homeCollectionProduct.service_name|escape:'html':'UTF-8':false}
                     </option>
                 {/foreach}
             </select>
@@ -40,26 +40,26 @@
         <div class="col-xs-1">
             <span class="switch prestashop-switch">
                 <input type="radio"
-                       name="product-active-{$idProduct}"
-                       id="product-active-{$idProduct}-on"
+                       name="product-active-{$idProduct|escape:'html':'UTF-8':false}"
+                       id="product-active-{$idProduct|escape:'html':'UTF-8':false}-on"
                        value="1"
                        disabled
                        {if $activeHomeColService}checked="checked"{/if}
                 >
-                <label for="product-active-{$idProduct}-on" class="radioCheck">Yes</label>
+                <label for="product-active-{$idProduct|escape:'html':'UTF-8':false}-on" class="radioCheck">Yes</label>
                 <input type="radio"
-                       name="product-active-{$idProduct}"
-                       id="product-active-{$idProduct}-off"
+                       name="product-active-{$idProduct|escape:'html':'UTF-8':false}"
+                       id="product-active-{$idProduct|escape:'html':'UTF-8':false}-off"
                        value="0"
                        disabled
                        {if !$activeHomeColService}checked="checked"{/if}
                 >
-                <label for="product-active-{$idProduct}-off" class="radioCheck">No</label>
+                <label for="product-active-{$idProduct|escape:'html':'UTF-8':false}-off" class="radioCheck">No</label>
                 <a class="slide-button btn"></a>
             </span>
         </div>
         <div class="col-xs-1">
-            {include file='./buttons.tpl' dpd_product_id_identifier={$idProduct}}
+            {include file='./buttons.tpl' dpd_product_id_identifier=$idProduct}
         </div>
     </div>
 </form>

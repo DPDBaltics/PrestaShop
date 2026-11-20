@@ -6,3 +6,4 @@
 config.xml
 .DS_Store
 *.zip
+/build

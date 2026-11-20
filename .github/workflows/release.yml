@@ -21,6 +21,7 @@ jobs:
           composer install --no-dev
           bash scripts/scope-vendor.sh
           rm -rf scripts scoper.inc.php
+          find vendor -name .git -prune -exec rm -rf {} +
           rm -rf .git
           rm -rf .github
           rm -rf tests

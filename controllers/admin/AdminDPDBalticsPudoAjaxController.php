@@ -20,6 +20,7 @@
 
 use Invertus\dpdBaltics\Config\Config;
 use Invertus\dpdBaltics\Controller\AbstractAdminController;
+use Invertus\dpdBaltics\Infrastructure\Bootstrap\ModuleTabs;
 use Invertus\dpdBaltics\Provider\CurrentCountryProvider;
 use Invertus\dpdBaltics\Repository\ParcelShopRepository;
 use Invertus\dpdBaltics\Repository\ProductRepository;
@@ -42,6 +43,13 @@ class AdminDPDBalticsPudoAjaxController extends AbstractAdminController
         }
 
         if ($action === 'addPudoCart') {
+            if (!$this->isTabGranted('add', ModuleTabs::ADMIN_ORDERS_CONTROLLER)) {
+                $this->ajaxDie(json_encode([
+                    'status' => false,
+                    'message' => $this->getPermissionDeniedMessage('add'),
+                ]));
+            }
+
             $this->ajaxProcessAddPudoCart();
         }
     }

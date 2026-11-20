@@ -4,5 +4,5 @@ CREATE TABLE IF NOT EXISTS `PREFIX_dpd_order_phone` (
   `phone` VARCHAR(50),
   `phone_area` VARCHAR (10),
   PRIMARY KEY (`id_dpd_order_phone`),
-  INDEX (`id_dpd_order_phone`, `id_cart`)
+  INDEX (`id_cart`)
 ) ENGINE=ENGINE_TYPE DEFAULT CHARSET=utf8;

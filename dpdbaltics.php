@@ -46,7 +46,9 @@ use Invertus\dpdBaltics\Service\ShippingPriceCalculationService;
 use Invertus\dpdBaltics\Service\TabService;
 use Invertus\dpdBaltics\Service\TrackingService;
 use Invertus\dpdBaltics\Util\CountryUtility;
+use Invertus\dpdBaltics\Util\StringUtility;
 use Invertus\dpdBaltics\Validate\Carrier\PudoValidate;
+use Invertus\dpdBaltics\Validate\ReturnLabel\ReturnLabelAccessValidator;
 use Invertus\dpdBalticsApi\Api\DTO\Response\ParcelPrintResponse;
 use Invertus\dpdBalticsApi\Api\DTO\Response\ParcelShopSearchResponse;
 use Invertus\dpdBalticsApi\Exception\DPDBalticsAPIException;
@@ -91,7 +93,7 @@ class DPDBaltics extends CarrierModule
         $this->author = 'Invertus';
         $this->tab = 'shipping_logistics';
         $this->description = 'DPD Baltics shipping integration';
-        $this->version = '3.3.2';
+        $this->version = '3.3.3';
         $this->ps_versions_compliancy = ['min' => '1.7.4.0', 'max' => _PS_VERSION_];
         $this->need_instance = 0;
         parent::__construct();
@@ -368,6 +370,7 @@ class DPDBaltics extends CarrierModule
         $carrierReference = $carrier->id_reference;
         $dpdCarriers = $carrierRepo->getDpdCarriers($idShop);
         $isDpdCarrier = false;
+        $isSameDayDelivery = false;
         foreach ($dpdCarriers as $dpdCarrier) {
             if ($carrierReference == $dpdCarrier['id_reference']) {
                 $isDpdCarrier = true;
@@ -561,6 +564,10 @@ class DPDBaltics extends CarrierModule
         $maxAllowedWeight = Config::getDefaultServiceWeights($countryCode, $serviceCarrier['product_reference']);
 
         if (!$cartWeightValidator->validate($cart, $parcelDistribution, $maxAllowedWeight)) {
+            return false;
+        }
+
+        if (!$cartWeightValidator->isEachProductWithinWeightLimit($cart, \Configuration::get(Config::MAX_PRODUCT_WEIGHT))) {
             return false;
         }
 
@@ -1204,12 +1211,7 @@ class DPDBaltics extends CarrierModule
 
     public function hookDisplayOrderDetail($params)
     {
-        $isReturnServiceEnabled = Configuration::get(Config::PARCEL_RETURN);
-        if (!$isReturnServiceEnabled) {
-            return;
-        }
-
-        if (CountryUtility::isEstonia()) {
+        if (!isset($params['order']) || !Validate::isLoadedObject($params['order'])) {
             return;
         }
 
@@ -1218,7 +1220,22 @@ class DPDBaltics extends CarrierModule
         $shipmentId = $shipmentRepo->getIdByOrderId($params['order']->id);
 
         $orderState = new OrderState($params['order']->current_state);
-        if (!$orderState->delivery) {
+        $idCustomer = $this->context->customer->isLogged() ? (int) $this->context->customer->id : 0;
+
+        /** @var ReturnLabelAccessValidator $returnLabelAccessValidator */
+        $returnLabelAccessValidator = $this->getModuleContainer('invertus.dpdbaltics.validate.return_label.return_label_access_validator');
+
+        if (!$returnLabelAccessValidator->isOwner($idCustomer, $params['order']->id_customer)) {
+            return;
+        }
+
+        $isReturnAvailable = $returnLabelAccessValidator->isReturnAvailable(
+            (bool) Configuration::get(Config::PARCEL_RETURN),
+            CountryUtility::isEstonia(),
+            (bool) $orderState->delivery,
+            (bool) $shipmentId
+        );
+        if (!$isReturnAvailable) {
             return;
         }
         /** @var AddressTemplateRepository $addressTemplateRepo */
@@ -1237,7 +1254,7 @@ class DPDBaltics extends CarrierModule
         }
 
         if (isset($this->context->cookie->dpd_error)) {
-            $this->context->controller->errors[] = json_decode($this->context->cookie->dpd_error);
+            $this->context->controller->errors[] = StringUtility::escapeHtml(json_decode($this->context->cookie->dpd_error));
             unset($this->context->cookie->dpd_error);
         }
         $href = $this->context->link->getModuleLink(
@@ -1402,18 +1419,18 @@ class DPDBaltics extends CarrierModule
             } catch (DPDBalticsAPIException $e) {
                 /** @var ExceptionService $exceptionService */
                 $exceptionService = $this->getModuleContainer('invertus.dpdbaltics.service.exception.exception_service');
-                Context::getContext()->controller->errors[] = $exceptionService->getErrorMessageForException(
+                Context::getContext()->controller->errors[] = StringUtility::escapeHtml($exceptionService->getErrorMessageForException(
                     $e,
                     $exceptionService->getAPIErrorMessages()
-                );
+                ));
                 return;
             } catch (Exception $e) {
-                Context::getContext()->controller->errors[] = $this->l('Failed to print label: ') . $e->getMessage();
+                Context::getContext()->controller->errors[] = StringUtility::escapeHtml($this->l('Failed to print label: ') . $e->getMessage());
                 return;
             }
 
             if (isset($parcelPrintResponse) && !empty($parcelPrintResponse->getErrLog())) {
-                Context::getContext()->controller->errors[] = $parcelPrintResponse->getErrLog();
+                Context::getContext()->controller->errors[] = StringUtility::escapeHtml($parcelPrintResponse->getErrLog());
             }
 
             exit;
@@ -1427,18 +1444,18 @@ class DPDBaltics extends CarrierModule
             } catch (DPDBalticsAPIException $e) {
                 /** @var ExceptionService $exceptionService */
                 $exceptionService = $this->getModuleContainer('invertus.dpdbaltics.service.exception.exception_service');
-                Context::getContext()->controller->errors[] = $exceptionService->getErrorMessageForException(
+                Context::getContext()->controller->errors[] = StringUtility::escapeHtml($exceptionService->getErrorMessageForException(
                     $e,
                     $exceptionService->getAPIErrorMessages()
-                );
+                ));
                 return;
             } catch (Exception $e) {
-                Context::getContext()->controller->errors[] = $this->l('Failed to print label: ') . $e->getMessage();
+                Context::getContext()->controller->errors[] = StringUtility::escapeHtml($this->l('Failed to print label: ') . $e->getMessage());
                 return;
             }
 
             if (isset($parcelPrintResponse) && !empty($parcelPrintResponse->getErrLog())) {
-                Context::getContext()->controller->errors[] = $parcelPrintResponse->getErrLog();
+                Context::getContext()->controller->errors[] = StringUtility::escapeHtml($parcelPrintResponse->getErrLog());
             }
 
             exit;

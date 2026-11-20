@@ -24,6 +24,7 @@ namespace Invertus\dpdBaltics\Validate\CourierRequest;
 use DateTime;
 use Invertus\dpdBaltics\Config\Config;
 use Invertus\dpdBaltics\DTO\CourierRequestData;
+use Invertus\dpdBaltics\Util\PickupTimeSlotUtility;
 
 if (!defined('_PS_VERSION_')) {
     exit;
@@ -31,6 +32,25 @@ if (!defined('_PS_VERSION_')) {
 
 class CourierRequestValidator
 {
+    /**
+     * @return bool
+     */
+    public function validatePickupTimeSlots(CourierRequestData $courierRequestData)
+    {
+        $from = $courierRequestData->getPickupTimeFrom();
+        $to = $courierRequestData->getPickupTimeTo();
+
+        if (!PickupTimeSlotUtility::isValidPickupTimeFromSlot($from)) {
+            return false;
+        }
+
+        if (!PickupTimeSlotUtility::isValidPickupTimeToSlot($to)) {
+            return false;
+        }
+
+        return $from < $to;
+    }
+
     public function validate(CourierRequestData $courierRequestData, $countryIso)
     {
         $dateFrom = new DateTime($courierRequestData->getPickupTime());
@@ -42,5 +62,30 @@ class CourierRequestValidator
         }
 
         return true;
+    }
+
+    /**
+     * DPD rejects a pickup without a positive weight, and the API client drops "0" values from the request.
+     * The pattern also keeps values that DPDCourierRequest::$definition (isFloat) would refuse to save.
+     *
+     * @return bool
+     */
+    public function validateWeight(CourierRequestData $courierRequestData)
+    {
+        $weight = (string) $courierRequestData->getWeight();
+
+        if (!preg_match('/^(\d+(\.\d+)?|\.\d+)\z/', $weight)) {
+            return false;
+        }
+
+        return is_finite((float) $weight) && (float) $weight > 0;
+    }
+
+    /**
+     * @return bool
+     */
+    public function validateParcelsCount(CourierRequestData $courierRequestData)
+    {
+        return (bool) preg_match('/^[1-9]\d{0,8}\z/', (string) $courierRequestData->getParcelsCount());
     }
 }

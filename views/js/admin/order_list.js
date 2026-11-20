@@ -121,7 +121,7 @@ $(document).ready(function () {
 
     function toggleMessageBoxResult(success, message) {
         var messageBox = $('.message-text-box');
-        messageBox.html(message);
+        messageBox.text(toPlainText(message));
         if (success) {
             messageBox.removeClass('alert-warning');
             messageBox.addClass('alert-success');
@@ -131,6 +131,15 @@ $(document).ready(function () {
             messageBox.removeClass('alert-warning');
             messageBox.addClass('alert-danger');
         }
+    }
+
+    // Server messages arrive HTML-escaped; a native textarea decodes entities without creating elements.
+    // jQuery .html() is not used here because it builds elements for <script> or <td> input.
+    function toPlainText(message) {
+        var textarea = document.createElement('textarea');
+        textarea.innerHTML = message || '';
+
+        return textarea.value;
     }
 
     function replaceIcon(idOrder, iconReplacer)

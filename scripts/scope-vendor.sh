@@ -31,6 +31,8 @@ php "$PHP_SCOPER_PHAR" add-prefix --output-dir=build --force --no-interaction
 rm -f build/composer.json
 (cd build && tar cf - .) | tar xf -
 rm -rf build vendor/scoper-autoload.php
+# php-scoper skips test folders, so the library's own tests would ship with the global Unirest namespace.
+rm -rf vendor/apimatic/unirest-php/tests
 composer dump-autoload "${DUMP_FLAGS[@]}"
 
 CLASSMAP=vendor/composer/autoload_classmap.php
@@ -40,7 +42,7 @@ if grep -q "'Unirest\\\\\\\\" "$CLASSMAP" || ! grep -q "'Invertus\\\\\\\\dpdBalt
 fi
 
 # Docblocks keep the original name, so comment lines are skipped and only code references are checked.
-UNSCOPED=$(grep -rEn --include='*.php' --exclude-dir=tests --exclude-dir=test --exclude-dir=Tests \
+UNSCOPED=$(grep -rEn --include='*.php' \
     '^\s*namespace\s+Unirest\b|Unirest\\[A-Za-z]' src vendor controllers upgrade dpdbaltics.php \
     | grep -vE 'Vendor\\+Unirest' | grep -vE '^[^:]+:[0-9]+:\s*(\*|//|/\*|#)' || true)
 if [ -n "$UNSCOPED" ]; then

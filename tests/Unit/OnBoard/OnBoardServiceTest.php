@@ -23,6 +23,13 @@ if (!class_exists('Configuration')) {
         {
             return isset(self::$values[$key]) ? self::$values[$key] : false;
         }
+
+        public static function updateValue($key, $value)
+        {
+            self::$values[$key] = $value;
+
+            return true;
+        }
     }
 }
 
@@ -34,6 +41,11 @@ use Invertus\dpdBaltics\OnBoard\Service\OnBoardService;
 
 class OnBoardServiceTest extends PHPUnit_Framework_TestCase
 {
+    protected function setUp()
+    {
+        Configuration::$values = [];
+    }
+
     /**
      * The parcel import JS stores DPD_MANUAL_PARCELS_AFTER_IMPORT_STEP, which no step class handles.
      */

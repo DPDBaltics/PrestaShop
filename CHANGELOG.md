@@ -221,6 +221,7 @@
 - Fixed home delivery shipments sending a parcel shop ID to DPD, which DPD can reject with "PUDO id is provided but main service type is not PUDO"
 - Fixed checkout dropdowns in the DPD carrier block being cut off and unusable on the Hummingbird theme
 - Fixed the customer return label page failing with a fatal error since 3.3.0
+- Fixed every DPD back office page failing with an error after a pickup point import during the setup guide
 - Fixed the return label being available to any visitor for any order: only the logged-in customer who placed the order can get it, and only when the return service is enabled, the order is delivered and it has a DPD shipment
 - Fixed the return button showing to guests and on orders without a DPD shipment
 - Fixed slow back office order page, checkout pickup point step and pickup point re-import on shops with many imported countries, caused by missing pickup point table indexes on installs and resets since 3.2.22

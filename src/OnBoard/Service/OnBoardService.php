@@ -60,6 +60,10 @@ class OnBoardService
 
         $onBoardTemplateData = $this->onBoardStepProvider->takeStepData();
 
+        if (!$onBoardTemplateData) {
+            return $ajaxNextStep ? ['onBoardTemplate' => ''] : '';
+        }
+
         return $this->onBoardTemplateBuilder->render($onBoardTemplateData, $ajaxNextStep);
     }
 }

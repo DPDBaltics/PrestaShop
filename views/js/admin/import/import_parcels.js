@@ -81,10 +81,6 @@ $(window).load(function () {
         $("#import-modal-confirm").modal('hide');
         $("#import-parcels-modal").modal('hide');
         stopLoadImport();
-
-        if (typeof onBoard !== 'undefined') {
-          nextOnBoardStep('DPD_MANUAL_PARCELS_AFTER_IMPORT_STEP');
-        }
       }
     });
   });
@@ -112,39 +108,5 @@ $(window).load(function () {
     var $modal = $('#import-cron-required-modal');
     $('#cron-command-display').text(cronCommand || buildCronCommand());
     $modal.modal('show');
-  }
-
-  function nextOnBoardStep(nextStep) {
-    $.ajax(onBoard.ajaxUrl, {
-      method: 'POST',
-      data: {
-        action: 'nextOnBoardStep',
-        ajax: 1,
-        nextStep: nextStep
-      },
-      success: function (response) {
-        response = JSON.parse(response);
-
-        if (!response.status) {
-          return false;
-        }
-
-        if (response.stepTemplate) {
-          $onBoardSection = $('.dpd-on-board-section');
-
-          $onBoardSection.find('#dpd-on-board').html(response.stepTemplate.onBoardTemplate);
-
-          if (typeof response.stepTemplate.progressBarTemplate !== 'undefined') {
-            if ($onBoardSection.find('.dpd-on-board-bottom-progress-container').length) {
-              $onBoardSection.find('.dpd-on-board-bottom-progress-container').replaceWith(response.stepTemplate.progressBarTemplate);
-            } else {
-              $onBoardSection.append(response.stepTemplate.progressBarTemplate);
-            }
-          }
-
-          $onBoardSection.removeClass('hidden d-none');
-        }
-      }
-    });
   }
 });
